@@ -1,4 +1,4 @@
-export const getRatings = (rating) => {
+export var getRatings = function(rating){
         if(isNaN(rating)){
             throw new Error("Invalid rating value provided");
         }
@@ -10,23 +10,23 @@ export const getRatings = (rating) => {
         //  // divide the no by 2 and floor the result. This will be the total no of full stars;
         //  // half star will be one
         //  // empty stars will be 5 - (full stars + half stars)
-        const result = rating / 0.5;
-        let fullStars=0;
-        let halfStars =0;
-        let emptyStars = 0;
-        let resultString = '';
+        var result = rating / 0.5;
+        var fullStars=0;
+        var halfStars =0;
+        var emptyStars = 0;
+        var resultString = '';
         if(result % 2 !== 0){
             halfStars = 1;
         }
         fullStars = Math.floor(result / 2);
         emptyStars = 5 - (fullStars + halfStars); 
-        for(let i=0; i< fullStars; i++){
+        for(var i=0; i< fullStars; i++){
             resultString += '<span class="full-star recs-star"></span>';
         }
-        for(let i=0; i< halfStars; i++){
+        for(var i=0; i< halfStars; i++){
             resultString += '<span class="half-star recs-star"></span>';
         }
-        for(let i=0; i< emptyStars; i++){
+        for(var i=0; i< emptyStars; i++){
             resultString += '<span class="empty-star recs-star"></span>';
         }
         return resultString;

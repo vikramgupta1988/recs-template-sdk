@@ -1,9 +1,9 @@
-export const eventHandlers = {
+export var eventHandlers = {
     // side scroll function with delayed scroll to provide smooth scroll
     // feature across cross browsers
     // the code inside the methods are in native javascript
     // because they are to be appended directly in the DOM
-    recsSliderSideScroll(direction, speed, step) {
+    recsSliderSideScroll: function recsSliderSideScroll(direction, speed, step) {
        scrollAmount = 0;
        var element = document.querySelector("#recs-slider-container");
        if(!element){
@@ -64,7 +64,7 @@ export const eventHandlers = {
    },
    
    // horizontal slider next button
-   recsSliderScrollNext() {
+   recsSliderScrollNext: function recsSliderScrollNext() {
        var prevButton = document.querySelector(".rex-slider--prev");
        if(!prevButton){
            return console.warn("rex-slider--prev class missing");
@@ -76,7 +76,7 @@ export const eventHandlers = {
    },
 
    // horizontal slider prev button
-   recsSliderScrollPrev() {
+   recsSliderScrollPrev: function recsSliderScrollPrev() {
        var nextButton = document.querySelector(".rex-slider--next");
        if(!nextButton){
          return console.warn("rex-slider--next class missing");
@@ -88,6 +88,6 @@ export const eventHandlers = {
    }    
 }
 
-export const sendWarning = (msg) => {
+export var sendWarning = function (msg) {
     return console.warn(msg);
 }
