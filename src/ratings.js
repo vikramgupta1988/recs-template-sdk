@@ -21,13 +21,13 @@ export var getRatings = function(rating){
         fullStars = Math.floor(result / 2);
         emptyStars = 5 - (fullStars + halfStars); 
         for(var i=0; i< fullStars; i++){
-            resultString += '<span class="full-star recs-star"></span>';
+            resultString += '<span class="rex-full-star recs-star"></span>';
         }
         for(var i=0; i< halfStars; i++){
-            resultString += '<span class="half-star recs-star"></span>';
+            resultString += '<span class="rex-half-star recs-star"></span>';
         }
         for(var i=0; i< emptyStars; i++){
-            resultString += '<span class="empty-star recs-star"></span>';
+            resultString += '<span class="rex-empty-star recs-star"></span>';
         }
         return resultString;
 }

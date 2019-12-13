@@ -1,6 +1,6 @@
 import './dot';
-import {eventHandlers, setImagesSource, appendImageToId, sendWarning } from './handlers';
-import {recommendations, template, style, configuration} from './config';
+import {eventHandlers, setImagesSource, sendWarning } from './handlers';
+import {style} from './config';
 import {getRatings} from './ratings';
 import fullStar from './images/full-star.png';
 import halfStar from './images/half-star.png';
@@ -8,31 +8,51 @@ import emptyStar from './images/empty-star.png';
 import sliderPrev from './images/recs-slider-prev.png';
 import sliderNext from './images/recs-slider-next.png';
 
-// unbxd-template-init({widget1:null, widget2:null, widget3:null, pageType:null, userId:null,
-// productId:null, siteKey:null, apiKey: null})
-
 (function (global) {
+
+    /**
+     * Global declaration section
+     */
+
+    /** Function for fetching api requests */ 
+    function fetchData(url,cb){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
+               // Typical action to be performed when the document is ready:
+               cb(null, xhttp.responseText);
+            }
+            else if(this.readyState == 4 && (this.status != 200 || this.status !=204 )){
+               cb('error');
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    }
+
+
+    /** Global variables */
     // the domain url
-    var platformDomain = 'http://localhost:4201';
+    var platformDomain = 'http://localhost:4201/';
 
     // Declaration of template containers
     var widget1;
     var widget2;
     var widget3;
-    /***** Getting Configuration Data */
-    // Getting configuration data here
-    // 1 - targetDOMElementId: this is the target id of the element where you want to render this 
-    //     slider
-    // 2 - heading: the heading title that has to appear above the slider. This can be text as
-    //     well as an image
-    // 3- itemsToShow: the no of items that need to be displayed in the slider at once
-    var targetDOMElementId = configuration.targetDOMElementId;
-    var heading = configuration.heading;
-    var itemsToShow = configuration.itemsToShow;
 
+    // Horizontal template config containers
+    var horizontalConfig;
+    var horizontalAssets;
     // Setting constant values for margin between slider items and the DOM id for the slider
     var margin=10;
     var recsSliderId='recs-slider';
+    /** End of Global variables */
+
+    /**
+     * End of Global declaration section
+     */
+   
+    /** Scripts and styles that are appended to the DOM */
 
     /** Adding event handlers for the horizontal slider to the DOM */
     var eventHandlerScript = document.createElement('script');
@@ -48,10 +68,18 @@ import sliderNext from './images/recs-slider-next.png';
     eventHandlerStyle.innerHTML = style;
     document.head.appendChild(eventHandlerStyle);
 
+    /** End of Scripts and styles that are appended to the DOM */
 
-    // exporting a global function to initialize recs slider
-    global.recsSliderInit = function(targetDOMElementId, recommendations, heading, itemClickHandler){
-        // appending the tempate data as html to DOM
+
+    /** exporting a global function to initialize recs slider */ 
+    global.recsSliderInit = function(options){
+        /** Template rendering logic */
+        var template = options.template;
+        var targetDOMElementId = options.targetDOMElementId;
+        var recommendations = options.recommendations;
+        var heading = options.heading;
+        var itemsToShow = options.itemsToShow;
+
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
         if(!renderTargetEl){
@@ -64,14 +92,15 @@ import sliderNext from './images/recs-slider-next.png';
         });
 
         /** Dynamically adjusting width based on no of items to be shown */
-
-        var sliderContainer = document.querySelector('#recs-slider-container');
+        var domSelector = "#"+targetDOMElementId + " #recs-slider-container";
+        var sliderContainer = document.querySelector(domSelector);
         if(!sliderContainer){
             return sendWarning('The slider container id was not found. Script can not continue');
         }
 
         var sliderItemWidth = (sliderContainer.offsetWidth - (itemsToShow * margin)) / itemsToShow;
-        var sliderItems = document.querySelectorAll(".recs-slider__item");
+        var sliderItemSelector = "#"+targetDOMElementId+ " .recs-slider__item";
+        var sliderItems = document.querySelectorAll(sliderItemSelector);
         if(!sliderItems.length){
             return sendWarning('Found 0 nodes with class "recs-slider__item"');
         }
@@ -80,7 +109,8 @@ import sliderNext from './images/recs-slider-next.png';
         }
 
         var tileWidth = sliderItems[0].offsetWidth;
-        var recsSlider = document.getElementById(recsSliderId);
+        var recsSliderSelector = "#"+targetDOMElementId+ " #"+recsSliderId
+        var recsSlider = document.querySelector(recsSliderSelector);
         if(!recsSlider){
             return sendWarning('Slider Parent id was not found in the DOM');
         }
@@ -91,7 +121,8 @@ import sliderNext from './images/recs-slider-next.png';
         // the navigation button need to be hidden in case the total no of items to be shown
         // are less than the no of items to be shown at in one slide 
         if(recommendations.length <= itemsToShow){
-            var navigationButtons = document.querySelectorAll(".recs-slider-btn");
+            var navigationButtonSelector = "#"+targetDOMElementId + " .recs-slider-btn";
+            var navigationButtons = document.querySelectorAll(navigationButtonSelector);
             if(!navigationButtons || !navigationButtons.length){
                 return sendWarning('recs-slider-btn class not found on navigation buttons');
             }
@@ -101,49 +132,65 @@ import sliderNext from './images/recs-slider-next.png';
         } 
 
         // the previous button for the slider needs to be disabled initially
-        var prevSliderButton = document.querySelector(".rex-slider--prev");
+        var prevSliderButtonSelector = "#"+targetDOMElementId + " .rex-slider--prev";
+        var prevSliderButton = document.querySelector(prevSliderButtonSelector);
+
         if(!prevSliderButton){
             return sendWarning('rex-slider--prev class was not found on the navigation buttons');
         }
         prevSliderButton.disabled = true;
         
-        // setting images
-        var imgArr = [
-            {
-                classname: "full-star", 
-                url: fullStar
-            },
-            {
-                classname: "half-star", 
-                url: halfStar
-            },
-            {
-                classname: "empty-star", 
-                url: emptyStar
-            },
-            {
-                classname: "rex-slider--prev", 
-                url: sliderPrev
-            },
-            {
-                classname: "rex-slider--next", 
-                url: sliderNext
-            },
+       
 
-        ];
+        /** Setting images value */
+        var imgArr = [];
+        var classMap = {
+            "next_arrow":"rex-slider--next",
+            "prev_arrow":"rex-slider--prev",
+            "empty_rating":"rex-empty-star",
+            "half_rating":"rex-half-star",
+            "full_rating":"rex-full-star"
+        }
+        for(i=0;i<horizontalAssets.length;i++){
+            var horizontalAssetItem = horizontalAssets[i];
+            imgArr.push(
+                {
+                    classname: classMap[horizontalAssetItem.tag],
+                    url: horizontalAssetItem.src
+                }
+            );
+        }
+        setImagesSource(imgArr,targetDOMElementId);
 
-        setImagesSource(imgArr);
-        
-        /** The initialization function that has to be exposed to the merchandizer website
+        /** Setting images value end*/
+
+        /** Setting styles for heading */
+
+        var headingSelector = "#"+targetDOMElementId+" #recs-slider-heading";
+        var hzStyleConfig = horizontalConfig.header;
+        var hzHeadingEl = document.querySelector(headingSelector);
+        hzHeadingEl.style.textAlign = hzStyleConfig.alignment;
+        hzHeadingEl.style.fontSize = hzStyleConfig.text.size.value + hzStyleConfig.text.size.unit;
+        hzHeadingEl.style.fontWeight = hzStyleConfig.text.style;
+        hzHeadingEl.style.color = hzStyleConfig.text.colour;
+
+        /** End of Setting styles for heading */
+
+    }
+
+
+     /** The initialization function that has to be exposed to the merchandizer website
          *  it takes context object from the client html
          *  and makes a call to the recommender proxy
          *  and updates the dom as per the response
          */
         global.unbxdTemplateInit =  function(context){
             var widgets = context.widgets;
-            var requestUrl = platformDomain + '/items';
+            // container for no of items to be shown
+            var itemsToShow;
+
             if(!widgets){
-                throw error("Widgets information is missing");
+                throw new Error("Widgets information is missing");
             }
 
             // retrieve ids for widget containers
@@ -152,29 +199,31 @@ import sliderNext from './images/recs-slider-next.png';
             widget3 = widgets.widget3;
 
             if(!widget1 && !widget2 && !widget3){
-                throw error('No widget id provided');
+                throw new Error('No widget id provided');
             }
 
             // getting userId, siteKey and apiKey
             var userInfo = context.userInfo;
             if(!userInfo){
-                throw error("User info missing")
+                throw new Error("User info missing")
             }
 
             var userId = userInfo.userId;
             var siteKey = userInfo.siteKey;
             var apiKey = userInfo.apiKey;
 
+            var requestUrl = platformDomain + apiKey + "/" + siteKey+ '/items?pageType=';
+
             if(!userId){
-                throw error("user id is missing");
+                throw new Error("user id is missing");
             }
 
             if(!siteKey){
-                throw error("site Key is missing");
+                throw new Error("site Key is missing");
             }
 
             if(!apiKey){
-                throw error("api key is missing");
+                throw new Error("api key is missing");
             }
 
 
@@ -183,7 +232,7 @@ import sliderNext from './images/recs-slider-next.png';
             var pageInfo = context.pageInfo;
 
             if(!pageInfo){
-                throw error("Page info missing")
+                throw new Error("Page info missing")
             }
 
             var pageType = pageInfo.pageType;
@@ -193,61 +242,100 @@ import sliderNext from './images/recs-slider-next.png';
                throw error("Invalid value for page type");
             }
             
-            var productId = pageInfo.productId;
-
+          
+            requestUrl += pageType
             switch (pageType){
-                case 'PRODUCT':
+                case "PRODUCT":
+                case "CART":    
+                    var productId = pageInfo.productId;
                     if(!productId){
-                        throw error("product id is missing for page type:'PRODUCT'");
+                        throw new Error("product id is missing for page type:" + pageType);
                     }
+                    requestUrl += "&id="+productId;
+                    break;
+                case "CATEGORY":
+                    var catlevel1Name = pageInfo.catlevel1Name;
+                    if(!catlevel1Name){
+                        throw new Error("catlevel1Name is mandatory for page type:"+pageType);
+                    }
+                    var catlevel2Name = pageInfo.catlevel2Name;
+                    var catlevel3Name = pageInfo.catlevel3Name;
+                    var catlevel4Name = pageInfo.catlevel4Name;
+                    var categoryUrl = "&catlevel1Name="+catlevel1Name;
+                    categoryUrl += catlevel2Name ? ("&catlevel2Name="+catlevel2Name) : "";
+                    categoryUrl += catlevel3Name ? ("&catlevel3Name="+catlevel3Name) : "";
+                    categoryUrl += catlevel4Name ? ("&catlevel4Name="+catlevel4Name) : "";
+                    requestUrl += categoryUrl;
+                    break;
+                case "BRAND":
+                    var brand = pageInfo.brand;
+                    if(!brand){
+                        throw new Error("brand is mandatory for page type:"+pageType);
+                    }    
+                    requestUrl += "&brand="+brand;
+                break;    
             }
 
-            // if pagetype is product or cart, then it needs to have product id
-            if(pageType == 'PRODUCT'){
-                if(!productId){
-                    throw error("product id is missing for page type:'PRODUCT'");
+            requestUrl += "&uid="+userId;
+
+            function renderWidgetDataHorizontal(targetDOMElementId, recommendations, heading){
+                var options = {
+                    template: horizontalTemplate,
+                    targetDOMElementId: targetDOMElementId,
+                    recommendations: recommendations,
+                    heading: heading,
+                    itemsToShow: itemsToShow
                 }
+                recsSliderInit(options);
+            }
+
+            function handleWidgetRendering(){
+                if(widget1){
+                    var widget1Data = recommendationsResponse.rex_data.widget1;
+                    var widget1Heading = widget1Data.title;
+                    var widget1Recommendations = widget1Data.recommendations;
+                    renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
+                }
+                if(widget2){
+                    var widget2Data = recommendationsResponse.rex_data.widget2;
+                    var widget2Heading = widget2Data.title;
+                    var widget2Recommendations = widget2Data.recommendations;
+                    renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
+                }
+            }
+
+            function horizontalTemplateHandler(err, res){
+                if(err){
+                    throw new Error('Failed to fetch templates');
+                }
+                // populating the template string
+                horizontalTemplate = res;
+                handleWidgetRendering();  
+            }
+
+            /** Fetch recomendations response */
+            // to store recommendations response
+            var recommendationsResponse;
+            // to store template string
+            var horizontalTemplate;
+            fetchData(requestUrl, function(err, res){
+                if(err){
+                    throw new Error('Failed to fetch recommendations');
+                }
+                recommendationsResponse = JSON.parse(res);
+               
+                var horizontalTemplate = recommendationsResponse.horizontal;
+                horizontalConfig = horizontalTemplate.configuration;
+                horizontalAssets = horizontalTemplate.assets;
+                itemsToShow = horizontalConfig.products.visible_products;
+                var templateUrlHorizontal = horizontalTemplate.layout.src;
                 
-            }
-            if((pageType == "PRODUCT" || pageType == "CART") && !productId){
-                throw error("product id is missing for page type:'PRODUCT'");
-            }
-
-            var catlevel1Name = pageInfo.catlevel1Name;
-            var catlevel2Name = pageInfo.catlevel2Name;
-            var catlevel3Name = pageInfo.catlevel3Name;
-            var catlevel4Name = pageInfo.catlevel4Name;
-
-            // if pagetype is CATEGORY, then it needs to have one of catlevel1Name
-            if(pageType == "CATEGORY" && !catlevel1Name){
-                throw error("catlevel1Name is mandatory for page type:'CATEGORY'");
-            }
-
-            var brand = pageInfo.brand;
-            // if pagetype is BRAND, then it needs brand string
-            if(pageType == "BRAND" && !brand){
-                throw error("barnd is mandatory for page type:'BRAND'");
-            }
-
-            //check if all the values are present
-    
-            // if everything is correct proceed with fetching the response
-            var requestUrl = platformDomain + "/items";
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                   // Typical action to be performed when the document is ready:
-                   console.log(JSON.parse(xhttp.responseText));
-                }
-            };
-            xhttp.open("GET", requestUrl, true);
-            xhttp.send();
+                /** Fetch template layout string */
+                fetchData(templateUrlHorizontal,horizontalTemplateHandler);
+               
+            });   
+            
         }
-
-    }
-
-    // initializing the slider inside the DOM
-    recsSliderInit(targetDOMElementId, recommendations, heading);
 })(window);
 
 

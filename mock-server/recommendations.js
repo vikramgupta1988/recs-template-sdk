@@ -19,7 +19,7 @@ module.exports = {
             },
             "products": {
                 "max_products": 18,
-                "visible_products": 4,
+                "visible_products": 5,
                 "max_fields": 6,
                 "fields": [
                     {
@@ -139,131 +139,135 @@ module.exports = {
             "title": "Widget 1 Title",
             "recommendations": [
                 {
-                    title:'Product 1 with a very long title. This should be shown with ellipsis',
+                    title: 'Product 1 with a very long title. This should be shown with ellipsis',
                     imageUrl: [
                         "http://images.express.com/is/image/expressfashion/0028_04602604_1709_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                     ],
                     rating: 1.5
                 },
                 {
-                    title:'Product 2',
+                    title: 'Product 2',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0028_04602434_1822_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0028_04602434_1822_b?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 5
+                    ],
+                    rating: 5
                 },
                 {
-                    title:'Product 3',
+                    title: 'Product 3',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0022_05326519_0058_f04?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0022_05326519_0058_f30?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0022_05326519_0058_b57?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 3  
+                    ],
+                    rating: 3
                 },
                 {
-                    title:'Product 4',
+                    title: 'Product 4',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0021_03984819_1981_f56?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0021_03984819_1981_b83?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 2.5
+                    ],
+                    rating: 2.5
                 },
                 {
-                    title:'Product 5',
+                    title: 'Product 5',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0021_03984819_0566_f30?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0021_03984819_0566_f38?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0021_03984819_0566_b58?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 4.5
+                    ],
+                    rating: 4.5
                 },
                 {
-                    title:'Product 6',
+                    title: 'Product 6',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0034_04584003_0302_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0034_04584003_0302_a?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 5
+                    ],
+                    rating: 5
                 },
                 {
-                    title:'Product 7',
+                    title: 'Product 7',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0028_04601554_0058_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 1
+                    ],
+                    rating: 1
                 },
                 {
-                    title:'Product 8',
+                    title: 'Product 8',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0028_04601550_1709_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 0
+                    ],
+                    rating: 0
                 },
                 {
-                    title:'Product 9',
+                    title: 'Product 9',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0028_04601550_0010_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 4.5
+                    ],
+                    rating: 4.5
                 },
                 {
-                    title:'Product 10',
+                    title: 'Product 10',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0020_01692318_1701_f50?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0020_01692318_1701_f62?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 2.5
+                    ],
+                    rating: 2.5
                 },
                 {
-                    title:'Product 11',
+                    title: 'Product 11',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0034_04584001_0807_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0034_04584001_0807_a?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 2
+                    ],
+                    rating: 2
                 },
                 {
-                    title:'Product 12',
+                    title: 'Product 12',
                     "imageUrl": [
                         "http://images.express.com/is/image/expressfashion/0034_04534553_0058_a?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0034_04534553_0058_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0034_04534553_0058_b?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
                         "http://images.express.com/is/image/expressfashion/0034_04534553_0058_a2?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                      ],
-                      rating: 3.5
+                    ],
+                    rating: 3.5
                 }
             ]
         },
-        "widget2": [
-            {
-                title:'Product 10',
-                "imageUrl": [
-                    "http://images.express.com/is/image/expressfashion/0020_01692318_1701_f50?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
-                    "http://images.express.com/is/image/expressfashion/0020_01692318_1701_f62?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                  ],
-                  rating: 2.5
-            },
-            {
-                title:'Product 11',
-                "imageUrl": [
-                    "http://images.express.com/is/image/expressfashion/0034_04584001_0807_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
-                    "http://images.express.com/is/image/expressfashion/0034_04584001_0807_a?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                  ],
-                  rating: 2
-            },
-            {
-                title:'Product 12',
-                "imageUrl": [
-                    "http://images.express.com/is/image/expressfashion/0034_04534553_0058_a?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
-                    "http://images.express.com/is/image/expressfashion/0034_04534553_0058_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
-                    "http://images.express.com/is/image/expressfashion/0034_04534553_0058_b?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
-                    "http://images.express.com/is/image/expressfashion/0034_04534553_0058_a2?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
-                  ],
-                  rating: 3.5
-            }
-        ],
+        "widget2": {
+            "count": 2,
+            "title": "Widget 2 Title",
+            "recommendations": [
+                {
+                    title: 'Product 10',
+                    "imageUrl": [
+                        "http://images.express.com/is/image/expressfashion/0020_01692318_1701_f50?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
+                        "http://images.express.com/is/image/expressfashion/0020_01692318_1701_f62?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
+                    ],
+                    rating: 2.5
+                },
+                {
+                    title: 'Product 11',
+                    "imageUrl": [
+                        "http://images.express.com/is/image/expressfashion/0034_04584001_0807_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
+                        "http://images.express.com/is/image/expressfashion/0034_04584001_0807_a?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
+                    ],
+                    rating: 2
+                },
+                {
+                    title: 'Product 12',
+                    "imageUrl": [
+                        "http://images.express.com/is/image/expressfashion/0034_04534553_0058_a?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
+                        "http://images.express.com/is/image/expressfashion/0034_04534553_0058_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
+                        "http://images.express.com/is/image/expressfashion/0034_04534553_0058_b?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon",
+                        "http://images.express.com/is/image/expressfashion/0034_04534553_0058_a2?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
+                    ],
+                    rating: 3.5
+                }
+            ]
+        },
         "widget3": null
     }
 }

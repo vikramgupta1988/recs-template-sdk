@@ -3,13 +3,15 @@ export var eventHandlers = {
     // feature across cross browsers
     // the code inside the methods are in native javascript
     // because they are to be appended directly in the DOM
-    recsSliderSideScroll: function recsSliderSideScroll(direction, speed, step) {
+    recsSliderSideScroll: function recsSliderSideScroll(targetDOMId, direction, speed, step) {
        scrollAmount = 0;
-       var element = document.querySelector("#recs-slider-container");
+       var elementSelector = "#"+targetDOMId+ " #recs-slider-container";
+       var element = document.querySelector(elementSelector);
        if(!element){
            return console.warn("slider container id is missing. Execution can not continue");
        }
-       var sliderItem = document.querySelector(".recs-slider__item");
+       var sliderItemSelector = "#"+targetDOMId+ " .recs-slider__item";
+       var sliderItem = document.querySelector(sliderItemSelector);
        if(!sliderItem){
            return console.warn("slider item tile class is missing. Execution can not continue");
        }
@@ -64,27 +66,54 @@ export var eventHandlers = {
    },
    
    // horizontal slider next button
-   recsSliderScrollNext: function recsSliderScrollNext() {
-       var prevButton = document.querySelector(".rex-slider--prev");
+   recsSliderScrollNext: function recsSliderScrollNext(event) {
+       // a bit clumsy. But the only way to reach out to the id of the container
+       var targetEl;
+       try{    
+          targetEl = event.currentTarget.parentElement.parentElement.parentElement;
+       }
+       catch(err){
+           console.warn(err);
+       }
+       if(!targetEl){
+           console.warn("target element not found. HTML was changed");
+           return;
+       }
+       var targetElId = targetEl.id;
+       var prevButtonSelector = "#"+targetElId+ " .rex-slider--prev";
+       var prevButton = document.querySelector(prevButtonSelector);
        if(!prevButton){
            return console.warn("rex-slider--prev class missing");
        }
        if(prevButton.disabled){
            prevButton.disabled = false;
        }
-       recsSliderSideScroll('right', 25, 30);
+       recsSliderSideScroll(targetElId,'right', 25, 30);
    },
 
    // horizontal slider prev button
    recsSliderScrollPrev: function recsSliderScrollPrev() {
-       var nextButton = document.querySelector(".rex-slider--next");
-       if(!nextButton){
-         return console.warn("rex-slider--next class missing");
-       }
-       if(nextButton.disabled){
-         nextButton.disabled = false;
-       }
-       recsSliderSideScroll('left', 25, 30);
+        var targetEl;
+        try{
+            targetEl = event.currentTarget.parentElement.parentElement.parentElement;
+        }
+        catch(err){
+            console.warn(err);
+        }
+        if(!targetEl){
+            console.warn("target element not found. HTML was changed");
+            return;
+        }
+        var targetElId = targetEl.id;
+        var nextButtonSelector = "#"+targetElId+ " .rex-slider--next";
+        var nextButton = document.querySelector(nextButtonSelector);
+        if(!nextButton){
+          return console.warn("rex-slider--next class missing");
+        }
+        if(nextButton.disabled){
+          nextButton.disabled = false;
+        }
+        recsSliderSideScroll(targetElId,'left', 25, 30);
    }    
 }
 

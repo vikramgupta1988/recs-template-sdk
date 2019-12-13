@@ -1,5 +1,5 @@
-export var appendImagesToClass = function(className,  imgUrl) {
-    var elements = document.querySelectorAll('.'+className);
+export var appendImagesToClass = function(className,  imgUrl, targetContainerId) {
+    var elements = document.querySelectorAll("#"+targetContainerId+" ."+className);
     for(var i=0; i< elements.length; i++){
         var img = document.createElement('img');
         img.src = imgUrl;
@@ -14,8 +14,8 @@ export var appendImageToId = function(id, imgUrl) {
     element.appendChild(img);
 }
 
-export var setImagesSource = function(imgArr){
+export var setImagesSource = function(imgArr, targetContainerId){
     for(var i=0; i<imgArr.length; i++){
-        appendImagesToClass(imgArr[i].classname, imgArr[i].url);
+        appendImagesToClass(imgArr[i].classname, imgArr[i].url, targetContainerId);
     }
 }

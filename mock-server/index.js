@@ -9,7 +9,7 @@ const PORT = 4201;
 
 app.use(express.static(__dirname+'/public'));
 
-app.get('/items' ,(req,res)=>{
+app.get('/:sitekey/:apiKey/items' ,(req,res)=>{
    res.json(recommendations);
 });
 
