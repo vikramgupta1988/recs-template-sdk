@@ -43,6 +43,9 @@ import sliderNext from './images/recs-slider-next.png';
     // Horizontal template config containers
     var horizontalConfig;
     var horizontalAssets;
+
+    // container for no of items to be shown
+    var itemsToShow;
     // Setting constant values for margin between slider items and the DOM id for the slider
     var margin=10;
     var recsSliderId='recs-slider';
@@ -78,7 +81,6 @@ import sliderNext from './images/recs-slider-next.png';
         var targetDOMElementId = options.targetDOMElementId;
         var recommendations = options.recommendations;
         var heading = options.heading;
-        var itemsToShow = options.itemsToShow;
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -186,8 +188,6 @@ import sliderNext from './images/recs-slider-next.png';
          */
         global.unbxdTemplateInit =  function(context){
             var widgets = context.widgets;
-            // container for no of items to be shown
-            var itemsToShow;
 
             if(!widgets){
                 throw new Error("Widgets information is missing");
@@ -283,8 +283,7 @@ import sliderNext from './images/recs-slider-next.png';
                     template: horizontalTemplate,
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
-                    heading: heading,
-                    itemsToShow: itemsToShow
+                    heading: heading
                 }
                 recsSliderInit(options);
             }

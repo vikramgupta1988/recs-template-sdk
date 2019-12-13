@@ -1,7 +1,7 @@
 module.exports = {
     "horizontal": {
         "layout": {
-            "src": "http://localhost:4201/templates/default.js",
+            "src": "http://localhost:4201/templates/default.dot",
             "format": "js"
         },
         "configuration": {
