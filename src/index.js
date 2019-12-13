@@ -2,11 +2,6 @@ import './dot';
 import {eventHandlers, setImagesSource, sendWarning } from './handlers';
 import {style} from './config';
 import {getRatings} from './ratings';
-import fullStar from './images/full-star.png';
-import halfStar from './images/half-star.png';
-import emptyStar from './images/empty-star.png';
-import sliderPrev from './images/recs-slider-prev.png';
-import sliderNext from './images/recs-slider-next.png';
 
 (function (global) {
 
@@ -40,12 +35,11 @@ import sliderNext from './images/recs-slider-next.png';
     var widget2;
     var widget3;
 
+    var itemsToShow;
+
     // Horizontal template config containers
     var horizontalConfig;
     var horizontalAssets;
-
-    // container for no of items to be shown
-    var itemsToShow;
     // Setting constant values for margin between slider items and the DOM id for the slider
     var margin=10;
     var recsSliderId='recs-slider';
@@ -62,7 +56,9 @@ import sliderNext from './images/recs-slider-next.png';
     eventHandlerScript.type = 'text/javascript';
     // innerHTML needs to stay as es5 since it will be embedded duirectly to client's browser
     eventHandlerScript.innerHTML = eventHandlers.recsSliderSideScroll + '\n' + eventHandlers.recsSliderScrollNext + '\n' +eventHandlers.recsSliderScrollPrev +'\n';
+ 
     document.body.appendChild(eventHandlerScript);
+
 
     /** Attaching styles for the slider */
     var eventHandlerStyle = document.createElement('style');
@@ -283,7 +279,8 @@ import sliderNext from './images/recs-slider-next.png';
                     template: horizontalTemplate,
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
-                    heading: heading
+                    heading: heading,
+                    itemsToShow: itemsToShow
                 }
                 recsSliderInit(options);
             }
