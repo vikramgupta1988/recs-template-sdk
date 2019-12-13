@@ -8,8 +8,17 @@ import emptyStar from './images/empty-star.png';
 import sliderPrev from './images/recs-slider-prev.png';
 import sliderNext from './images/recs-slider-next.png';
 
+// unbxd-template-init({widget1:null, widget2:null, widget3:null, pageType:null, userId:null,
+// productId:null, siteKey:null, apiKey: null})
 
 (function (global) {
+    // the domain url
+    var platformDomain = 'http://localhost:4201';
+
+    // Declaration of template containers
+    var widget1;
+    var widget2;
+    var widget3;
     /***** Getting Configuration Data */
     // Getting configuration data here
     // 1 - targetDOMElementId: this is the target id of the element where you want to render this 
@@ -53,20 +62,6 @@ import sliderNext from './images/recs-slider-next.png';
             recommendations: recommendations, 
             heading:heading, getRatings:getRatings
         });
-         /****  Handling the heading section configuration */ 
-        // check if the heading has an image url then show it as an image otherwise continue
-
-        // var { imgUrl: headingImgUrl, targetId: headingParentId = "recs-slider-heading" } = heading;
-
-        // if(headingImgUrl){
-        //     var targetHeadingParentEl = document.getElementById(headingParentId);
-        //     if(!targetHeadingParentEl){
-        //         return sendWarning('The parent id to attach image was not found. Image could not be attached');
-        //     }
-        //     document.getElementById(headingParentId).innerText = "";
-        //     appendImageToId(headingParentId, headingImgUrl);
-        // }
-
 
         /** Dynamically adjusting width based on no of items to be shown */
 
@@ -107,6 +102,9 @@ import sliderNext from './images/recs-slider-next.png';
 
         // the previous button for the slider needs to be disabled initially
         var prevSliderButton = document.querySelector(".rex-slider--prev");
+        if(!prevSliderButton){
+            return sendWarning('rex-slider--prev class was not found on the navigation buttons');
+        }
         prevSliderButton.disabled = true;
         
         // setting images
@@ -135,6 +133,116 @@ import sliderNext from './images/recs-slider-next.png';
         ];
 
         setImagesSource(imgArr);
+        
+        /** The initialization function that has to be exposed to the merchandizer website
+         *  it takes context object from the client html
+         *  and makes a call to the recommender proxy
+         *  and updates the dom as per the response
+         */
+        global.unbxdTemplateInit =  function(context){
+            var widgets = context.widgets;
+            var requestUrl = platformDomain + '/items';
+            if(!widgets){
+                throw error("Widgets information is missing");
+            }
+
+            // retrieve ids for widget containers
+            widget1 = widgets.widget1;
+            widget2 = widgets.widget2;
+            widget3 = widgets.widget3;
+
+            if(!widget1 && !widget2 && !widget3){
+                throw error('No widget id provided');
+            }
+
+            // getting userId, siteKey and apiKey
+            var userInfo = context.userInfo;
+            if(!userInfo){
+                throw error("User info missing")
+            }
+
+            var userId = userInfo.userId;
+            var siteKey = userInfo.siteKey;
+            var apiKey = userInfo.apiKey;
+
+            if(!userId){
+                throw error("user id is missing");
+            }
+
+            if(!siteKey){
+                throw error("site Key is missing");
+            }
+
+            if(!apiKey){
+                throw error("api key is missing");
+            }
+
+
+            // getting page info
+            
+            var pageInfo = context.pageInfo;
+
+            if(!pageInfo){
+                throw error("Page info missing")
+            }
+
+            var pageType = pageInfo.pageType;
+            // check if the value for page type is valid
+            var allowedPageTypes = ["HOME", "CATEGORY", "PRODUCT", "CART", "BRAND"];
+            if(allowedPageTypes.indexOf(pageType) == -1){
+               throw error("Invalid value for page type");
+            }
+            
+            var productId = pageInfo.productId;
+
+            switch (pageType){
+                case 'PRODUCT':
+                    if(!productId){
+                        throw error("product id is missing for page type:'PRODUCT'");
+                    }
+            }
+
+            // if pagetype is product or cart, then it needs to have product id
+            if(pageType == 'PRODUCT'){
+                if(!productId){
+                    throw error("product id is missing for page type:'PRODUCT'");
+                }
+                
+            }
+            if((pageType == "PRODUCT" || pageType == "CART") && !productId){
+                throw error("product id is missing for page type:'PRODUCT'");
+            }
+
+            var catlevel1Name = pageInfo.catlevel1Name;
+            var catlevel2Name = pageInfo.catlevel2Name;
+            var catlevel3Name = pageInfo.catlevel3Name;
+            var catlevel4Name = pageInfo.catlevel4Name;
+
+            // if pagetype is CATEGORY, then it needs to have one of catlevel1Name
+            if(pageType == "CATEGORY" && !catlevel1Name){
+                throw error("catlevel1Name is mandatory for page type:'CATEGORY'");
+            }
+
+            var brand = pageInfo.brand;
+            // if pagetype is BRAND, then it needs brand string
+            if(pageType == "BRAND" && !brand){
+                throw error("barnd is mandatory for page type:'BRAND'");
+            }
+
+            //check if all the values are present
+    
+            // if everything is correct proceed with fetching the response
+            var requestUrl = platformDomain + "/items";
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                   // Typical action to be performed when the document is ready:
+                   console.log(JSON.parse(xhttp.responseText));
+                }
+            };
+            xhttp.open("GET", requestUrl, true);
+            xhttp.send();
+        }
 
     }
 
