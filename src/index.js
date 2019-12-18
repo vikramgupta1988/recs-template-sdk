@@ -72,19 +72,19 @@ import {getRatings} from './ratings';
 
     /** exporting a global function to initialize recs slider */ 
     global.recsSliderInit = function(options){
-        console.log('options', options)
         /** Template rendering logic */
         var template = options.template;
         var targetDOMElementId = options.targetDOMElementId;
         var recommendations = options.recommendations;
         var heading = options.heading;
-        var config = options.config
-        var itemsToShow = options.config.products.visible_products
+        var config = options.config;
+        var itemsToShow = config.products.visible_products;
+        var maxProducts = options.maxProducts;
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
         if(!renderTargetEl){
-            return sendWarning('The target element id is not present in DOM. Execution can not continue');
+            return sendWarning('The target element id <' +targetDOMElementId+'> is not present in DOM. Execution can not continue');
         }
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
@@ -116,7 +116,7 @@ import {getRatings} from './ratings';
             return sendWarning('Slider Parent id was not found in the DOM');
         }
 
-        recsSlider.style.width = (recommendations.length * tileWidth) + (recommendations.length) * margin +'px';
+        recsSlider.style.width = (recommendations.length * tileWidth) + (maxProducts) * margin +'px';
         
         /** Setting styles for carousel buttons */
         // the navigation button need to be hidden in case the total no of items to be shown
@@ -140,8 +140,6 @@ import {getRatings} from './ratings';
             return sendWarning('rex-slider--prev class was not found on the navigation buttons');
         }
         prevSliderButton.disabled = true;
-        
-       
 
         /** Setting images value */
         var imgArr = [];
@@ -277,7 +275,22 @@ import {getRatings} from './ratings';
 
             requestUrl += "&uid="+userId;
 
-            function renderWidgetDataHorizontal(targetDOMElementId, recommendations, heading){
+            // no of items to be shown
+
+            var itemsToScroll = context.itemsToScroll;
+            if(!itemsToScroll){
+                itemsToScroll = 3;
+            }
+
+            global.recsItemToScroll = itemsToScroll;
+
+            function renderWidgetDataHorizontal(widget, recommendations, heading){
+                var maxProducts = horizontalConfig.products.max_products;
+                var targetDOMElementId = widget.name;
+                var itemsToScroll = widget.itemsToScroll;
+                var maxItemsFromContext = widget.maxItems;
+                maxProducts = Math.min(maxProducts,maxItemsFromContext);
+                recommendations = recommendations.splice(0,maxProducts);
                 var options = {
                     template: horizontalTemplate,
                     targetDOMElementId: targetDOMElementId,
@@ -285,7 +298,9 @@ import {getRatings} from './ratings';
                     heading: heading,
                     itemsToShow: itemsToShow,
                     config: horizontalConfig,
-                    assets: horizontalAssets
+                    assets: horizontalAssets,
+                    maxProducts:maxProducts,
+                    itemsToScroll:itemsToScroll
                 }
                 recsSliderInit(options);
             }

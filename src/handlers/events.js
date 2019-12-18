@@ -19,25 +19,29 @@ export var eventHandlers = {
 
        var recsSlider = document.querySelector("#recs-slider");
 
-      
-       var tileWidth = sliderItem.offsetWidth;
+       var initialSteps = 30;
+
+       var itemsToScroll = window.recsItemToScroll;
+
+       var eventualSteps = initialSteps + itemsToScroll*5;
+       var tileWidth = sliderItem.offsetWidth * itemsToScroll;
        var tileVal = tileWidth - (tileWidth % 30);
-       var distance = tileWidth + 10;
+       var distance = tileWidth + (10*itemsToScroll);
        var slideTimer = setInterval(function () {
            if (direction == 'left') {
-               var distToScroll = scrollAmount + step;
+               var distToScroll = itemsToScroll*(scrollAmount + eventualSteps);
                if(distToScroll > distance){
-                  step = distance - tileVal;
+                eventualSteps = distance - tileVal;
                }
-            element.scrollLeft -= step;
+            element.scrollLeft -= eventualSteps;
            } else {
-               var distToScroll = scrollAmount + step;
+               var distToScroll = scrollAmount + eventualSteps;
                if(distToScroll > distance){
-                  step = distance - tileVal;         
+                eventualSteps = distance - tileVal;         
                }
-               element.scrollLeft += step;
+               element.scrollLeft += eventualSteps;
            }
-           scrollAmount += step;
+           scrollAmount += eventualSteps;
            if (scrollAmount >= distance) {
                window.clearInterval(slideTimer);
            }
