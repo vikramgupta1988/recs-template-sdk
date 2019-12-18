@@ -18,7 +18,7 @@ module.exports = {
                 }
             },
             "products": {
-                "max_products": 18,
+                "max_products": 12,
                 "visible_products": 6,
                 "max_fields": 6,
                 "fields": [
