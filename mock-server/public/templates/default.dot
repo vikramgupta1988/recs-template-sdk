@@ -1,1 +1,15 @@
-<div class='unbxd-recs-slider'><div class='recs-slider-heading' id='recs-slider-heading'>{{=it.heading}}</div><div class='recs-slider-container' id='recs-slider-container'> <button class='recs-slider-btn rex-slider--prev' onclick='recsSliderScrollPrev(event)'> </button> <button class='recs-slider-btn rex-slider--next' onclick='recsSliderScrollNext(event)'> </button><div class='recs-slider' id='recs-slider'> {{~it.recommendations :value:index}}<div class='recs-slider__item' id='hz-item-{{=index}}'> <img src='{{=value.imageUrl[0]}}' /><p class='recs-slider__content content--title'>{{=value.title}}</p><p class='recs-slider__content content--ratings'> {{=it.getRatings(value.rating)}}</p><p class='recs-slider__content content--display-price'>$40</p></div> {{~}}</div></div></div>
+<div class='unbxd-recs-slider'>
+    <div class='recs-slider-heading' id='recs-slider-heading'>{{=it.heading}}</div>
+    <div class='recs-slider-container' id='recs-slider-container'>
+        <button class='recs-slider-btn rex-slider--prev' onclick='recsSliderScrollPrev(event)'></button>
+        <button class='recs-slider-btn rex-slider--next' onclick='recsSliderScrollNext(event)'></button>
+        <div class='recs-slider' id='recs-slider'> {{~it.recommendations :value:index}}
+        <div class='recs-slider__item' id='hz-item-{{=index}}'>
+            <img src='{{=value.imageUrl || value.imageUrl[0]}}' />
+            <p class='recs-slider__content content--title'>{{=value.title}}</p>
+            <p class='recs-slider__content content--ratings'>{{=it.getRatings(value.rating)}}</p>
+            <p class='recs-slider__content content--display-price'>$40</p>
+        </div> {{~}}
+    </div>
+    </div>
+</div>

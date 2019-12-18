@@ -72,11 +72,14 @@ import {getRatings} from './ratings';
 
     /** exporting a global function to initialize recs slider */ 
     global.recsSliderInit = function(options){
+        console.log('options', options)
         /** Template rendering logic */
         var template = options.template;
         var targetDOMElementId = options.targetDOMElementId;
         var recommendations = options.recommendations;
         var heading = options.heading;
+        var config = options.config
+        var itemsToShow = options.config.products.visible_products
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -149,8 +152,8 @@ import {getRatings} from './ratings';
             "half_rating":"rex-half-star",
             "full_rating":"rex-full-star"
         }
-        for(i=0;i<horizontalAssets.length;i++){
-            var horizontalAssetItem = horizontalAssets[i];
+        for(i=0;i<options.assets.length;i++){
+            var horizontalAssetItem = options.assets[i];
             imgArr.push(
                 {
                     classname: classMap[horizontalAssetItem.tag],
@@ -165,7 +168,7 @@ import {getRatings} from './ratings';
         /** Setting styles for heading */
 
         var headingSelector = "#"+targetDOMElementId+" #recs-slider-heading";
-        var hzStyleConfig = horizontalConfig.header;
+        var hzStyleConfig = config.header;
         var hzHeadingEl = document.querySelector(headingSelector);
         hzHeadingEl.style.textAlign = hzStyleConfig.alignment;
         hzHeadingEl.style.fontSize = hzStyleConfig.text.size.value + hzStyleConfig.text.size.unit;
@@ -280,7 +283,9 @@ import {getRatings} from './ratings';
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
                     heading: heading,
-                    itemsToShow: itemsToShow
+                    itemsToShow: itemsToShow,
+                    config: horizontalConfig,
+                    assets: horizontalAssets
                 }
                 recsSliderInit(options);
             }
@@ -323,7 +328,7 @@ import {getRatings} from './ratings';
                 var horizontalTemplate = recommendationsResponse.horizontal;
                 horizontalConfig = horizontalTemplate.configuration;
                 horizontalAssets = horizontalTemplate.assets;
-                itemsToShow = horizontalConfig.products.visible_products;
+                // itemsToShow = horizontalConfig.products.visible_products;
                 var templateUrlHorizontal = horizontalTemplate.layout.src;
                 
                 /** Fetch template layout string */
