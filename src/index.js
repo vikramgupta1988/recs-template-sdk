@@ -80,15 +80,18 @@ import {getRatings} from './ratings';
         var config = options.config;
         var itemsToShow = config.products.visible_products;
         var maxProducts = options.maxProducts;
-<<<<<<< HEAD
+        var clickHandler = options.clickHandler;
 
         // no of items to be shown
         global.recsItemToScroll = itemsToShow;
-=======
->>>>>>> 6c62b28a1960b08a203702b272487fe365a4090c
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
+
+        if(sliderItems){
+            console.log(sliderItems)
+        }
+
         if(!renderTargetEl){
             return sendWarning('The target element id <' +targetDOMElementId+'> is not present in DOM. Execution can not continue');
         }
@@ -108,11 +111,16 @@ import {getRatings} from './ratings';
         var sliderItemWidth = (sliderContainer.offsetWidth - (itemsToShow * margin)) / itemsToShow;
         var sliderItemSelector = "#"+targetDOMElementId+ " .recs-slider__item";
         var sliderItems = document.querySelectorAll(sliderItemSelector);
+
         if(!sliderItems.length){
             return sendWarning('Found 0 nodes with class "recs-slider__item"');
         }
         for(var i=0; i<sliderItems.length; i++){
             sliderItems[i].style.width = sliderItemWidth + 'px';
+            sliderItems[i].addEventListener("click",function(){
+               clickHandler(recommendations[i])
+               console.log();
+            });
         }
 
         var tileWidth = sliderItems[0].offsetWidth;
@@ -285,6 +293,7 @@ import {getRatings} from './ratings';
             function renderWidgetDataHorizontal(widget, recommendations, heading){
                 var maxProducts = horizontalConfig.products.max_products;
                 var targetDOMElementId = widget.name;
+                var clickHandler = widget.clickHandler;
                 recommendations = recommendations.splice(0,maxProducts);
                 var options = {
                     template: horizontalTemplate,
@@ -294,7 +303,8 @@ import {getRatings} from './ratings';
                     config: horizontalConfig,
                     assets: horizontalAssets,
                     maxProducts:maxProducts,
-                    itemsToScroll:itemsToShow
+                    itemsToScroll:itemsToShow,
+                    clickHandler: clickHandler
                 }
                 recsSliderInit(options);
             }
