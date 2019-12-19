@@ -80,9 +80,12 @@ import {getRatings} from './ratings';
         var config = options.config;
         var itemsToShow = config.products.visible_products;
         var maxProducts = options.maxProducts;
+<<<<<<< HEAD
 
         // no of items to be shown
         global.recsItemToScroll = itemsToShow;
+=======
+>>>>>>> 6c62b28a1960b08a203702b272487fe365a4090c
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -277,7 +280,6 @@ import {getRatings} from './ratings';
             }
 
             requestUrl += "&uid="+userId;
-
 
 
             function renderWidgetDataHorizontal(widget, recommendations, heading){
