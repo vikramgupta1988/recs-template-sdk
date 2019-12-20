@@ -29,17 +29,17 @@ module.exports = {
                         "catalog_key": "image_url"
                     },
                     {
-                        "display_name": "Rating",
-                        "sequence_number": 2,
-                        "unbxd_dimension_key": "rating",
-                        "catalog_key": "product_rating"
-                    },
-                    {
                         "display_name": "Title",
                         "sequence_number": 3,
                         "unbxd_dimension_key": "title",
                         "catalog_key": "product_title"
-                    }
+                    },
+                    {
+                        "display_name": "Rating",
+                        "sequence_number": 2,
+                        "unbxd_dimension_key": "rating",
+                        "catalog_key": "product_rating"
+                    }             
                 ]
             }
         },
@@ -143,7 +143,7 @@ module.exports = {
                     imageUrl: [
                         "http://images.express.com/is/image/expressfashion/0028_04602604_1709_f?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                     ],
-                    rating: 1.5
+                    rating: 1.5,
                 },
                 {
                     title: 'Product 2',

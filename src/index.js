@@ -115,12 +115,43 @@ import {getRatings} from './ratings';
         if(!sliderItems.length){
             return sendWarning('Found 0 nodes with class "recs-slider__item"');
         }
+
+        var productFields = config.products.fields;
+
         for(var i=0; i<sliderItems.length; i++){
+            // setting the width of individual slider item
             sliderItems[i].style.width = sliderItemWidth + 'px';
+
+            // adding click handler to each item
             sliderItems[i].addEventListener("click",function(){
-               clickHandler(recommendations[i])
-               console.log();
+               clickHandler(recommendations[i]);
             });
+
+            (function(){
+                for(var j=0;j<productFields.length;j++){
+                    var dimensionKey = productFields[j].unbxd_dimension_key;
+                    // appending fields to slider item
+                    // field appending doesn't applies to imageUrl
+                    if(dimensionKey != "imageUrl"){
+                        var newnode = document.createElement("p");
+                        newnode.className = "recs-slider__content";
+                        if(dimensionKey == "rating"){
+                            newnode.className = "recs-slider__content content--ratings";
+                            newnode.innerHTML = getRatings(recommendations[i][dimensionKey]);
+                        }
+                        else{
+                            newnode.innerHTML = recommendations[i][dimensionKey];
+                        }
+                      
+                        sliderItems[i].appendChild(newnode);
+                    }
+                }
+            })()
+            
+
+    
+
+    
         }
 
         var tileWidth = sliderItems[0].offsetWidth;
@@ -347,7 +378,6 @@ import {getRatings} from './ratings';
                 var horizontalTemplate = recommendationsResponse.horizontal;
                 horizontalConfig = horizontalTemplate.configuration;
                 horizontalAssets = horizontalTemplate.assets;
-                // itemsToShow = horizontalConfig.products.visible_products;
                 var templateUrlHorizontal = horizontalTemplate.layout.src;
                 
                 /** Fetch template layout string */
