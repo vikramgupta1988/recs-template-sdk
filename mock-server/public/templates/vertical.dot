@@ -1,0 +1,12 @@
+<div class='unbxd-vertical-recs-slider'>
+    <div class='recs-vertical-slider-heading' id='recs-vertical-slider-heading'>{{=it.heading}}</div>
+    <div class='recs-vertical-slider-container' id='recs-vertical-slider-container'>
+        <button class='recs-vertical-slider-btn rex-vertical-slider--top' onclick='recsSliderScrollTop(event)'></button>
+        <button class='recs-vertical-slider-btn rex-vertical-slider--bottom' onclick='recsSliderScrollBottom(event)'></button>
+        <div class='recs-vertical-slider' id='recs-vertical-slider'> {{~it.recommendations :value:index}}
+        <div class='recs-vertical-slider__item' id='vt-item-{{=index}}'>
+            <img src='{{=value.imageUrl || value.imageUrl[0]}}' />
+        </div> {{~}}
+    </div>
+    </div>
+</div>
