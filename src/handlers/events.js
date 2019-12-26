@@ -4,7 +4,7 @@ export var eventHandlers = {
     // the code inside the methods are in native javascript
     // because they are to be appended directly in the DOM
     recsSliderSideScroll: function recsSliderSideScroll(targetDOMId, direction, speed, step) {
-       var scrollAmount = 0;
+       scrollAmount = 0;
        var elementSelector = "#"+targetDOMId+ " #recs-slider-container";
        var element = document.querySelector(elementSelector);
        if(!element){
@@ -19,29 +19,25 @@ export var eventHandlers = {
 
        var recsSlider = document.querySelector("#recs-slider");
 
-       var initialSteps = 30;
-
-       var itemsToScroll = window.recsItemToScroll;
-
-       var eventualSteps = initialSteps + itemsToScroll*5;
-       var tileWidth = sliderItem.offsetWidth * itemsToScroll;
+      
+       var tileWidth = sliderItem.offsetWidth;
        var tileVal = tileWidth - (tileWidth % 30);
-       var distance = tileWidth + (10*itemsToScroll);
+       var distance = tileWidth + 10;
        var slideTimer = setInterval(function () {
            if (direction == 'left') {
-               var distToScroll = itemsToScroll*(scrollAmount + eventualSteps);
+               var distToScroll = scrollAmount + step;
                if(distToScroll > distance){
-                eventualSteps = distance - tileVal;
+                  step = distance - tileVal;
                }
-            element.scrollLeft -= eventualSteps;
+            element.scrollLeft -= step;
            } else {
-               var distToScroll = scrollAmount + eventualSteps;
+               var distToScroll = scrollAmount + step;
                if(distToScroll > distance){
-                eventualSteps = distance - tileVal;         
+                  step = distance - tileVal;         
                }
-               element.scrollLeft += eventualSteps;
+               element.scrollLeft += step;
            }
-           scrollAmount += eventualSteps;
+           scrollAmount += step;
            if (scrollAmount >= distance) {
                window.clearInterval(slideTimer);
            }
