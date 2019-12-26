@@ -52,12 +52,12 @@ import {getRatings} from './ratings';
     /** Scripts and styles that are appended to the DOM */
 
     /** Adding event handlers for the horizontal slider to the DOM */
-    var eventHandlerScript = document.createElement('script');
-    eventHandlerScript.type = 'text/javascript';
-    // innerHTML needs to stay as es5 since it will be embedded duirectly to client's browser
-    eventHandlerScript.innerHTML = eventHandlers.recsSliderSideScroll + '\n' + eventHandlers.recsSliderScrollNext + '\n' +eventHandlers.recsSliderScrollPrev +'\n';
+   
  
-    document.body.appendChild(eventHandlerScript);
+    global.recsSliderScrollNext = eventHandlers.recsSliderScrollNext;
+    global.recsSliderScrollPrev = eventHandlers.recsSliderScrollPrev;
+    global.recsSliderSideScroll = eventHandlers.recsSliderSideScroll;
+
 
 
     /** Attaching styles for the slider */
@@ -72,19 +72,28 @@ import {getRatings} from './ratings';
 
     /** exporting a global function to initialize recs slider */ 
     global.recsSliderInit = function(options){
-        console.log('options', options)
         /** Template rendering logic */
         var template = options.template;
         var targetDOMElementId = options.targetDOMElementId;
         var recommendations = options.recommendations;
         var heading = options.heading;
-        var config = options.config
-        var itemsToShow = options.config.products.visible_products
+        var config = options.config;
+        var itemsToShow = config.products.visible_products;
+        var maxProducts = options.maxProducts;
+        var clickHandler = options.clickHandler;
+
+        // no of items to be shown
+        global.recsItemToScroll = itemsToShow;
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
+
+        if(sliderItems){
+            console.log(sliderItems)
+        }
+
         if(!renderTargetEl){
-            return sendWarning('The target element id is not present in DOM. Execution can not continue');
+            return sendWarning('The target element id <' +targetDOMElementId+'> is not present in DOM. Execution can not continue');
         }
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
@@ -102,11 +111,47 @@ import {getRatings} from './ratings';
         var sliderItemWidth = (sliderContainer.offsetWidth - (itemsToShow * margin)) / itemsToShow;
         var sliderItemSelector = "#"+targetDOMElementId+ " .recs-slider__item";
         var sliderItems = document.querySelectorAll(sliderItemSelector);
+
         if(!sliderItems.length){
             return sendWarning('Found 0 nodes with class "recs-slider__item"');
         }
+
+        var productFields = config.products.fields;
+
         for(var i=0; i<sliderItems.length; i++){
+            // setting the width of individual slider item
             sliderItems[i].style.width = sliderItemWidth + 'px';
+
+            // adding click handler to each item
+            sliderItems[i].addEventListener("click",function(){
+               clickHandler(recommendations[i]);
+            });
+
+            (function(){
+                for(var j=0;j<productFields.length;j++){
+                    var dimensionKey = productFields[j].unbxd_dimension_key;
+                    // appending fields to slider item
+                    // field appending doesn't applies to imageUrl
+                    if(dimensionKey != "imageUrl"){
+                        var newnode = document.createElement("p");
+                        newnode.className = "recs-slider__content";
+                        if(dimensionKey == "rating"){
+                            newnode.className = "recs-slider__content content--ratings";
+                            newnode.innerHTML = getRatings(recommendations[i][dimensionKey]);
+                        }
+                        else{
+                            newnode.innerHTML = recommendations[i][dimensionKey];
+                        }
+                      
+                        sliderItems[i].appendChild(newnode);
+                    }
+                }
+            })()
+            
+
+    
+
+    
         }
 
         var tileWidth = sliderItems[0].offsetWidth;
@@ -116,7 +161,7 @@ import {getRatings} from './ratings';
             return sendWarning('Slider Parent id was not found in the DOM');
         }
 
-        recsSlider.style.width = (recommendations.length * tileWidth) + (recommendations.length) * margin +'px';
+        recsSlider.style.width = (recommendations.length * tileWidth) + (maxProducts) * margin +'px';
         
         /** Setting styles for carousel buttons */
         // the navigation button need to be hidden in case the total no of items to be shown
@@ -140,8 +185,6 @@ import {getRatings} from './ratings';
             return sendWarning('rex-slider--prev class was not found on the navigation buttons');
         }
         prevSliderButton.disabled = true;
-        
-       
 
         /** Setting images value */
         var imgArr = [];
@@ -277,15 +320,22 @@ import {getRatings} from './ratings';
 
             requestUrl += "&uid="+userId;
 
-            function renderWidgetDataHorizontal(targetDOMElementId, recommendations, heading){
+
+            function renderWidgetDataHorizontal(widget, recommendations, heading){
+                var maxProducts = horizontalConfig.products.max_products;
+                var targetDOMElementId = widget.name;
+                var clickHandler = widget.clickHandler;
+                recommendations = recommendations.splice(0,maxProducts);
                 var options = {
                     template: horizontalTemplate,
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
                     heading: heading,
-                    itemsToShow: itemsToShow,
                     config: horizontalConfig,
-                    assets: horizontalAssets
+                    assets: horizontalAssets,
+                    maxProducts:maxProducts,
+                    itemsToScroll:itemsToShow,
+                    clickHandler: clickHandler
                 }
                 recsSliderInit(options);
             }
@@ -328,7 +378,6 @@ import {getRatings} from './ratings';
                 var horizontalTemplate = recommendationsResponse.horizontal;
                 horizontalConfig = horizontalTemplate.configuration;
                 horizontalAssets = horizontalTemplate.assets;
-                // itemsToShow = horizontalConfig.products.visible_products;
                 var templateUrlHorizontal = horizontalTemplate.layout.src;
                 
                 /** Fetch template layout string */
