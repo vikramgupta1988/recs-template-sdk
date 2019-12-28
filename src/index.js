@@ -35,8 +35,6 @@ import { getRatings } from './ratings';
     var widget2;
     var widget3;
 
-    var itemsToShow;
-
     // Horizontal template config containers
     var horizontalConfig;
     var horizontalAssets;
@@ -46,7 +44,6 @@ import { getRatings } from './ratings';
     var verticalAssets;
     // Setting constant values for margin between slider items and the DOM id for the slider
     var margin = 10;
-    var recsSliderId = 'recs-slider';
     /** End of Global variables */
 
     /**
@@ -62,6 +59,9 @@ import { getRatings } from './ratings';
     global.recsSliderScrollPrev = eventHandlers.recsSliderScrollPrev;
     global.recsSliderSideScroll = eventHandlers.recsSliderSideScroll;
 
+    global.recsSliderScrollBottom = eventHandlers.recsSliderScrollBottom;
+    global.recsSliderScrollTop = eventHandlers.recsSliderScrollTop;
+    global.recsSliderVerticalScroll = eventHandlers.recsSliderVerticalScroll;
 
 
     /** Attaching styles for the slider */
@@ -73,8 +73,10 @@ import { getRatings } from './ratings';
 
     /** End of Scripts and styles that are appended to the DOM */
 
+
+    // Configuration object for vertical/horizontal sliders
     var sliderConfig = {
-        horizontal:{
+        horizontal: {
             containerId: " #recs-slider-container",
             sliderItemClassSelector: " .recs-slider__item",
             dimension: "width",
@@ -82,10 +84,10 @@ import { getRatings } from './ratings';
             buttonClassSelector: ".recs-slider-btn",
             prevButtonClass: "rex-slider--prev",
             nextButtonClass: "rex-slider--next",
-            headingContainerId:" #recs-slider-heading",
-            sliderContentClass:"recs-slider__content"
+            headingContainerId: " #recs-slider-heading",
+            sliderContentClass: "recs-slider__content"
         },
-        vertical:{
+        vertical: {
             containerId: " #recs-vertical-slider-container",
             sliderItemClassSelector: " .recs-vertical-slider__item",
             dimension: "height",
@@ -93,8 +95,8 @@ import { getRatings } from './ratings';
             buttonClassSelector: ".recs-vertical-slider-btn",
             prevButtonClass: "rex-vertical-slider--top",
             nextButtonClass: "rex-vertical-slider--bottom",
-            headingContainerId:" #recs-vertical-slider-heading",
-            sliderContentClass:"recs-vertical-slider__content"
+            headingContainerId: " #recs-vertical-slider-heading",
+            sliderContentClass: "recs-vertical-slider__content"
         }
     }
 
@@ -113,63 +115,86 @@ import { getRatings } from './ratings';
         if (!sliderContainer) {
             return sendWarning('The slider container id was not found. Script can not continue');
         }
-        var sliderItemDimension = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
+
         var sliderItemSelector = "#" + targetDOMElementId + sliderContent.sliderItemClassSelector;
         var sliderItems = document.querySelectorAll(sliderItemSelector);
 
         if (!sliderItems.length) {
-            return sendWarning('Found 0 nodes with class : '+ sliderContent.sliderItemClassSelector);
+            return sendWarning('Found 0 nodes with class : ' + sliderContent.sliderItemClassSelector);
         }
 
         var productFields = config.products.fields;
 
         var dimension = sliderContent.dimension;
+
         for (var i = 0; i < sliderItems.length; i++) {
-            // setting the width of individual slider item
-            sliderItems[i].style[dimension] = sliderItemDimension + 'px';
 
             // adding click handler to each item
-            sliderItems[i].addEventListener("click", function () {
-                clickHandler(recommendations[i]);
-            });
+            if (clickHandler) {
+                (function (index) {
+                    sliderItems[i].addEventListener("click", function () {
+                        clickHandler(recommendations[index]);
+                    });
+                })(i);
+            }
 
-            (function () {
-                for (var j = 0; j < productFields.length; j++) {
-                    var dimensionKey = productFields[j].unbxd_dimension_key;
-                    // appending fields to slider item
-                    // field appending doesn't applies to imageUrl
-                    if (dimensionKey != "imageUrl") {
-                        var newnode = document.createElement("p");
-                        newnode.className = sliderContent.sliderContentClass;
-                        if (dimensionKey == "rating") {
-                            newnode.className = sliderContent.sliderContentClass+" content--ratings";
-                            newnode.innerHTML = getRatings(recommendations[i][dimensionKey]);
-                        }
-                        else {
-                            newnode.innerHTML = recommendations[i][dimensionKey];
-                        }
-
-                        sliderItems[i].appendChild(newnode);
+            for (var j = 0; j < productFields.length; j++) {
+                var dimensionKey = productFields[j].unbxd_dimension_key;
+                // appending fields to slider item
+                // field appending doesn't applies to imageUrl
+                if (dimensionKey != "imageUrl") {
+                    var newnode = document.createElement("p");
+                    newnode.className = sliderContent.sliderContentClass;
+                    if (dimensionKey == "rating") {
+                        newnode.className = sliderContent.sliderContentClass + " content--ratings";
+                        newnode.innerHTML = getRatings(recommendations[i][dimensionKey]);
                     }
+                    else {
+                        newnode.innerHTML = recommendations[i][dimensionKey];
+                    }
+
+                    sliderItems[i].appendChild(newnode);
                 }
-            })();
+            }
+
         }
 
-        var tileDimension = sliderItems[0][sliderContent.offsetDimension];
+        // Setting width of each slider item and
+        // setting width of the visible slider
         var recsSliderSelector = "#" + targetDOMElementId + " ." + sliderClass;
-        console.log(recsSliderSelector)
         var recsSlider = document.querySelector(recsSliderSelector);
         if (!recsSlider) {
             return sendWarning('Slider Parent id was not found in the DOM');
         }
 
-        recsSlider.style[sliderContent.dimension] = (recommendations.length * tileDimension) + (maxProducts) * margin + 'px';
+        if (sliderContent.dimension == "width") {
+
+            setTimeout(function () {
+                sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
+
+                var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
+
+                for (i = 0; i < sliderItems.length; i++) {
+                    sliderItems[i].style.width = hzSliderWidth;
+                }
+                recsSlider.style[sliderContent.dimension] = (maxProducts * hzSliderWidth) + (maxProducts) * margin + 'px';
+
+            }, 0);
+        }
+        else{
+            setTimeout(function(){
+                var sliderItemHeight = sliderItems[0].getBoundingClientRect().height;
+                recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin;
+            }, 0);
+        }
+
+
 
         /** Setting styles for carousel buttons */
         // the navigation button need to be hidden in case the total no of items to be shown
         // are less than the no of items to be shown at in one slide 
         if (recommendations.length <= itemsToShow) {
-            var navigationButtonSelector = "#" + targetDOMElementId +" "+ sliderContent.buttonClassSelector;
+            var navigationButtonSelector = "#" + targetDOMElementId + " " + sliderContent.buttonClassSelector;
             var navigationButtons = document.querySelectorAll(navigationButtonSelector);
             if (!navigationButtons || !navigationButtons.length) {
                 return sendWarning(sliderContent.buttonClassSelector + 'class not found on navigation buttons');
@@ -180,11 +205,11 @@ import { getRatings } from './ratings';
         }
 
         // the previous button for the slider needs to be disabled initially
-        var prevSliderButtonSelector = "#" + targetDOMElementId +" ."+ sliderContent.prevButtonClass;
+        var prevSliderButtonSelector = "#" + targetDOMElementId + " ." + sliderContent.prevButtonClass;
         var prevSliderButton = document.querySelector(prevSliderButtonSelector);
 
         if (!prevSliderButton) {
-            return sendWarning(sliderContent.prevButtonClass+' class was not found on the navigation buttons');
+            return sendWarning(sliderContent.prevButtonClass + ' class was not found on the navigation buttons');
         }
         prevSliderButton.disabled = true;
 
@@ -214,11 +239,11 @@ import { getRatings } from './ratings';
 
         var headingSelector = "#" + targetDOMElementId + sliderContent.headingContainerId;
         var styleConfig = config.header;
-        var hzHeadingEl = document.querySelector(headingSelector);
-        hzHeadingEl.style.textAlign = styleConfig.alignment;
-        hzHeadingEl.style.fontSize = styleConfig.text.size.value + styleConfig.text.size.unit;
-        hzHeadingEl.style.fontWeight = styleConfig.text.style;
-        hzHeadingEl.style.color = styleConfig.text.colour;
+        var headingEl = document.querySelector(headingSelector);
+        headingEl.style.textAlign = styleConfig.alignment;
+        headingEl.style.fontSize = styleConfig.text.size.value + styleConfig.text.size.unit;
+        headingEl.style.fontWeight = styleConfig.text.style;
+        headingEl.style.color = styleConfig.text.colour;
 
         /** End of Setting styles for heading */
 
@@ -238,8 +263,8 @@ import { getRatings } from './ratings';
         var isVertical = options.isVertical;
         var sliderClass = options.sliderClass;
 
-        // no of items to be shown
-        global.recsItemToScroll = itemsToShow;
+      
+  
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -262,9 +287,18 @@ import { getRatings } from './ratings';
             itemsToShow: itemsToShow,
             maxProducts: maxProducts,
             assets: options.assets,
-            sliderType: isVertical ? "vertical":"horizontal",
+            sliderType: isVertical ? "vertical" : "horizontal",
             sliderClass: sliderClass
         }
+
+          // no of items to be shown
+          if(isVertical){
+            global.recsItemToScrollHz = itemsToShow;
+          }
+          else{
+            global.recsItemToScrollVt = itemsToShow;
+          }
+          
 
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
     }
@@ -381,9 +415,8 @@ import { getRatings } from './ratings';
                 config: horizontalConfig,
                 assets: horizontalAssets,
                 maxProducts: maxProducts,
-                itemsToScroll: itemsToShow,
                 clickHandler: clickHandler,
-                sliderClass:"recs-slider"
+                sliderClass: "recs-slider"
             }
             recsSliderInit(options);
         }
@@ -402,10 +435,9 @@ import { getRatings } from './ratings';
                 config: verticalConfig,
                 assets: verticalAssets,
                 maxProducts: maxProducts,
-                itemsToScroll: itemsToShow,
                 clickHandler: clickHandler,
                 isVertical: true,
-                sliderClass:"recs-vertical-slider"
+                sliderClass: "recs-vertical-slider"
 
             }
             recsSliderInit(options);

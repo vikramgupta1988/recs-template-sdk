@@ -123,7 +123,64 @@ export var recommendations = [
 // </div>`;
 export var template = '<div class="unbxd-recs-slider"><div class="recs-slider-heading" id="recs-slider-heading">{{=it.heading.text}}</div><div class="recs-slider-container" id="recs-slider-container"> <button class="recs-slider-btn rex-slider--prev" onclick="recsSliderScrollPrev()"> </button> <button class="recs-slider-btn rex-slider--next" onclick="recsSliderScrollNext()"> </button><div class="recs-slider" id="recs-slider"> {{~it.recommendations :value:index}}<div class="recs-slider__item" id="hz-item-{{=index}}"> <img src="{{=value.imageUrl[0]}}" /><p class="recs-slider__content content--title">{{=value.title}}</p><p class="recs-slider__content content--ratings"> {{=it.getRatings(value.rating)}}</p><p class="recs-slider__content content--display-price">$40</p></div> {{~}}</div></div></div>';
 export var style = '.recs-slider{overflow:auto}.recs-slider-heading{display:block;}.recs-slider__item{cursor:pointer;float:left;margin-right:5px;margin-left:5px;text-align:center;width:140px}.recs-slider__item:last-of-type{margin-right:0}.recs-slider__item img{margin-bottom:3px;width:inherit}.recs-slider-container{margin-top:8px;overflow:hidden;width:100%}.unbxd-recs-slider{position:relative}.recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}.recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}.recs-slider-btn img{padding:16px 5px;}.rex-slider--prev{left:0}.rex-slider--next{right:0}.recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-family:OpenSans;font-size:14px;font-weight:600;font-stretch:normal;font-style:normal;text-align:center;color:#445870}.content--ratings .recs-star{height:15px;width:15px}.content--ratings .recs-star img{height:inherit;width:inherit;margin:0}';
-export var vStyles = '.unbxd-vertical-recs-slider{width:inherit;}.recs-vertical-slider-container{height:100vh; overflow-y:auto;}.recs-vertical-slider__item{margin: 10px 0;}.recs-vertical-slider__item img{width:inherit;}'
+
+export var vStyles = `
+    .unbxd-vertical-recs-slider{
+        width:inherit;
+        position:relative;
+    }
+    .recs-vertical-slider-container{
+ 
+    }
+    .recs-vertical-slider{
+        overflow-y:hidden;
+    }
+    .recs-vertical-slider__item{
+        margin: 10px 0;
+    }
+    .recs-vertical-slider__item img{
+        height:auto;
+        width:100%;
+    }
+    .recs-vertical-slider-btn{
+        cursor:pointer;
+        display: inline-block;
+        vertical-align: top;
+        width:30px;
+        height:30px;
+        background-color: #fff;
+        border-width: 0;
+        border-radius: 3px;
+        box-shadow: -3px 0 6px -3px rgba(68,88,112,.3);
+    }
+    .recs-vertical-slider-btn:disabled{
+        opacity:0.5;
+        cursor:not-allowed;
+    }
+    .recs-vertical-slider-btn.rex-vertical-slider--top{
+        
+    }
+    .recs-vertical-slider-btn.rex-vertical-slider--top img{
+        transform: rotate(90deg);
+    }
+    .recs-vertical-slider-btn.rex-vertical-slider--bottom{
+    }
+    .recs-vertical-slider-btn.rex-vertical-slider--bottom img{
+        transform: rotate(90deg);
+    }
+    .recs-vertical-slider__content{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: center;
+    }
+    .recs-vertical-slider__content{
+        margin: 0;
+        padding: 5px 0;
+    }
+`;
+
+//export var vStyles = '.unbxd-vertical-recs-slider{width:inherit;}.recs-vertical-slider-container{height:100vh; overflow-y:auto;}.recs-vertical-slider__item{margin: 10px 0;}.recs-vertical-slider__item img{width:100%;height:inherit}'
 // const stylePure = `.recs-slider{
 //     overflow: auto;
 // }
