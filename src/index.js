@@ -258,13 +258,10 @@ import { getRatings } from './ratings';
         var heading = options.heading;
         var config = options.config;
         var itemsToShow = config.products.visible_products;
-        var maxProducts = options.maxProducts;
+        var maxProducts = config.products.max_products;
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
-        var sliderClass = options.sliderClass;
 
-      
-  
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -288,7 +285,7 @@ import { getRatings } from './ratings';
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: sliderClass
+            sliderClass: isVertical ?  "recs-vertical-slider":  "recs-slider"
         }
 
           // no of items to be shown
