@@ -1,6 +1,6 @@
 import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
-import { style, vStyles } from './config';
+import { style } from './config';
 import { getRatings } from './ratings';
 
 (function (global) {
@@ -144,19 +144,31 @@ import { getRatings } from './ratings';
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
                     var newnode = document.createElement("p");
+                    var dimension = recommendations[i][dimensionKey];
                     newnode.className = sliderContent.sliderContentClass;
                     if (dimensionKey == "rating") {
                         newnode.className = sliderContent.sliderContentClass + " content--ratings";
-                        newnode.innerHTML = getRatings(recommendations[i][dimensionKey]);
+                        if (!dimension) {
+                            newnode.innerHTML = "";
+                        }
+                        else {
+                            newnode.innerHTML = getRatings(dimension);
+                        }
+
                     }
                     else {
-                        newnode.innerHTML = recommendations[i][dimensionKey];
+                        if (!dimension) {
+                            newnode.innerHTML = "";
+                        }
+                        else {
+                            newnode.innerHTML = dimension;
+                        }
                     }
-
-                    sliderItems[i].appendChild(newnode);
+                    if (newnode.innerHTML) {
+                        sliderItems[i].appendChild(newnode);
+                    }
                 }
             }
-
         }
 
         // Setting width of each slider item and
@@ -171,20 +183,18 @@ import { getRatings } from './ratings';
 
             setTimeout(function () {
                 sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
-
                 var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
-
                 for (i = 0; i < sliderItems.length; i++) {
-                    sliderItems[i].style.width = hzSliderWidth;
+                    sliderItems[i].style.width = hzSliderWidth + "px";
+                    recsSlider.style[sliderContent.dimension] = (maxProducts * hzSliderWidth) + (maxProducts) * margin + "px";
                 }
-                recsSlider.style[sliderContent.dimension] = (maxProducts * hzSliderWidth) + (maxProducts) * margin + 'px';
-
             }, 0);
         }
-        else{
-            setTimeout(function(){
+        else {
+            setTimeout(function () {
                 var sliderItemHeight = sliderItems[0].getBoundingClientRect().height;
-                recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin;
+                recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
+                recsSlider.style.overflow = "hidden";
             }, 0);
         }
 
@@ -285,17 +295,17 @@ import { getRatings } from './ratings';
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ?  "recs-vertical-slider":  "recs-slider"
+            sliderClass: isVertical ? "recs-vertical-slider" : "recs-slider"
         }
 
-          // no of items to be shown
-          if(isVertical){
-            global.recsItemToScrollHz = itemsToShow;
-          }
-          else{
+        // no of items to be shown
+        if (isVertical) {
             global.recsItemToScrollVt = itemsToShow;
-          }
-          
+        }
+        else {
+            global.recsItemToScrollHz = itemsToShow;
+        }
+
 
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
     }
@@ -445,12 +455,6 @@ import { getRatings } from './ratings';
                 var widget3Data = recommendationsResponse.rex_data.widget3;
                 var widget3Heading = widget3Data.title;
                 var widget3Recommendations = widget3Data.recommendations;
-                /** Attaching styles for the slider */
-                var eventHandlerStyle = document.createElement('style');
-                eventHandlerStyle.type = 'text/css';
-                // innerHTML needs to stay as es5 since it will be embedded duirectly to client's browser
-                eventHandlerStyle.innerHTML = vStyles;
-                document.head.appendChild(eventHandlerStyle);
                 renderWidgetDataVertical(widget3, widget3Recommendations, widget3Heading);
             }
         }

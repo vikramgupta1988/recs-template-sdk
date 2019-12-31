@@ -37,10 +37,6 @@ export var eventHandlers = {
         // the entire width of the slider visible at once exclusive of margin
         var tileSliderWidth = sliderItem.clientWidth * itemsToScroll;
 
-        // this value has to be deducted from the scrolled amount if the user
-        // programatically scrolled beyond it
-        var tileVal = tileSliderWidth - (tileSliderWidth % initialSteps);
-
 
         // the total distance to scroll inclusive of margin. 10 is the constant margin
         var distance = tileSliderWidth + (10 * itemsToScroll);
@@ -54,7 +50,6 @@ export var eventHandlers = {
                 element.scrollLeft -= eventualSteps;
             } else {
                 var distToScroll = scrollAmount + eventualSteps;
-
                 if (distToScroll > distance) {
                     eventualSteps -= (distToScroll - distance);
                 }
@@ -68,7 +63,7 @@ export var eventHandlers = {
             if (element.scrollLeft === 0) {
                 // we have reached the starting position for scroll
                 // thus we need to disable the prev button for slider
-                var prevButton = document.querySelector(".rex-slider--prev");
+                var prevButton = document.querySelector(elementSelector +" .rex-slider--prev");
                 if (!prevButton) {
                     return console.warn("rex-slider--prev class missing");
                 }
@@ -79,7 +74,7 @@ export var eventHandlers = {
             if ((element.scrollLeft + element.clientWidth) === recsSlider.clientWidth) {
                 // we have reached the end position for scroll
                 // thus we need to disable the next button for slider
-                var nextButton = document.querySelector(".rex-slider--next");
+                var nextButton = document.querySelector(elementSelector + " .rex-slider--next");
                 if (!nextButton) {
                     return console.warn("rex-slider--next class missing");
                 }
@@ -160,8 +155,6 @@ export var eventHandlers = {
         }
 
 
-        var recsSlider = document.querySelector("#recs-vertical-slider");
-
         // hard coding no of steps scrolled in given time frame to produce smooth effect
         var initialSteps = 50;
 
@@ -176,11 +169,6 @@ export var eventHandlers = {
 
         // the entire height of the slider visible at once exclusive of margin
         var tileSliderHeight = sliderItem.clientHeight * itemsToScroll;
-
-        // this value has to be deducted from the scrolled amount if the user
-        // programatically scrolled beyond it
-        var tileVal = tileSliderHeight - (tileSliderHeight % initialSteps);
-
 
         // the total distance to scroll inclusive of margin. 10 is the constant margin
         var distance = tileSliderHeight + (10 * itemsToScroll);
@@ -208,9 +196,9 @@ export var eventHandlers = {
             if (element.scrollTop === 0) {
                 // we have reached the starting position for scroll
                 // thus we need to disable the prev button for slider
-                var prevButton = document.querySelector(".rex-vertical-slider--top");
+                var prevButton = document.querySelector("#"+targetDOMId+" .rex-vertical-slider--top");
                 if (!prevButton) {
-                    return console.warn("rex-vertical-slider--top class missing");
+                    return console.warn("#"+targetDOMId+" rex-vertical-slider--top class missing");
                 }
                 prevButton.disabled = true;
 
@@ -219,9 +207,9 @@ export var eventHandlers = {
             if ((element.clientHeight + element.scrollTop) >= element.scrollHeight) {
                 // we have reached the end position for scroll
                 // thus we need to disable the next button for slider
-                var nextButton = document.querySelector(".rex-vertical-slider--bottom");
+                var nextButton = document.querySelector("#"+targetDOMId+ " .rex-vertical-slider--bottom");
                 if (!nextButton) {
-                    return console.warn("rex-vertical-slider--bottom class missing");
+                    return console.warn("#"+targetDOMId+ " rex-vertical-slider--bottom class missing");
                 }
                 nextButton.disabled = true;
             }
@@ -270,7 +258,6 @@ export var eventHandlers = {
         if (!bottomButtom) {
             return console.warn("rex-vertical-slider--bottom class missing");
         }
-        console.log(bottomButtom)
         if (bottomButtom.disabled) {
             bottomButtom.disabled = false;
         }
