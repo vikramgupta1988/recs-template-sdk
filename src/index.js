@@ -249,10 +249,15 @@ import { getRatings } from './ratings';
         var headingSelector = "#" + targetDOMElementId + sliderContent.headingContainerId;
         var styleConfig = config.header;
         var headingEl = document.querySelector(headingSelector);
-        headingEl.style.textAlign = styleConfig.alignment;
-        headingEl.style.fontSize = styleConfig.text.size.value + styleConfig.text.size.unit;
-        headingEl.style.fontWeight = styleConfig.text.style;
-        headingEl.style.color = styleConfig.text.colour;
+        if(headingEl.innerHTML == "null" || headingEl.innerHTML == "undefined"){
+            headingEl.style.display = "none";
+        }
+        else{
+            headingEl.style.textAlign = styleConfig.alignment;
+            headingEl.style.fontSize = styleConfig.text.size.value + styleConfig.text.size.unit;
+            headingEl.style.fontWeight = styleConfig.text.style;
+            headingEl.style.color = styleConfig.text.colour;
+        }
 
         /** End of Setting styles for heading */
 
