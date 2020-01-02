@@ -180,7 +180,6 @@ import { getRatings } from './ratings';
         }
 
         if (sliderContent.dimension == "width") {
-
             setTimeout(function () {
                 sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
                 var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
@@ -267,8 +266,11 @@ import { getRatings } from './ratings';
         var recommendations = options.recommendations;
         var heading = options.heading;
         var config = options.config;
-        var itemsToShow = config.products.visible_products;
-        var maxProducts = config.products.max_products;
+        var itemsToShow = config.products.visible;
+        var maxProducts = config.products.max;
+        if(recommendations.length < maxProducts){
+            maxProducts = recommendations.length;
+        }
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
 
@@ -410,22 +412,27 @@ import { getRatings } from './ratings';
 
 
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
-            var maxProducts = horizontalConfig.products.max_products;
+            var maxProducts = horizontalConfig.products.max;
+            if(recommendations.length < maxProducts){
+                maxProducts = recommendations.length;
+            }
             var targetDOMElementId = widget.name;
             var clickHandler = widget.clickHandler;
-            recommendations = recommendations.splice(0, maxProducts);
-            var options = {
-                template: horizontalTemplate,
-                targetDOMElementId: targetDOMElementId,
-                recommendations: recommendations,
-                heading: heading,
-                config: horizontalConfig,
-                assets: horizontalAssets,
-                maxProducts: maxProducts,
-                clickHandler: clickHandler,
-                sliderClass: "recs-slider"
-            }
-            recsSliderInit(options);
+            if(recommendations.length){
+                recommendations = recommendations.splice(0, maxProducts);
+                var options = {
+                    template: horizontalTemplate,
+                    targetDOMElementId: targetDOMElementId,
+                    recommendations: recommendations,
+                    heading: heading,
+                    config: horizontalConfig,
+                    assets: horizontalAssets,
+                    maxProducts: maxProducts,
+                    clickHandler: clickHandler,
+                    sliderClass: "recs-slider"
+                }
+                recsSliderInit(options);
+            }   
         }
 
 
@@ -433,27 +440,29 @@ import { getRatings } from './ratings';
             var maxProducts = verticalConfig.products.max_products;
             var targetDOMElementId = widget.name;
             var clickHandler = widget.clickHandler;
-            recommendations = recommendations.splice(0, maxProducts);
-            var options = {
-                template: verticalTemplate,
-                targetDOMElementId: targetDOMElementId,
-                recommendations: recommendations,
-                heading: heading,
-                config: verticalConfig,
-                assets: verticalAssets,
-                maxProducts: maxProducts,
-                clickHandler: clickHandler,
-                isVertical: true,
-                sliderClass: "recs-vertical-slider"
-
-            }
-            recsSliderInit(options);
+            if(recommendations.length){
+                recommendations = recommendations.splice(0, maxProducts);
+                var options = {
+                    template: verticalTemplate,
+                    targetDOMElementId: targetDOMElementId,
+                    recommendations: recommendations,
+                    heading: heading,
+                    config: verticalConfig,
+                    assets: verticalAssets,
+                    maxProducts: maxProducts,
+                    clickHandler: clickHandler,
+                    isVertical: true,
+                    sliderClass: "recs-vertical-slider"
+    
+                }
+                recsSliderInit(options);
+            }     
         }
 
         function handleWidgetRenderingVertical() {
             if (widget3) {
-                var widget3Data = recommendationsResponse.rex_data.widget3;
-                var widget3Heading = widget3Data.title;
+                var widget3Data = recommendationsResponse.widget3;
+                var widget3Heading = widget3Data.widgetTitle;
                 var widget3Recommendations = widget3Data.recommendations;
                 renderWidgetDataVertical(widget3, widget3Recommendations, widget3Heading);
             }
@@ -461,14 +470,14 @@ import { getRatings } from './ratings';
 
         function handleWidgetRendering() {
             if (widget1) {
-                var widget1Data = recommendationsResponse.rex_data.widget1;
-                var widget1Heading = widget1Data.title;
+                var widget1Data = recommendationsResponse.widget1;
+                var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
                 renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
             }
             if (widget2) {
-                var widget2Data = recommendationsResponse.rex_data.widget2;
-                var widget2Heading = widget2Data.title;
+                var widget2Data = recommendationsResponse.widget2;
+                var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
                 renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
             }
@@ -508,20 +517,19 @@ import { getRatings } from './ratings';
             recommendationsResponse = JSON.parse(res);
 
             // horizontal templates configuration
-            var horizontalTemplate = recommendationsResponse.horizontal;
-            horizontalConfig = horizontalTemplate.configuration;
-            horizontalAssets = horizontalTemplate.assets;
-            var templateUrlHorizontal = horizontalTemplate.layout.src;
+            var horizontalTemplate = recommendationsResponse.template.horizontal;
+            horizontalConfig = horizontalTemplate.conf;
+            horizontalAssets = horizontalConfig.assets;
+            var templateUrlHorizontal = horizontalTemplate.scriptUrl;
 
             /** Fetch template layout string */
             fetchData(templateUrlHorizontal, horizontalTemplateHandler);
 
-
             // vertical templates configuration
-            var verticalTemplate = recommendationsResponse.vertical;
-            verticalConfig = verticalTemplate.configuration;
+            var verticalTemplate = recommendationsResponse.template.vertical;
+            verticalConfig = verticalTemplate.conf;
             verticalAssets = verticalTemplate.assets;
-            var templateUrlVertical = verticalTemplate.layout.src;
+            var templateUrlVertical = verticalTemplate.scriptUrl;
 
             /** Fetch vertical template layout string */
             fetchData(templateUrlVertical, verticalTemplateHandler);
