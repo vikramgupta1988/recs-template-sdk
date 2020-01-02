@@ -73,7 +73,7 @@ module.exports = {
         },
         "configuration": {
             "header": {
-                "alignment": "left",
+                "alignment": "center",
                 "type": "text",
                 "text": {
                     "size": {

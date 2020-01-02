@@ -219,7 +219,7 @@ export var eventHandlers = {
     recsSliderScrollBottom: function () {
         var targetEl;
         try {
-            targetEl = event.currentTarget.parentElement.parentElement.parentElement;
+            targetEl = event.currentTarget.parentElement.parentElement.parentElement.parentElement;
         }
         catch (err) {
             console.warn(err);
@@ -229,6 +229,7 @@ export var eventHandlers = {
             return;
         }
         var targetElId = targetEl.id;
+        console.log(targetElId)
         var topButtonSelector = "#" + targetElId + " .rex-vertical-slider--top";
         var topButton = document.querySelector(topButtonSelector);
         if (!topButton) {
@@ -243,7 +244,7 @@ export var eventHandlers = {
     recsSliderScrollTop: function () {
         var targetEl;
         try {
-            targetEl = event.currentTarget.parentElement.parentElement.parentElement;
+            targetEl = event.currentTarget.parentElement.parentElement.parentElement.parentElement;
         }
         catch (err) {
             console.warn(err);
