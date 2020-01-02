@@ -139,7 +139,7 @@ import { getRatings } from './ratings';
             }
 
             for (var j = 0; j < productFields.length; j++) {
-                var dimensionKey = productFields[j].unbxd_dimension_key;
+                var dimensionKey = productFields[j].unbxdDimensionKey;
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
