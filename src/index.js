@@ -139,7 +139,9 @@ import { getRatings } from './ratings';
             }
 
             for (var j = 0; j < productFields.length; j++) {
-                var dimensionKey = productFields[j].unbxdDimensionKey;
+                // console.log(productFields[j])
+                var dimensionKey = productFields[j].unbxdDimensionKey || productFields[j].unbxd_dimension_key;
+                // console.log(dimensionKey);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
@@ -180,34 +182,60 @@ import { getRatings } from './ratings';
         }
 
         var maxprodLimit = maxProducts;
-        if(recommendations.length < maxProducts){
+        if (recommendations.length < maxProducts) {
             maxprodLimit = recommendations.length
         }
 
-        if (sliderContent.dimension == "width") {
-     
-            setTimeout(function () {
-                sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
-                var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
-                for (i = 0; i < sliderItems.length; i++) {
-                    sliderItems[i].style.width = hzSliderWidth + "px";
-                    console.log("itemwidtgh",sliderItems[i].style.width);
-                    console.log("maxProducts",maxprodLimit);
-                    console.log("hzSliderWidth",hzSliderWidth);
-                    console.log("margin",margin);
-                    console.log(maxprodLimit*(margin + hzSliderWidth))
-                    recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
+
+        function incrementCounter() {
+            counter++;
+            if (counter === len) {
+                // console.log('All images loaded!');
+                if (sliderContent.dimension == "width") {
+
+                    setTimeout(function () {
+                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
+                        // console.log("sliderContainer.style.width",sliderContainer.style.width)
+                        var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
+                        for (i = 0; i < sliderItems.length; i++) {
+                            sliderItems[i].style.width = hzSliderWidth + "px";
+                            // console.log("itemwidtgh",sliderItems[i].style.width);
+                            // console.log("maxProducts",maxprodLimit);
+                            // console.log("hzSliderWidth",hzSliderWidth);
+                            // console.log("margin",margin);
+                            // console.log(maxprodLimit*(margin + hzSliderWidth))
+                            recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
+                        }
+                    }, 0);
                 }
-            }, 0);
-        }
-        else {
-            setTimeout(function () {
-                var sliderItemHeight = sliderItems[0].getBoundingClientRect().height;
-                recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
-                recsSlider.style.overflow = "hidden";
-            }, 0);
+                else {
+                    var sliderItemHeight = sliderItems[0].getBoundingClientRect().height;
+                    // console.log("sliderItemHeight", sliderItemHeight);
+                    // console.log("itemsToShow", itemsToShow);
+                    // console.log("margin" + margin);
+                    // console.log("sum", (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin);
+    
+                    recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
+                    // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
+                    recsSlider.style.overflow = "hidden";
+                }
+        
+                
+            }
         }
 
+        var imgs = document.images,
+        len = imgs.length,
+        counter = 0;
+
+        [].forEach.call(imgs, function (img) {
+            if (img.complete)
+                incrementCounter();
+            else
+                img.addEventListener('load', incrementCounter, false);
+        });
+
+       
 
 
         /** Setting styles for carousel buttons */
@@ -260,10 +288,10 @@ import { getRatings } from './ratings';
         var headingSelector = "#" + targetDOMElementId + sliderContent.headingContainerId;
         var styleConfig = config.header;
         var headingEl = document.querySelector(headingSelector);
-        if(headingEl.innerHTML == "null" || headingEl.innerHTML == "undefined"){
+        if (headingEl.innerHTML == "null" || headingEl.innerHTML == "undefined") {
             headingEl.style.display = "none";
         }
-        else{
+        else {
             headingEl.style.textAlign = styleConfig.alignment;
             headingEl.style.fontSize = styleConfig.text.size.value + styleConfig.text.size.unit;
             headingEl.style.fontWeight = styleConfig.text.style;
@@ -295,10 +323,18 @@ import { getRatings } from './ratings';
             return sendWarning('The target element id <' + targetDOMElementId + '> is not present in DOM. Execution can not continue');
         }
 
+        if (maxProducts < recommendations.length) {
+            // console.log("maxProducts",maxProducts);
+            recommendations = recommendations.splice(0, maxProducts);
+            // console.log("recommendations",recommendations);
+        }
+
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
             recommendations: recommendations,
             heading: heading, getRatings: getRatings
         });
+
+
 
         /** Dynamically adjusting width based on no of items to be shown */
 
@@ -425,12 +461,18 @@ import { getRatings } from './ratings';
 
 
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
-            var maxProducts = horizontalConfig.products.max;
+            var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
             var targetDOMElementId = widget.name;
             var clickHandler = widget.clickHandler;
-            if(recommendations.length){
-                if(maxProducts < recommendations.length){
+            // console.log("--------------------------------------->>>>>>");
+            // console.log(recommendations);
+            if (recommendations.length) {
+                // console.log("--------------------------------------->");
+                // console.log(maxProducts)
+                if (maxProducts < recommendations.length) {
+                    // console.log("maxProducts", maxProducts);
                     recommendations = recommendations.splice(0, maxProducts);
+                    // console.log("recommendations", recommendations);
                 }
                 var options = {
                     template: horizontalTemplate,
@@ -444,16 +486,16 @@ import { getRatings } from './ratings';
                     sliderClass: "recs-slider"
                 }
                 recsSliderInit(options);
-            }   
+            }
         }
 
 
         function renderWidgetDataVertical(widget, recommendations, heading) {
-            var maxProducts = verticalConfig.products.max;
+            var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
             var targetDOMElementId = widget.name;
             var clickHandler = widget.clickHandler;
-            if(recommendations.length){
-                if(maxProducts < recommendations.length){
+            if (recommendations.length) {
+                if (maxProducts < recommendations.length) {
                     recommendations = recommendations.splice(0, maxProducts);
                 }
                 var options = {
@@ -467,10 +509,10 @@ import { getRatings } from './ratings';
                     clickHandler: clickHandler,
                     isVertical: true,
                     sliderClass: "recs-vertical-slider"
-    
+
                 }
                 recsSliderInit(options);
-            }     
+            }
         }
 
         function handleWidgetRenderingVertical() {
@@ -487,12 +529,14 @@ import { getRatings } from './ratings';
                 var widget1Data = recommendationsResponse.widget1;
                 var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
+                // console.log("------>widget1");
                 renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
             }
             if (widget2) {
                 var widget2Data = recommendationsResponse.widget2;
                 var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
+                // console.log("------>widget2");
                 renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
             }
 
@@ -504,6 +548,7 @@ import { getRatings } from './ratings';
             }
             // populating the template string
             horizontalTemplate = res;
+            // console.log("------>horizontalTemplateHandler");
             handleWidgetRendering();
         }
 
@@ -513,6 +558,7 @@ import { getRatings } from './ratings';
             }
             // populating the template string
             verticalTemplate = res;
+            // console.log("------>verticalTemplateHandler");
             handleWidgetRenderingVertical();
         }
 
@@ -536,13 +582,15 @@ import { getRatings } from './ratings';
             horizontalAssets = horizontalConfig.assets;
             var templateUrlHorizontal = horizontalTemplate.scriptUrl;
 
+            // console.log("templateUrlHorizontal---->", templateUrlHorizontal);
+
             /** Fetch template layout string */
             fetchData(templateUrlHorizontal, horizontalTemplateHandler);
 
             // vertical templates configuration
             var verticalTemplate = recommendationsResponse.template.vertical;
             verticalConfig = verticalTemplate.conf;
-            verticalAssets = verticalTemplate.assets;
+            verticalAssets = verticalConfig.assets;
             var templateUrlVertical = verticalTemplate.scriptUrl;
 
             /** Fetch vertical template layout string */

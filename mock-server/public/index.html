@@ -60,6 +60,13 @@
                         // product information will be provided here
                         console.log("Yoohoo I will do something with", product.title);
                     }
+                },
+                widget3: {
+                    name: "recommendations2",
+                    clickHandler: function (product) {
+                        // product information will be provided here
+                        console.log("Yoohoo I will do something with", product.title);
+                    }
                 }
             },
             userInfo: {
@@ -72,6 +79,9 @@
                 productIds: ['1234', '5678']
             }
         };
+        window.onload = function(){
+            console.log("-----------> loaded");
+        }
         window.unbxdTemplateInit(context);
     </script>
 </body>
