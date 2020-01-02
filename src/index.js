@@ -179,13 +179,24 @@ import { getRatings } from './ratings';
             return sendWarning('Slider Parent id was not found in the DOM');
         }
 
+        var maxprodLimit = maxProducts;
+        if(recommendations.length < maxProducts){
+            maxprodLimit = recommendations.length
+        }
+
         if (sliderContent.dimension == "width") {
+     
             setTimeout(function () {
                 sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
                 var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
                 for (i = 0; i < sliderItems.length; i++) {
                     sliderItems[i].style.width = hzSliderWidth + "px";
-                    recsSlider.style[sliderContent.dimension] = (maxProducts * hzSliderWidth) + (maxProducts) * margin + "px";
+                    console.log("itemwidtgh",sliderItems[i].style.width);
+                    console.log("maxProducts",maxprodLimit);
+                    console.log("hzSliderWidth",hzSliderWidth);
+                    console.log("margin",margin);
+                    console.log(maxprodLimit*(margin + hzSliderWidth))
+                    recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
                 }
             }, 0);
         }
@@ -271,11 +282,8 @@ import { getRatings } from './ratings';
         var recommendations = options.recommendations;
         var heading = options.heading;
         var config = options.config;
-        var itemsToShow = config.products.visible;
-        var maxProducts = config.products.max;
-        if(recommendations.length < maxProducts){
-            maxProducts = recommendations.length;
-        }
+        var itemsToShow = config.products.visible || config.products.visible_products;
+        var maxProducts = config.products.max || config.products.max_products;
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
 
@@ -418,13 +426,12 @@ import { getRatings } from './ratings';
 
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max;
-            if(recommendations.length < maxProducts){
-                maxProducts = recommendations.length;
-            }
             var targetDOMElementId = widget.name;
             var clickHandler = widget.clickHandler;
             if(recommendations.length){
-                recommendations = recommendations.splice(0, maxProducts);
+                if(maxProducts < recommendations.length){
+                    recommendations = recommendations.splice(0, maxProducts);
+                }
                 var options = {
                     template: horizontalTemplate,
                     targetDOMElementId: targetDOMElementId,
@@ -442,11 +449,13 @@ import { getRatings } from './ratings';
 
 
         function renderWidgetDataVertical(widget, recommendations, heading) {
-            var maxProducts = verticalConfig.products.max_products;
+            var maxProducts = verticalConfig.products.max;
             var targetDOMElementId = widget.name;
             var clickHandler = widget.clickHandler;
             if(recommendations.length){
-                recommendations = recommendations.splice(0, maxProducts);
+                if(maxProducts < recommendations.length){
+                    recommendations = recommendations.splice(0, maxProducts);
+                }
                 var options = {
                     template: verticalTemplate,
                     targetDOMElementId: targetDOMElementId,
