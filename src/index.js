@@ -1,6 +1,6 @@
 import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
-import { style } from './config';
+import { compressedStyle } from './config';
 import { getRatings } from './ratings';
 
 (function (global) {
@@ -12,15 +12,18 @@ import { getRatings } from './ratings';
     /** Function for fetching api requests */
     function fetchData(url, cb) {
         var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
+        xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
                 // Typical action to be performed when the document is ready:
                 cb(null, xhttp.responseText);
             }
             else if (this.readyState == 4 && (this.status != 200 || this.status != 204)) {
-                cb('error');
+                cb('Invalid network request: ' + url);
             }
         };
+        xhttp.onerror = function() {
+            cb('Failed network request: ' + url);
+        }
         xhttp.open("GET", url, true);
         xhttp.send();
     }
@@ -29,6 +32,36 @@ import { getRatings } from './ratings';
     /** Global variables */
     // the domain url
     var platformDomain = 'http://localhost:4201/';
+    // var platformDomain = 'http://console-lohika.0126-int-use2.unbxd.io/v2.0/';
+
+    // Constants
+    var HOME_PAGE = 'home';
+    var PRODUCT_PAGE = 'product';
+    var CATEGORY_PAGE = 'category';
+    var CART_PAGE = 'cart';
+    var allowedPageTypes = [ HOME_PAGE, PRODUCT_PAGE, CATEGORY_PAGE, CART_PAGE ];
+
+    var widgetIdMap = {};
+    widgetIdMap[HOME_PAGE] = {
+            'widget1': 'unbxd_rex_'+HOME_PAGE+'_w1',
+            'widget2': 'unbxd_rex_'+HOME_PAGE+'_w2',
+            'widget3': 'unbxd_rex_'+HOME_PAGE+'_w3'
+    };
+    widgetIdMap[PRODUCT_PAGE] = {
+            'widget1': 'unbxd_rex_'+PRODUCT_PAGE+'_w1',
+            'widget2': 'unbxd_rex_'+PRODUCT_PAGE+'_w2',
+            'widget3': 'unbxd_rex_'+PRODUCT_PAGE+'_w3'
+    };
+    widgetIdMap[CATEGORY_PAGE] = {
+            'widget1': 'unbxd_rex_'+CATEGORY_PAGE+'_w1',
+            'widget2': 'unbxd_rex_'+CATEGORY_PAGE+'_w2',
+            'widget3': 'unbxd_rex_'+CATEGORY_PAGE+'_w3'
+    };
+    widgetIdMap[CART_PAGE] = {
+            'widget1': 'unbxd_rex_'+CART_PAGE+'_w1',
+            'widget2': 'unbxd_rex_'+CART_PAGE+'_w2',
+            'widget3': 'unbxd_rex_'+CART_PAGE+'_w3'
+    }
 
     // Declaration of template containers
     var widget1;
@@ -67,8 +100,9 @@ import { getRatings } from './ratings';
     /** Attaching styles for the slider */
     var eventHandlerStyle = document.createElement('style');
     eventHandlerStyle.type = 'text/css';
-    // innerHTML needs to stay as es5 since it will be embedded duirectly to client's browser
-    eventHandlerStyle.innerHTML = style;
+    // innerHTML needs to stay as es5 since it will be embedded directly to client's browser
+    // console.log('compressedStyle', compressedStyle)
+    eventHandlerStyle.innerHTML = compressedStyle;
     document.head.appendChild(eventHandlerStyle);
 
     /** End of Scripts and styles that are appended to the DOM */
@@ -100,8 +134,12 @@ import { getRatings } from './ratings';
         }
     }
 
+    function missingValueError(valueKey, contentObject) {
+        throw new Error('Error: ' + valueKey + ' not found in ' + JSON.stringify(contentObject));
+    }
+
     function handleSizeCalculations(targetDOMElementId, options) {
-        var config = options.config;
+        var rexConsoleConfigs = options.rexConsoleConfigs;
         var recommendations = options.recommendations;
         var clickHandler = options.clickHandler;
         var itemsToShow = options.itemsToShow;
@@ -123,12 +161,11 @@ import { getRatings } from './ratings';
             return sendWarning('Found 0 nodes with class : ' + sliderContent.sliderItemClassSelector);
         }
 
-        var productFields = config.products.fields;
+        var productFields = rexConsoleConfigs.products.fields || missingValueError('products.fields', rexConsoleConfigs );
 
         var dimension = sliderContent.dimension;
 
         for (var i = 0; i < sliderItems.length; i++) {
-
             // adding click handler to each item
             if (clickHandler) {
                 (function (index) {
@@ -140,7 +177,7 @@ import { getRatings } from './ratings';
 
             for (var j = 0; j < productFields.length; j++) {
                 // console.log(productFields[j])
-                var dimensionKey = productFields[j].unbxdDimensionKey || productFields[j].unbxd_dimension_key;
+                var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]) ;
                 // console.log(dimensionKey);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
@@ -156,7 +193,6 @@ import { getRatings } from './ratings';
                         else {
                             newnode.innerHTML = getRatings(dimension);
                         }
-
                     }
                     else {
                         if (!dimension) {
@@ -186,7 +222,6 @@ import { getRatings } from './ratings';
             maxprodLimit = recommendations.length
         }
 
-
         function incrementCounter() {
             counter++;
             if (counter === len) {
@@ -199,7 +234,7 @@ import { getRatings } from './ratings';
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
                         for (i = 0; i < sliderItems.length; i++) {
                             sliderItems[i].style.width = hzSliderWidth + "px";
-                            // console.log("itemwidtgh",sliderItems[i].style.width);
+                            // console.log("itemWidth",sliderItems[i].style.width);
                             // console.log("maxProducts",maxprodLimit);
                             // console.log("hzSliderWidth",hzSliderWidth);
                             // console.log("margin",margin);
@@ -219,8 +254,6 @@ import { getRatings } from './ratings';
                     // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
                     recsSlider.style.overflow = "hidden";
                 }
-        
-                
             }
         }
 
@@ -234,8 +267,6 @@ import { getRatings } from './ratings';
             else
                 img.addEventListener('load', incrementCounter, false);
         });
-
-       
 
 
         /** Setting styles for carousel buttons */
@@ -286,7 +317,7 @@ import { getRatings } from './ratings';
         /** Setting styles for heading */
 
         var headingSelector = "#" + targetDOMElementId + sliderContent.headingContainerId;
-        var styleConfig = config.header;
+        var styleConfig = rexConsoleConfigs.header;
         var headingEl = document.querySelector(headingSelector);
         if (headingEl.innerHTML == "null" || headingEl.innerHTML == "undefined") {
             headingEl.style.display = "none";
@@ -299,22 +330,20 @@ import { getRatings } from './ratings';
         }
 
         /** End of Setting styles for heading */
-
     }
 
     /** exporting a global function to initialize recs slider */
-    global.recsSliderInit = function (options) {
+    global._unbxd_generateRexContent = function (options) {
         /** Template rendering logic */
-        var template = options.template;
-        var targetDOMElementId = options.targetDOMElementId;
-        var recommendations = options.recommendations;
-        var heading = options.heading;
-        var config = options.config;
-        var itemsToShow = config.products.visible || config.products.visible_products;
-        var maxProducts = config.products.max || config.products.max_products;
+        var template = options.template || missingValueError('template', options);
+        var targetDOMElementId = options.targetDOMElementId || missingValueError('targetDOMElementId', options);
+        var recommendations = options.recommendations || missingValueError('recommendations', options) ;
+        var heading = options.heading || missingValueError('heading', options);
+        var rexConsoleConfigs = options.rexConsoleConfigs || missingValueError('rexConsoleConfigs', options);
+        var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
+        var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs);
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
-
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -334,12 +363,9 @@ import { getRatings } from './ratings';
             heading: heading, getRatings: getRatings
         });
 
-
-
         /** Dynamically adjusting width based on no of items to be shown */
-
         var sliderOptionsConfig = {
-            config: config,
+            rexConsoleConfigs: rexConsoleConfigs,
             recommendations: recommendations,
             clickHandler: clickHandler,
             itemsToShow: itemsToShow,
@@ -356,32 +382,78 @@ import { getRatings } from './ratings';
         else {
             global.recsItemToScrollHz = itemsToShow;
         }
-
-
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
     }
 
 
-    /** The initialization function that has to be exposed to the merchandizer website
+    /** The initialization function that has to be exposed to the merchandiser website
         *  it takes context object from the client html
         *  and makes a call to the recommender proxy
         *  and updates the dom as per the response
         */
-    global.unbxdTemplateInit = function (context) {
-        var widgets = context.widgets;
+    global._unbxd_getRecommendations = function (context) {
 
-        if (!widgets) {
-            throw new Error("Widgets information is missing");
+        // Get widget id
+        function getWidgetId(pageType, widgetKey, widgetDetails) {
+            console.log(pageType, widgetKey, widgetDetails)
+            var widgetIdLocal;
+            if (widgetDetails) {
+                return widgetDetails[widgetKey] ? widgetDetails[widgetKey].name : null;
+            } else {
+                widgetIdLocal = widgetIdMap[pageType.toLowerCase()][widgetKey];
+                // Check if widget exists in the page
+                if(document.getElementById(widgetIdLocal)) {
+                    return widgetIdLocal;
+                } else {
+                    return null;
+                }
+            }
+            return null;
         }
 
-        // retrieve ids for widget containers
-        widget1 = widgets.widget1;
-        widget2 = widgets.widget2;
-        widget3 = widgets.widget3;
+        function getPageDetails(pageInfo) {
+            if (!pageInfo || !pageInfo.pageType) {
+                throw new Error("Page type info missing");
+            }
+            var pageTypeLocal = pageInfo.pageType;
+            if (allowedPageTypes.indexOf(pageTypeLocal.toLowerCase()) == -1) {
+                throw new Error("Invalid value for page type");
+            }
+            return pageTypeLocal;
+        }
 
+        function getClickHandler(context) {
+            return context.itemClickHandler;
+        }
+
+        function getUrlEncodedParam(paramName, paramValue) {
+            return "" + paramName + "=" + encodeURIComponent(paramValue);
+        }
+
+        function getProductIdsAsUrlParams(productIdsList) {
+            var queryStringLocal = '';
+            if (productIdsList instanceof Array) {
+                productIdsList.forEach(function(item){
+                    queryStringLocal+='&'+getUrlEncodedParam('id', item);
+                });
+            } else {
+                queryStringLocal+='&'+getUrlEncodedParam('id', productIdsList);
+            }
+            return queryStringLocal;
+        }
+
+        // getting page info
+        var pageType = getPageDetails(context.pageInfo);
+
+        // get widget if
+        var widgets = context.widgets;
+        widget1 = getWidgetId(pageType, 'widget1', widgets);
+        widget2 = getWidgetId(pageType, 'widget2', widgets);
+        widget3 = getWidgetId(pageType, 'widget3', widgets);
         if (!widget1 && !widget2 && !widget3) {
             throw new Error('No widget id provided');
         }
+        var itemClickHandler = getClickHandler(context);
 
         // getting userId, siteKey and apiKey
         var userInfo = context.userInfo;
@@ -407,34 +479,17 @@ import { getRatings } from './ratings';
             throw new Error("api key is missing");
         }
 
-
-        // getting page info
-
+        requestUrl += encodeURIComponent(pageType);
         var pageInfo = context.pageInfo;
-
-        if (!pageInfo) {
-            throw new Error("Page info missing")
-        }
-
-        var pageType = pageInfo.pageType;
-        // check if the value for page type is valid
-        var allowedPageTypes = ["HOME", "CATEGORY", "PRODUCT", "CART", "BRAND"];
-        if (allowedPageTypes.indexOf(pageType) == -1) {
-            throw error("Invalid value for page type");
-        }
-
-
-        requestUrl += pageType
-        switch (pageType) {
-            case "PRODUCT":
-            case "CART":
-                var productId = pageInfo.productId;
-                if (!productId) {
+        switch (pageType.toLowerCase()) {
+            case PRODUCT_PAGE:
+            case CART_PAGE:
+                if (!pageInfo.productIds) {
                     throw new Error("product id is missing for page type:" + pageType);
                 }
-                requestUrl += "&id=" + productId;
+                requestUrl += getProductIdsAsUrlParams(pageInfo.productIds);
                 break;
-            case "CATEGORY":
+            case CATEGORY_PAGE:
                 var catlevel1Name = pageInfo.catlevel1Name;
                 if (!catlevel1Name) {
                     throw new Error("catlevel1Name is mandatory for page type:" + pageType);
@@ -442,28 +497,30 @@ import { getRatings } from './ratings';
                 var catlevel2Name = pageInfo.catlevel2Name;
                 var catlevel3Name = pageInfo.catlevel3Name;
                 var catlevel4Name = pageInfo.catlevel4Name;
-                var categoryUrl = "&catlevel1Name=" + catlevel1Name;
-                categoryUrl += catlevel2Name ? ("&catlevel2Name=" + catlevel2Name) : "";
-                categoryUrl += catlevel3Name ? ("&catlevel3Name=" + catlevel3Name) : "";
-                categoryUrl += catlevel4Name ? ("&catlevel4Name=" + catlevel4Name) : "";
+                var categoryUrl = getUrlEncodedParam("catlevel1Name", catlevel1Name);
+                if (catlevel2Name) {
+                    categoryUrl += getUrlEncodedParam("catlevel2Name", catlevel2Name);
+                    if (catlevel3Name) {
+                        categoryUrl += getUrlEncodedParam("catlevel3Name=", catlevel3Name);
+                        if (catlevel4Name) {
+                            categoryUrl += getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                        }
+                    }
+                }
                 requestUrl += categoryUrl;
                 break;
-            case "BRAND":
-                var brand = pageInfo.brand;
-                if (!brand) {
-                    throw new Error("brand is mandatory for page type:" + pageType);
-                }
-                requestUrl += "&brand=" + brand;
+            case HOME_PAGE:
                 break;
+            default:
+                throw new Error("Invalid page type: "+pageType);
         }
 
         requestUrl += "&uid=" + userId;
 
-
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
-            var targetDOMElementId = widget.name;
-            var clickHandler = widget.clickHandler;
+            var targetDOMElementId = widget;
+            var clickHandler = itemClickHandler;
             // console.log("--------------------------------------->>>>>>");
             // console.log(recommendations);
             if (recommendations.length) {
@@ -479,21 +536,21 @@ import { getRatings } from './ratings';
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
                     heading: heading,
-                    config: horizontalConfig,
+                    rexConsoleConfigs: horizontalConfig,
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     sliderClass: "recs-slider"
                 }
-                recsSliderInit(options);
+                _unbxd_generateRexContent(options);
             }
         }
 
 
         function renderWidgetDataVertical(widget, recommendations, heading) {
             var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
-            var targetDOMElementId = widget.name;
-            var clickHandler = widget.clickHandler;
+            var targetDOMElementId = widget;
+            var clickHandler = itemClickHandler;
             if (recommendations.length) {
                 if (maxProducts < recommendations.length) {
                     recommendations = recommendations.splice(0, maxProducts);
@@ -503,7 +560,7 @@ import { getRatings } from './ratings';
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
                     heading: heading,
-                    config: verticalConfig,
+                    rexConsoleConfigs: verticalConfig,
                     assets: verticalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
@@ -511,7 +568,7 @@ import { getRatings } from './ratings';
                     sliderClass: "recs-vertical-slider"
 
                 }
-                recsSliderInit(options);
+                _unbxd_generateRexContent(options);
             }
         }
 
@@ -562,7 +619,7 @@ import { getRatings } from './ratings';
             handleWidgetRenderingVertical();
         }
 
-        /** Fetch recomendations response */
+        /** Fetch recommendations response */
         // to store recommendations response
         var recommendationsResponse;
         // to store template string
@@ -597,7 +654,6 @@ import { getRatings } from './ratings';
             fetchData(templateUrlVertical, verticalTemplateHandler);
 
         });
-
     }
 })(window);
 
