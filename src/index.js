@@ -147,6 +147,7 @@ import { getRatings } from './ratings';
         var assets = options.assets;
         var sliderType = options.sliderType;
         var sliderClass = options.sliderClass;
+        var recommendationsModified = options.recommendationsModified;
         var sliderContent = sliderConfig[sliderType]
         var domSelector = "#" + targetDOMElementId + sliderContent.containerId;
         var sliderContainer = document.querySelector(domSelector);
@@ -244,15 +245,21 @@ import { getRatings } from './ratings';
                     }, 0);
                 }
                 else {
-                    var sliderItemHeight = sliderItems[0].getBoundingClientRect().height;
+                    var targetDomElement = document.querySelector("#"+targetDOMElementId);
+                    sliderContainer.style.width = (targetDomElement.clientWidth);
+                    setTimeout(function(){     
+                            for(i=0; i< sliderItems.length; i++){
+                                sliderItems[i].style.width = targetDomElement.clientWidth - 2*margin +"px";
+                            }
+                    }, 0);
+                    recsSlider.style.width = (targetDomElement.clientWidth) * recommendationsModified.length + "px";
                     // console.log("sliderItemHeight", sliderItemHeight);
                     // console.log("itemsToShow", itemsToShow);
                     // console.log("margin" + margin);
                     // console.log("sum", (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin);
     
-                    recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
+                    // recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
                     // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
-                    recsSlider.style.overflow = "hidden";
                 }
             }
         }
@@ -344,7 +351,17 @@ import { getRatings } from './ratings';
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs);
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
-
+        var recommendationsModified = null;
+        if(isVertical){
+            recommendationsModified = [];
+            for(var i=0;i<recommendations.length;i++){
+                if(i %(itemsToShow) === 0){
+                    var slicedItems = recommendations.slice(i, i+itemsToShow);
+                    recommendationsModified.push(slicedItems);
+                }
+            }
+        }
+       
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
 
@@ -359,7 +376,7 @@ import { getRatings } from './ratings';
         }
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
-            recommendations: recommendations,
+            recommendations: recommendationsModified || recommendations,
             heading: heading, getRatings: getRatings
         });
 
@@ -367,6 +384,7 @@ import { getRatings } from './ratings';
         var sliderOptionsConfig = {
             rexConsoleConfigs: rexConsoleConfigs,
             recommendations: recommendations,
+            recommendationsModified:recommendationsModified,
             clickHandler: clickHandler,
             itemsToShow: itemsToShow,
             maxProducts: maxProducts,
@@ -555,6 +573,9 @@ import { getRatings } from './ratings';
                 if (maxProducts < recommendations.length) {
                     recommendations = recommendations.splice(0, maxProducts);
                 }
+
+                var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
+               
                 var options = {
                     template: verticalTemplate,
                     targetDOMElementId: targetDOMElementId,
@@ -565,7 +586,7 @@ import { getRatings } from './ratings';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     isVertical: true,
-                    sliderClass: "recs-vertical-slider"
+                    sliderClass: "recs-vertical-slider",
 
                 }
                 _unbxd_generateRexContent(options);

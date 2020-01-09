@@ -142,7 +142,7 @@ export var eventHandlers = {
         var scrollAmount = 0;
 
         // the target selector
-        var elementSelector = "#" + targetDOMId + " #recs-vertical-slider";
+        var elementSelector = "#" + targetDOMId + " #recs-vertical-slider-container";
         // the element which is going to be scrolled programmatically
         var element = document.querySelector(elementSelector);
         if (!element) {
@@ -162,16 +162,17 @@ export var eventHandlers = {
         var speed = 40;
 
         // taking the no of items to be scrolled from window
-        var itemsToScroll = window.recsItemToScrollVt;
+        var itemsToScroll = 1 //window.recsItemToScrollVt;
 
         // an offset flag that is used around scroll limit and smoothness
         var eventualSteps = initialSteps + itemsToScroll * 5;
 
-        // the entire height of the slider visible at once exclusive of margin
-        var tileSliderHeight = sliderItem.clientHeight * itemsToScroll;
+        // the entire width of the slider visible at once exclusive of margin
+        console.log(sliderItem.clientWidth)
+        var tileSliderWidth = (sliderItem.clientWidth + 20) * itemsToScroll;
 
         // the total distance to scroll inclusive of margin. 10 is the constant margin
-        var distance = tileSliderHeight + (10 * itemsToScroll);
+        var distance = tileSliderWidth;
 
         var slideTimer = setInterval(function () {
             if (direction == 'top') {
@@ -179,21 +180,21 @@ export var eventHandlers = {
                 if (distToScroll > distance) {
                     eventualSteps -= (distToScroll - distance);
                 }
-                element.scrollTop -= eventualSteps;
+                element.scrollLeft -= eventualSteps;
             } else {
                 var distToScroll = scrollAmount + eventualSteps;
 
                 if (distToScroll > distance) {
                     eventualSteps -= (distToScroll - distance);
                 }
-                element.scrollTop += eventualSteps;
+                element.scrollLeft += eventualSteps;
             }
             scrollAmount += eventualSteps;
             if (scrollAmount >= distance) {
                 window.clearInterval(slideTimer);
             }
 
-            if (element.scrollTop === 0) {
+            if (element.scrollLeft === 0) {
                 // we have reached the starting position for scroll
                 // thus we need to disable the prev button for slider
                 var prevButton = document.querySelector("#"+targetDOMId+" .rex-vertical-slider--top");
@@ -204,7 +205,7 @@ export var eventHandlers = {
 
             }
 
-            if ((element.clientHeight + element.scrollTop) >= element.scrollHeight) {
+            if ((element.clientWidth + element.scrollLeft) >= element.scrollWidth) {
                 // we have reached the end position for scroll
                 // thus we need to disable the next button for slider
                 var nextButton = document.querySelector("#"+targetDOMId+ " .rex-vertical-slider--bottom");
@@ -219,7 +220,7 @@ export var eventHandlers = {
     recsSliderScrollBottom: function () {
         var targetEl;
         try {
-            targetEl = event.currentTarget.parentElement.parentElement.parentElement.parentElement;
+            targetEl = event.currentTarget.parentElement.parentElement.parentElement;
         }
         catch (err) {
             console.warn(err);
@@ -244,7 +245,7 @@ export var eventHandlers = {
     recsSliderScrollTop: function () {
         var targetEl;
         try {
-            targetEl = event.currentTarget.parentElement.parentElement.parentElement.parentElement;
+            targetEl = event.currentTarget.parentElement.parentElement.parentElement;
         }
         catch (err) {
             console.warn(err);

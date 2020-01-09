@@ -149,18 +149,24 @@ export var style = `
 .unbxd-vertical-recs-slider {
     width:inherit;position:relative
 }
+.recs-vertical-slider-container{
+    overflow-x:hidden;
+}
 .recs-vertical-button-container {
-    text-align:left;
+    text-align:right;
 }
 .recs-vertical-slider {
     overflow:hidden;
 }
 .recs-vertical-slider__item {
     cursor: pointer;
-    margin:10px 0;
+    margin:10px 10px;
 }
 .recs-vertical-slider__item img {
     height:auto;width:100%
+}
+.recs-vertical-list{
+    float:left;
 }
 .recs-vertical-slider-btn {
     cursor:pointer;
@@ -178,10 +184,10 @@ export var style = `
     cursor:not-allowed;
 }
 .recs-vertical-slider-btn.rex-vertical-slider--top img {
-    transform:rotate(90deg);
+   
 }
 .recs-vertical-slider-btn.rex-vertical-slider--bottom img {
-    transform:rotate(90deg);
+
 }
 .recs-vertical-slider__content {
     text-overflow:ellipsis;
