@@ -176,6 +176,8 @@ import { getRatings } from './ratings';
                 })(i);
             }
 
+            var fragment = new DocumentFragment();
+
             for (var j = 0; j < productFields.length; j++) {
                 // console.log(productFields[j])
                 var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]) ;
@@ -204,10 +206,12 @@ import { getRatings } from './ratings';
                         }
                     }
                     if (newnode.innerHTML) {
-                        sliderItems[i].appendChild(newnode);
+                        fragment.appendChild(newnode);
                     }
                 }
             }
+
+            sliderItems[i].appendChild(fragment);
         }
 
         // Setting width of each slider item and
