@@ -111,15 +111,15 @@ import { getRatings } from './ratings';
     // Configuration object for vertical/horizontal sliders
     var sliderConfig = {
         horizontal: {
-            containerId: " #recs-slider-container",
-            sliderItemClassSelector: " .recs-slider__item",
+            containerId: " #_unbxd_recs-slider-container",
+            sliderItemClassSelector: " ._unbxd_recs-slider__item",
             dimension: "width",
             offsetDimension: "offsetWidth",
-            buttonClassSelector: ".recs-slider-btn",
-            prevButtonClass: "rex-slider--prev",
-            nextButtonClass: "rex-slider--next",
-            headingContainerId: " #recs-slider-heading",
-            sliderContentClass: "recs-slider__content"
+            buttonClassSelector: "._unbxd_recs-slider-btn",
+            prevButtonClass: "_unbxd_rex-slider--prev",
+            nextButtonClass: "_unbxd_rex-slider--next",
+            headingContainerId: " #_unbxd_recs-slider-heading",
+            sliderContentClass: "_unbxd_recs-slider__content"
         },
         vertical: {
             containerId: " #recs-vertical-slider-container",
@@ -189,7 +189,7 @@ import { getRatings } from './ratings';
                     var dimension = recommendations[i][dimensionKey];
                     newnode.className = sliderContent.sliderContentClass;
                     if (dimensionKey == "rating") {
-                        newnode.className = sliderContent.sliderContentClass + " content--ratings";
+                        newnode.className = sliderContent.sliderContentClass + " _unbxd_content--ratings";
                         if (!dimension) {
                             newnode.innerHTML = "";
                         }
@@ -308,9 +308,9 @@ import { getRatings } from './ratings';
         var classMap = {
             "next_arrow": sliderContent.nextButtonClass,
             "prev_arrow": sliderContent.prevButtonClass,
-            "empty_rating": "rex-empty-star",
-            "half_rating": "rex-half-star",
-            "full_rating": "rex-full-star"
+            "empty_rating": "_unbxd_rex-empty-star",
+            "half_rating": "_unbxd_rex-half-star",
+            "full_rating": "_unbxd_rex-full-star"
         }
         for (i = 0; i < assets.length; i++) {
             var horizontalAssetItem = assets[i];
@@ -394,7 +394,7 @@ import { getRatings } from './ratings';
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ? "recs-vertical-slider" : "recs-slider"
+            sliderClass: isVertical ? "recs-vertical-slider" : "_unbxd_recs-slider"
         }
 
         // no of items to be shown
@@ -562,7 +562,7 @@ import { getRatings } from './ratings';
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
-                    sliderClass: "recs-slider"
+                    sliderClass: "_unbxd_recs-slider"
                 }
                 _unbxd_generateRexContent(options);
             }

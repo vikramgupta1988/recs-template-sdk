@@ -7,20 +7,20 @@ export var eventHandlers = {
         var scrollAmount = 0;
 
         // the target selector
-        var elementSelector = "#" + targetDOMId + " #recs-slider-container";
+        var elementSelector = "#" + targetDOMId + " #_unbxd_recs-slider-container";
         // the element which is going to be scrolled programmatically
         var element = document.querySelector(elementSelector);
         if (!element) {
             return console.warn("slider container id is missing. Execution can not continue");
         }
-        var sliderItemSelector = "#" + targetDOMId + " .recs-slider__item";
+        var sliderItemSelector = "#" + targetDOMId + " ._unbxd_recs-slider__item";
         var sliderItem = document.querySelector(sliderItemSelector);
         if (!sliderItem) {
             return console.warn("slider item tile class is missing. Execution can not continue");
         }
 
 
-        var recsSlider = document.querySelector("#recs-slider");
+        var recsSlider = document.querySelector("#_unbxd_recs-slider");
 
         // hard coding no of steps scrolled in given time frame to produce smooth effect
         var initialSteps = 30;
@@ -63,9 +63,9 @@ export var eventHandlers = {
             if (element.scrollLeft === 0) {
                 // we have reached the starting position for scroll
                 // thus we need to disable the prev button for slider
-                var prevButton = document.querySelector(elementSelector +" .rex-slider--prev");
+                var prevButton = document.querySelector(elementSelector +" ._unbxd_rex-slider--prev");
                 if (!prevButton) {
-                    return console.warn("rex-slider--prev class missing");
+                    return console.warn("_unbxd_rex-slider--prev class missing");
                 }
                 prevButton.disabled = true;
 
@@ -74,9 +74,9 @@ export var eventHandlers = {
             if ((element.scrollLeft + element.clientWidth) === recsSlider.clientWidth) {
                 // we have reached the end position for scroll
                 // thus we need to disable the next button for slider
-                var nextButton = document.querySelector(elementSelector + " .rex-slider--next");
+                var nextButton = document.querySelector(elementSelector + " ._unbxd_rex-slider--next");
                 if (!nextButton) {
-                    return console.warn("rex-slider--next class missing");
+                    return console.warn("_unbxd_rex-slider--next class missing");
                 }
                 nextButton.disabled = true;
             }
@@ -98,10 +98,10 @@ export var eventHandlers = {
             return;
         }
         var targetElId = targetEl.id;
-        var prevButtonSelector = "#" + targetElId + " .rex-slider--prev";
+        var prevButtonSelector = "#" + targetElId + " ._unbxd_rex-slider--prev";
         var prevButton = document.querySelector(prevButtonSelector);
         if (!prevButton) {
-            return console.warn("rex-slider--prev class missing");
+            return console.warn("_unbxd_rex-slider--prev class missing");
         }
         if (prevButton.disabled) {
             prevButton.disabled = false;
@@ -123,10 +123,10 @@ export var eventHandlers = {
             return;
         }
         var targetElId = targetEl.id;
-        var nextButtonSelector = "#" + targetElId + " .rex-slider--next";
+        var nextButtonSelector = "#" + targetElId + " ._unbxd_rex-slider--next";
         var nextButton = document.querySelector(nextButtonSelector);
         if (!nextButton) {
-            return console.warn("rex-slider--next class missing");
+            return console.warn("_unbxd_rex-slider--next class missing");
         }
         if (nextButton.disabled) {
             nextButton.disabled = false;
