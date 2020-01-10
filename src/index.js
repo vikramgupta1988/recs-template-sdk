@@ -176,7 +176,7 @@ import { getRatings } from './ratings';
                 })(i);
             }
 
-            var fragment = new DocumentFragment();
+            var fragment = document.createDocumentFragment();
 
             for (var j = 0; j < productFields.length; j++) {
                 // console.log(productFields[j])
