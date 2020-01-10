@@ -142,13 +142,13 @@ export var eventHandlers = {
         var scrollAmount = 0;
 
         // the target selector
-        var elementSelector = "#" + targetDOMId + " #recs-vertical-slider-container";
+        var elementSelector = "#" + targetDOMId + " #_unbxd_recs-vertical-slider-container";
         // the element which is going to be scrolled programmatically
         var element = document.querySelector(elementSelector);
         if (!element) {
             return console.warn("slider container id is missing. Execution can not continue");
         }
-        var sliderItemSelector = "#" + targetDOMId + " .recs-vertical-slider__item";
+        var sliderItemSelector = "#" + targetDOMId + " ._unbxd_recs-vertical-slider__item";
         var sliderItem = document.querySelector(sliderItemSelector);
         if (!sliderItem) {
             return console.warn("vertical slider item tile class is missing. Execution can not continue");
@@ -197,9 +197,9 @@ export var eventHandlers = {
             if (element.scrollLeft === 0) {
                 // we have reached the starting position for scroll
                 // thus we need to disable the prev button for slider
-                var prevButton = document.querySelector("#"+targetDOMId+" .rex-vertical-slider--top");
+                var prevButton = document.querySelector("#"+targetDOMId+" ._unbxd_rex-vertical-slider--top");
                 if (!prevButton) {
-                    return console.warn("#"+targetDOMId+" rex-vertical-slider--top class missing");
+                    return console.warn("#"+targetDOMId+" _unbxd_rex-vertical-slider--top class missing");
                 }
                 prevButton.disabled = true;
 
@@ -208,9 +208,9 @@ export var eventHandlers = {
             if ((element.clientWidth + element.scrollLeft) >= element.scrollWidth) {
                 // we have reached the end position for scroll
                 // thus we need to disable the next button for slider
-                var nextButton = document.querySelector("#"+targetDOMId+ " .rex-vertical-slider--bottom");
+                var nextButton = document.querySelector("#"+targetDOMId+ " ._unbxd_rex-vertical-slider--bottom");
                 if (!nextButton) {
-                    return console.warn("#"+targetDOMId+ " rex-vertical-slider--bottom class missing");
+                    return console.warn("#"+targetDOMId+ " _unbxd_rex-vertical-slider--bottom class missing");
                 }
                 nextButton.disabled = true;
             }
@@ -231,10 +231,10 @@ export var eventHandlers = {
         }
         var targetElId = targetEl.id;
         console.log(targetElId)
-        var topButtonSelector = "#" + targetElId + " .rex-vertical-slider--top";
+        var topButtonSelector = "#" + targetElId + " ._unbxd_rex-vertical-slider--top";
         var topButton = document.querySelector(topButtonSelector);
         if (!topButton) {
-            return console.warn("rex-vertical-slider--top class missing");
+            return console.warn("_unbxd_rex-vertical-slider--top class missing");
         }
         if (topButton.disabled) {
             topButton.disabled = false;
@@ -255,10 +255,10 @@ export var eventHandlers = {
             return;
         }
         var targetElId = targetEl.id;
-        var bottomButtonSelector = "#" + targetElId + " .rex-vertical-slider--bottom";
+        var bottomButtonSelector = "#" + targetElId + " ._unbxd_rex-vertical-slider--bottom";
         var bottomButtom = document.querySelector(bottomButtonSelector);
         if (!bottomButtom) {
-            return console.warn("rex-vertical-slider--bottom class missing");
+            return console.warn("_unbxd_rex-vertical-slider--bottom class missing");
         }
         if (bottomButtom.disabled) {
             bottomButtom.disabled = false;

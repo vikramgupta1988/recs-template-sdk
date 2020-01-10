@@ -122,15 +122,15 @@ import { getRatings } from './ratings';
             sliderContentClass: "_unbxd_recs-slider__content"
         },
         vertical: {
-            containerId: " #recs-vertical-slider-container",
-            sliderItemClassSelector: " .recs-vertical-slider__item",
+            containerId: " #_unbxd_recs-vertical-slider-container",
+            sliderItemClassSelector: " ._unbxd_recs-vertical-slider__item",
             dimension: "height",
             offsetDimension: "offsetHeight",
-            buttonClassSelector: ".recs-vertical-slider-btn",
-            prevButtonClass: "rex-vertical-slider--top",
-            nextButtonClass: "rex-vertical-slider--bottom",
-            headingContainerId: " #recs-vertical-slider-heading",
-            sliderContentClass: "recs-vertical-slider__content"
+            buttonClassSelector: "._unbxd_recs-vertical-slider-btn",
+            prevButtonClass: "_unbxd_rex-vertical-slider--top",
+            nextButtonClass: "_unbxd_rex-vertical-slider--bottom",
+            headingContainerId: " #_unbxd_recs-vertical-slider-heading",
+            sliderContentClass: "_unbxd_recs-vertical-slider__content"
         }
     }
 
@@ -394,7 +394,7 @@ import { getRatings } from './ratings';
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ? "recs-vertical-slider" : "_unbxd_recs-slider"
+            sliderClass: isVertical ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider"
         }
 
         // no of items to be shown
@@ -590,7 +590,7 @@ import { getRatings } from './ratings';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     isVertical: true,
-                    sliderClass: "recs-vertical-slider",
+                    sliderClass: "_unbxd_recs-vertical-slider",
 
                 }
                 _unbxd_generateRexContent(options);
