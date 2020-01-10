@@ -1,4 +1,4 @@
-<div class='unbxd-recs-slider'>
+<div class='unbxd-recs-slider _unxbd_slider_hide'>
     <div class='_unbxd_recs-slider-heading' id='_unbxd_recs-slider-heading'>{{=it.heading}}</div>
     <div class='_unbxd_recs-slider-container' id='_unbxd_recs-slider-container'>
         <button class='_unbxd_recs-slider-btn _unbxd_rex-slider--prev' onclick='_unbxd_recsSliderScrollPrev(event)'></button>

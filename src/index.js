@@ -265,6 +265,8 @@ import { getRatings } from './ratings';
                     // recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
                     // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
                 }
+                var opaqueElSelector = document.querySelector("._unxbd_slider_hide");
+                opaqueElSelector.classList.remove("_unxbd_slider_hide");
             }
         }
 

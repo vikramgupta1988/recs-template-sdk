@@ -1,4 +1,4 @@
-<div class='_unbxd_vertical-recs-slider'>
+<div class='_unbxd_vertical-recs-slider _unxbd_slider_hide'>
     <div class='_unbxd_recs-vertical-slider-heading' id='_unbxd_recs-vertical-slider-heading'>{{=it.heading}}</div>
     <div class='_unbxd_recs-vertical-button-container'>
         <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--top' onclick='_unbxd_recsSliderScrollTop(event)'></button>

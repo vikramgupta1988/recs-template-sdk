@@ -249,6 +249,10 @@ export var style = `
     height:inherit;
     width:inherit;
     margin:0;
-}`;
+}
+._unxbd_slider_hide{
+    opacity:0;
+}
+`;
 
 export var compressedStyle = style.replace(/\s{2,}/g,'');
