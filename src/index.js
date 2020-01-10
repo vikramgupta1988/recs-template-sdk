@@ -88,13 +88,13 @@ import { getRatings } from './ratings';
     /** Adding event handlers for the horizontal slider to the DOM */
 
 
-    global.recsSliderScrollNext = eventHandlers.recsSliderScrollNext;
-    global.recsSliderScrollPrev = eventHandlers.recsSliderScrollPrev;
-    global.recsSliderSideScroll = eventHandlers.recsSliderSideScroll;
+    global._unbxd_recsSliderScrollNext = eventHandlers._unbxd_recsSliderScrollNext;
+    global._unbxd_recsSliderScrollPrev = eventHandlers._unbxd_recsSliderScrollPrev;
+    global._unbxd_recsSliderSideScroll = eventHandlers._unbxd_recsSliderSideScroll;
 
-    global.recsSliderScrollBottom = eventHandlers.recsSliderScrollBottom;
-    global.recsSliderScrollTop = eventHandlers.recsSliderScrollTop;
-    global.recsSliderVerticalScroll = eventHandlers.recsSliderVerticalScroll;
+    global._unbxd_recsSliderScrollBottom = eventHandlers._unbxd_recsSliderScrollBottom;
+    global._unbxd_recsSliderScrollTop = eventHandlers._unbxd_recsSliderScrollTop;
+    global._unbxd_recsSliderVerticalScroll = eventHandlers._unbxd_recsSliderVerticalScroll;
 
 
     /** Attaching styles for the slider */
@@ -399,10 +399,10 @@ import { getRatings } from './ratings';
 
         // no of items to be shown
         if (isVertical) {
-            global.recsItemToScrollVt = itemsToShow;
+            global._unbxd_recsItemToScrollVt = itemsToShow;
         }
         else {
-            global.recsItemToScrollHz = itemsToShow;
+            global._unbxd_recsItemToScrollHz = itemsToShow;
         }
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
     }

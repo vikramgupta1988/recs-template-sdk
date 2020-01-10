@@ -3,7 +3,7 @@ export var eventHandlers = {
     // feature across cross browsers
     // the code inside the methods are in native javascript
     // because they are to be appended directly in the DOM
-    recsSliderSideScroll: function recsSliderSideScroll(targetDOMId, direction) {
+    _unbxd_recsSliderSideScroll: function(targetDOMId, direction) {
         var scrollAmount = 0;
 
         // the target selector
@@ -29,7 +29,7 @@ export var eventHandlers = {
         var speed = 25;
 
         // taking the no of items to be scrolled from window
-        var itemsToScroll = window.recsItemToScrollHz;
+        var itemsToScroll = window._unbxd_recsItemToScrollHz;
 
         // an offset flag that is used around scroll limit and smoothness
         var eventualSteps = initialSteps + itemsToScroll * 5;
@@ -84,7 +84,7 @@ export var eventHandlers = {
     },
 
     // horizontal slider next button
-    recsSliderScrollNext: function recsSliderScrollNext(event) {
+    _unbxd_recsSliderScrollNext: function(event) {
         // a bit clumsy. But the only way to reach out to the id of the container
         var targetEl;
         try {
@@ -106,11 +106,11 @@ export var eventHandlers = {
         if (prevButton.disabled) {
             prevButton.disabled = false;
         }
-        recsSliderSideScroll(targetElId, 'right');
+        _unbxd_recsSliderSideScroll(targetElId, 'right');
     },
 
     // horizontal slider prev button
-    recsSliderScrollPrev: function recsSliderScrollPrev() {
+    _unbxd_recsSliderScrollPrev: function() {
         var targetEl;
         try {
             targetEl = event.currentTarget.parentElement.parentElement.parentElement;
@@ -131,14 +131,14 @@ export var eventHandlers = {
         if (nextButton.disabled) {
             nextButton.disabled = false;
         }
-        recsSliderSideScroll(targetElId, 'left');
+        _unbxd_recsSliderSideScroll(targetElId, 'left');
     },
 
     // vertical scroll function with delayed scroll to provide smooth scroll
     // feature across cross browsers
     // the code inside the methods are in native javascript
     // because they are to be appended directly in the DOM
-    recsSliderVerticalScroll: function recsSliderVerticalScroll(targetDOMId, direction) {
+    _unbxd_recsSliderVerticalScroll: function(targetDOMId, direction) {
         var scrollAmount = 0;
 
         // the target selector
@@ -217,7 +217,7 @@ export var eventHandlers = {
         }, speed);
     },
 
-    recsSliderScrollBottom: function () {
+    _unbxd_recsSliderScrollBottom: function() {
         var targetEl;
         try {
             targetEl = event.currentTarget.parentElement.parentElement.parentElement;
@@ -239,10 +239,10 @@ export var eventHandlers = {
         if (topButton.disabled) {
             topButton.disabled = false;
         }
-        recsSliderVerticalScroll(targetElId, 'bottom');
+        _unbxd_recsSliderVerticalScroll(targetElId, 'bottom');
     },
 
-    recsSliderScrollTop: function () {
+    _unbxd_recsSliderScrollTop: function () {
         var targetEl;
         try {
             targetEl = event.currentTarget.parentElement.parentElement.parentElement;
@@ -263,7 +263,7 @@ export var eventHandlers = {
         if (bottomButtom.disabled) {
             bottomButtom.disabled = false;
         }
-        recsSliderVerticalScroll(targetElId, 'top');
+        _unbxd_recsSliderVerticalScroll(targetElId, 'top');
     }
 }
 

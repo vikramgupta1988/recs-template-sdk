@@ -1,8 +1,8 @@
 <div class='_unbxd_vertical-recs-slider'>
     <div class='_unbxd_recs-vertical-slider-heading' id='_unbxd_recs-vertical-slider-heading'>{{=it.heading}}</div>
     <div class='_unbxd_recs-vertical-button-container'>
-        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--top' onclick='recsSliderScrollTop(event)'></button>
-        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--bottom' onclick='recsSliderScrollBottom(event)'></button>
+        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--top' onclick='_unbxd_recsSliderScrollTop(event)'></button>
+        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--bottom' onclick='_unbxd_recsSliderScrollBottom(event)'></button>
     </div>
     <div class='_unbxd_recs-vertical-slider-container' id='_unbxd_recs-vertical-slider-container'>
       
