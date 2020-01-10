@@ -166,15 +166,32 @@ import { getRatings } from './ratings';
 
         var dimension = sliderContent.dimension;
 
-        for (var i = 0; i < sliderItems.length; i++) {
-            // adding click handler to each item
-            if (clickHandler) {
-                (function (index) {
-                    sliderItems[i].addEventListener("click", function () {
-                        clickHandler(recommendations[index]);
-                    });
-                })(i);
+        if(clickHandler){
+            if(sliderContent.dimension == "width"){
+                sliderContainer.addEventListener("click",function(event){
+                    // we are considering clicks on image only
+                    if(event.target.tagName == "IMG"){
+                        var parentId = event.target.parentElement.id;
+                        var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
+                        clickHandler(recommendations[arrayIndex]);
+                    }
+                });
             }
+            else{
+                sliderContainer.addEventListener("click",function(event){
+                    // we are considering clicks on image only
+                    if(event.target.tagName == "IMG"){
+                        var parent2Id = event.target.parentElement.id;
+                        var parent1Id = event.target.parentElement.parentElement.id;
+                        var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
+                        var parent2ArrayIndex = parent2Id.split("-")[2];
+                        clickHandler(recommendationsModified[parent1ArrayIndex][parent2ArrayIndex]);
+                    }
+                });
+            }
+        }
+
+        for (var i = 0; i < sliderItems.length; i++) {
 
             var fragment = document.createDocumentFragment();
 
