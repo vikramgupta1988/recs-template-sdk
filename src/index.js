@@ -151,6 +151,10 @@ import { getRatings } from './ratings';
         var sliderContent = sliderConfig[sliderType]
         var domSelector = "#" + targetDOMElementId + sliderContent.containerId;
         var sliderContainer = document.querySelector(domSelector);
+        var widgetWidth = options.widgetWidth;
+
+        console.log("----widgetWidth---", widgetWidth);
+
         if (!sliderContainer) {
             return sendWarning('The slider container id was not found. Script can not continue');
         }
@@ -257,7 +261,9 @@ import { getRatings } from './ratings';
                 if (sliderContent.dimension == "width") {
 
                     setTimeout(function () {
-                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
+                        var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " .unbxd-recs-slider");
+                        sliderParentContainer.style.width = widgetWidth || "initial";
+                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
                         // console.log("sliderContainer.style.width",sliderContainer.style.width)
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
                         for (i = 0; i < sliderItems.length; i++) {
@@ -272,6 +278,8 @@ import { getRatings } from './ratings';
                     }, 0);
                 }
                 else {
+                    var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " ._unbxd_vertical-recs-slider");
+                    sliderParentContainer.style.width = widgetWidth || "initial";
                     var targetDomElement = document.querySelector("#"+targetDOMElementId);
                     sliderContainer.style.width = (targetDomElement.clientWidth);
                     setTimeout(function(){     
@@ -381,6 +389,7 @@ import { getRatings } from './ratings';
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
         var recommendationsModified = null;
+        var widgetWidth = options.widgetWidth;
         if(isVertical){
             recommendationsModified = [];
             for(var i=0;i<recommendations.length;i++){
@@ -419,7 +428,8 @@ import { getRatings } from './ratings';
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider"
+            sliderClass: isVertical ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider",
+            widgetWidth: widgetWidth
         }
 
         // no of items to be shown
@@ -497,6 +507,10 @@ import { getRatings } from './ratings';
         widget1 = getWidgetId(pageType, 'widget1', widgets);
         widget2 = getWidgetId(pageType, 'widget2', widgets);
         widget3 = getWidgetId(pageType, 'widget3', widgets);
+        var widget1Width = widgets['widget1'] ? widgets['widget1'].width : '';
+        var widget2Width = widgets['widget2'] ? widgets['widget2'].width : '';
+        console.log("=======>", widgets)
+        var widget3Width = widgets['widget3'] ? widgets['widget3'].width : '';
         if (!widget1 && !widget2 && !widget3) {
             throw new Error('No widget id provided');
         }
@@ -564,7 +578,7 @@ import { getRatings } from './ratings';
 
         requestUrl += "&uid=" + userId;
 
-        function renderWidgetDataHorizontal(widget, recommendations, heading) {
+        function renderWidgetDataHorizontal(widget, recommendations, heading, widget2Width) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
@@ -587,7 +601,8 @@ import { getRatings } from './ratings';
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
-                    sliderClass: "_unbxd_recs-slider"
+                    sliderClass: "_unbxd_recs-slider",
+                    widgetWidth: widget2Width
                 }
                 _unbxd_generateRexContent(options);
             }
@@ -603,7 +618,7 @@ import { getRatings } from './ratings';
                     recommendations = recommendations.splice(0, maxProducts);
                 }
 
-                var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
+                // var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
                
                 var options = {
                     template: verticalTemplate,
@@ -616,6 +631,7 @@ import { getRatings } from './ratings';
                     clickHandler: clickHandler,
                     isVertical: true,
                     sliderClass: "_unbxd_recs-vertical-slider",
+                    widgetWidth: widget3Width
 
                 }
                 _unbxd_generateRexContent(options);
@@ -636,6 +652,7 @@ import { getRatings } from './ratings';
                 var widget1Data = recommendationsResponse.widget1;
                 var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
+                console.log("------>",widget1Width)
                 // console.log("------>widget1");
                 renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
             }
@@ -644,7 +661,8 @@ import { getRatings } from './ratings';
                 var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
                 // console.log("------>widget2");
-                renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
+                console.log("------>",widget2Width)
+                renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading, widget2Width);
             }
 
         }
