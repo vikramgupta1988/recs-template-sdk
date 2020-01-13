@@ -172,8 +172,11 @@ import { getRatings } from './ratings';
                     // we are considering clicks on image only
                     if(event.target.tagName == "IMG"){
                         var parentId = event.target.parentElement.id;
-                        var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
-                        clickHandler(recommendations[arrayIndex]);
+                        var hzRegex = /hz-item/;
+                        if(hzRegex.test(parentId)){
+                            var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
+                            clickHandler(recommendations[arrayIndex]);
+                        }
                     }
                 });
             }
@@ -183,9 +186,12 @@ import { getRatings } from './ratings';
                     if(event.target.tagName == "IMG"){
                         var parent2Id = event.target.parentElement.id;
                         var parent1Id = event.target.parentElement.parentElement.id;
-                        var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
-                        var parent2ArrayIndex = parent2Id.split("-")[2];
-                        clickHandler(recommendationsModified[parent1ArrayIndex][parent2ArrayIndex]);
+                        var vtRegex = /vt-level2-/;
+                        if(vtRegex.test(parent2Id)){
+                            var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
+                            var parent2ArrayIndex = parent2Id.split("-")[2];
+                            clickHandler(recommendationsModified[parent1ArrayIndex][parent2ArrayIndex]);
+                        }
                     }
                 });
             }
