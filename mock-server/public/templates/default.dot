@@ -1,10 +1,10 @@
-<div class='unbxd-recs-slider'>
-    <div class='recs-slider-heading' id='recs-slider-heading'>{{=it.heading}}</div>
-    <div class='recs-slider-container' id='recs-slider-container'>
-        <button class='recs-slider-btn rex-slider--prev' onclick='recsSliderScrollPrev(event)'></button>
-        <button class='recs-slider-btn rex-slider--next' onclick='recsSliderScrollNext(event)'></button>
-        <div class='recs-slider' id='recs-slider'> {{~it.recommendations :value:index}}
-        <div class='recs-slider__item' id='hz-item-{{=index}}'>
+<div class='unbxd-recs-slider _unxbd_slider_hide'>
+    <div class='_unbxd_recs-slider-heading' id='_unbxd_recs-slider-heading'>{{=it.heading}}</div>
+    <div class='_unbxd_recs-slider-container' id='_unbxd_recs-slider-container'>
+        <button class='_unbxd_recs-slider-btn _unbxd_rex-slider--prev' onclick='_unbxd_recsSliderScrollPrev(event)'></button>
+        <button class='_unbxd_recs-slider-btn _unbxd_rex-slider--next' onclick='_unbxd_recsSliderScrollNext(event)'></button>
+        <div class='_unbxd_recs-slider' id='_unbxd_recs-slider'> {{~it.recommendations :value:index}}
+        <div class='_unbxd_recs-slider__item' id='hz-item-{{=index}}'>
             <img src='{{=value.imageUrl || value.imageUrl[0]}}' />
         </div> {{~}}
     </div>

@@ -843,6 +843,10 @@ module.exports = {
         "horizontal": {
             "scriptUrl": "http://localhost:4201/templates/default.dot",
             "conf": {
+                "width":{
+                    "unit":"px",
+                    "value":"800"
+                },
                 "header": {
                     "alignment": "left",
                     "type": "text",
@@ -908,6 +912,10 @@ module.exports = {
         "vertical": {
             "scriptUrl": "http://localhost:4201/templates/vertical.dot",
             "conf": {
+                "width":{
+                    "unit":"px",
+                    "value":"270"
+                },
                 "header": {
                     "alignment": "center",
                     "type": "text",

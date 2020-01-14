@@ -1,15 +1,15 @@
-<div class='unbxd-vertical-recs-slider'>
-    <div class='recs-vertical-slider-heading' id='recs-vertical-slider-heading'>{{=it.heading}}</div>
-    <div class='recs-vertical-button-container'>
-        <button class='recs-vertical-slider-btn rex-vertical-slider--top' onclick='recsSliderScrollTop(event)'></button>
-        <button class='recs-vertical-slider-btn rex-vertical-slider--bottom' onclick='recsSliderScrollBottom(event)'></button>
+<div class='_unbxd_vertical-recs-slider _unxbd_slider_hide'>
+    <div class='_unbxd_recs-vertical-slider-heading' id='_unbxd_recs-vertical-slider-heading'>{{=it.heading}}</div>
+    <div class='_unbxd_recs-vertical-button-container'>
+        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--top' onclick='_unbxd_recsSliderScrollTop(event)'></button>
+        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--bottom' onclick='_unbxd_recsSliderScrollBottom(event)'></button>
     </div>
-    <div class='recs-vertical-slider-container' id='recs-vertical-slider-container'> 
-        <div class='recs-vertical-slider' id='recs-vertical-slider'> 
+    <div class='_unbxd_recs-vertical-slider-container' id='_unbxd_recs-vertical-slider-container'>
+        <div class='_unbxd_recs-vertical-slider' id='_unbxd_recs-vertical-slider'> 
             {{~it.recommendations :value:index}}
-                <div class='recs-vertical-list'>
+                <div class='_unbxd_recs-vertical-list' id='vt-level1-{{=index}}'>
                        {{ for(var prop in value) { }}
-                        <div class='recs-vertical-slider__item'>
+                        <div class='_unbxd_recs-vertical-slider__item' id='vt-level2-{{=prop}}'>
                             <img src='{{=value[prop].imageUrl || value[prop].imageUrl[0]}}' />
                         </div> 
                        {{ } }}     

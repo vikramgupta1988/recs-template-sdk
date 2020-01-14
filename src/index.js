@@ -88,13 +88,13 @@ import { getRatings } from './ratings';
     /** Adding event handlers for the horizontal slider to the DOM */
 
 
-    global.recsSliderScrollNext = eventHandlers.recsSliderScrollNext;
-    global.recsSliderScrollPrev = eventHandlers.recsSliderScrollPrev;
-    global.recsSliderSideScroll = eventHandlers.recsSliderSideScroll;
+    global._unbxd_recsSliderScrollNext = eventHandlers._unbxd_recsSliderScrollNext;
+    global._unbxd_recsSliderScrollPrev = eventHandlers._unbxd_recsSliderScrollPrev;
+    global._unbxd_recsSliderSideScroll = eventHandlers._unbxd_recsSliderSideScroll;
 
-    global.recsSliderScrollBottom = eventHandlers.recsSliderScrollBottom;
-    global.recsSliderScrollTop = eventHandlers.recsSliderScrollTop;
-    global.recsSliderVerticalScroll = eventHandlers.recsSliderVerticalScroll;
+    global._unbxd_recsSliderScrollBottom = eventHandlers._unbxd_recsSliderScrollBottom;
+    global._unbxd_recsSliderScrollTop = eventHandlers._unbxd_recsSliderScrollTop;
+    global._unbxd_recsSliderVerticalScroll = eventHandlers._unbxd_recsSliderVerticalScroll;
 
 
     /** Attaching styles for the slider */
@@ -111,26 +111,26 @@ import { getRatings } from './ratings';
     // Configuration object for vertical/horizontal sliders
     var sliderConfig = {
         horizontal: {
-            containerId: " #recs-slider-container",
-            sliderItemClassSelector: " .recs-slider__item",
+            containerId: " #_unbxd_recs-slider-container",
+            sliderItemClassSelector: " ._unbxd_recs-slider__item",
             dimension: "width",
             offsetDimension: "offsetWidth",
-            buttonClassSelector: ".recs-slider-btn",
-            prevButtonClass: "rex-slider--prev",
-            nextButtonClass: "rex-slider--next",
-            headingContainerId: " #recs-slider-heading",
-            sliderContentClass: "recs-slider__content"
+            buttonClassSelector: "._unbxd_recs-slider-btn",
+            prevButtonClass: "_unbxd_rex-slider--prev",
+            nextButtonClass: "_unbxd_rex-slider--next",
+            headingContainerId: " #_unbxd_recs-slider-heading",
+            sliderContentClass: "_unbxd_recs-slider__content"
         },
         vertical: {
-            containerId: " #recs-vertical-slider-container",
-            sliderItemClassSelector: " .recs-vertical-slider__item",
+            containerId: " #_unbxd_recs-vertical-slider-container",
+            sliderItemClassSelector: " ._unbxd_recs-vertical-slider__item",
             dimension: "height",
             offsetDimension: "offsetHeight",
-            buttonClassSelector: ".recs-vertical-slider-btn",
-            prevButtonClass: "rex-vertical-slider--top",
-            nextButtonClass: "rex-vertical-slider--bottom",
-            headingContainerId: " #recs-vertical-slider-heading",
-            sliderContentClass: "recs-vertical-slider__content"
+            buttonClassSelector: "._unbxd_recs-vertical-slider-btn",
+            prevButtonClass: "_unbxd_rex-vertical-slider--top",
+            nextButtonClass: "_unbxd_rex-vertical-slider--bottom",
+            headingContainerId: " #_unbxd_recs-vertical-slider-heading",
+            sliderContentClass: "_unbxd_recs-vertical-slider__content"
         }
     }
 
@@ -151,6 +151,10 @@ import { getRatings } from './ratings';
         var sliderContent = sliderConfig[sliderType]
         var domSelector = "#" + targetDOMElementId + sliderContent.containerId;
         var sliderContainer = document.querySelector(domSelector);
+        var widgetWidth = options.widgetWidth;
+
+        console.log("----widgetWidth---", widgetWidth);
+
         if (!sliderContainer) {
             return sendWarning('The slider container id was not found. Script can not continue');
         }
@@ -166,15 +170,40 @@ import { getRatings } from './ratings';
 
         var dimension = sliderContent.dimension;
 
-        for (var i = 0; i < sliderItems.length; i++) {
-            // adding click handler to each item
-            if (clickHandler) {
-                (function (index) {
-                    sliderItems[i].addEventListener("click", function () {
-                        clickHandler(recommendations[index]);
-                    });
-                })(i);
+        if(clickHandler){
+            if(sliderContent.dimension == "width"){
+                sliderContainer.addEventListener("click",function(event){
+                    // we are considering clicks on image only
+                    if(event.target.tagName == "IMG"){
+                        var parentId = event.target.parentElement.id;
+                        var hzRegex = /hz-item/;
+                        if(hzRegex.test(parentId)){
+                            var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
+                            clickHandler(recommendations[arrayIndex]);
+                        }
+                    }
+                });
             }
+            else{
+                sliderContainer.addEventListener("click",function(event){
+                    // we are considering clicks on image only
+                    if(event.target.tagName == "IMG"){
+                        var parent2Id = event.target.parentElement.id;
+                        var parent1Id = event.target.parentElement.parentElement.id;
+                        var vtRegex = /vt-level2-/;
+                        if(vtRegex.test(parent2Id)){
+                            var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
+                            var parent2ArrayIndex = parent2Id.split("-")[2];
+                            clickHandler(recommendationsModified[parent1ArrayIndex][parent2ArrayIndex]);
+                        }
+                    }
+                });
+            }
+        }
+
+        for (var i = 0; i < sliderItems.length; i++) {
+
+            var fragment = document.createDocumentFragment();
 
             for (var j = 0; j < productFields.length; j++) {
                 // console.log(productFields[j])
@@ -187,7 +216,7 @@ import { getRatings } from './ratings';
                     var dimension = recommendations[i][dimensionKey];
                     newnode.className = sliderContent.sliderContentClass;
                     if (dimensionKey == "rating") {
-                        newnode.className = sliderContent.sliderContentClass + " content--ratings";
+                        newnode.className = sliderContent.sliderContentClass + " _unbxd_content--ratings";
                         if (!dimension) {
                             newnode.innerHTML = "";
                         }
@@ -204,10 +233,12 @@ import { getRatings } from './ratings';
                         }
                     }
                     if (newnode.innerHTML) {
-                        sliderItems[i].appendChild(newnode);
+                        fragment.appendChild(newnode);
                     }
                 }
             }
+
+            sliderItems[i].appendChild(fragment);
         }
 
         // Setting width of each slider item and
@@ -230,7 +261,9 @@ import { getRatings } from './ratings';
                 if (sliderContent.dimension == "width") {
 
                     setTimeout(function () {
-                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
+                        var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " .unbxd-recs-slider");
+                        sliderParentContainer.style.width = widgetWidth || "initial";
+                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
                         // console.log("sliderContainer.style.width",sliderContainer.style.width)
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
                         for (i = 0; i < sliderItems.length; i++) {
@@ -245,6 +278,8 @@ import { getRatings } from './ratings';
                     }, 0);
                 }
                 else {
+                    var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " ._unbxd_vertical-recs-slider");
+                    sliderParentContainer.style.width = widgetWidth || "initial";
                     var targetDomElement = document.querySelector("#"+targetDOMElementId);
                     sliderContainer.style.width = (targetDomElement.clientWidth);
                     setTimeout(function(){     
@@ -261,6 +296,8 @@ import { getRatings } from './ratings';
                     // recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
                     // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
                 }
+                var opaqueElSelector = document.querySelector("._unxbd_slider_hide");
+                opaqueElSelector.classList.remove("_unxbd_slider_hide");
             }
         }
 
@@ -304,9 +341,9 @@ import { getRatings } from './ratings';
         var classMap = {
             "next_arrow": sliderContent.nextButtonClass,
             "prev_arrow": sliderContent.prevButtonClass,
-            "empty_rating": "rex-empty-star",
-            "half_rating": "rex-half-star",
-            "full_rating": "rex-full-star"
+            "empty_rating": "_unbxd_rex-empty-star",
+            "half_rating": "_unbxd_rex-half-star",
+            "full_rating": "_unbxd_rex-full-star"
         }
         for (i = 0; i < assets.length; i++) {
             var horizontalAssetItem = assets[i];
@@ -352,6 +389,7 @@ import { getRatings } from './ratings';
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
         var recommendationsModified = null;
+        var widgetWidth = options.widgetWidth;
         if(isVertical){
             recommendationsModified = [];
             for(var i=0;i<recommendations.length;i++){
@@ -390,15 +428,16 @@ import { getRatings } from './ratings';
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ? "recs-vertical-slider" : "recs-slider"
+            sliderClass: isVertical ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider",
+            widgetWidth: widgetWidth
         }
 
         // no of items to be shown
         if (isVertical) {
-            global.recsItemToScrollVt = itemsToShow;
+            global._unbxd_recsItemToScrollVt = itemsToShow;
         }
         else {
-            global.recsItemToScrollHz = itemsToShow;
+            global._unbxd_recsItemToScrollHz = itemsToShow;
         }
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
     }
@@ -468,6 +507,10 @@ import { getRatings } from './ratings';
         widget1 = getWidgetId(pageType, 'widget1', widgets);
         widget2 = getWidgetId(pageType, 'widget2', widgets);
         widget3 = getWidgetId(pageType, 'widget3', widgets);
+        var widget1Width = widgets['widget1'] ? widgets['widget1'].width : '';
+        var widget2Width = widgets['widget2'] ? widgets['widget2'].width : '';
+        console.log("=======>", widgets)
+        var widget3Width = widgets['widget3'] ? widgets['widget3'].width : '';
         if (!widget1 && !widget2 && !widget3) {
             throw new Error('No widget id provided');
         }
@@ -537,6 +580,12 @@ import { getRatings } from './ratings';
 
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
+            console.log("======<",horizontalConfig);
+            var widgetWidthData = horizontalConfig.width;
+            var widgetWidth = "";
+            if(widgetWidthData.value && widgetWidthData.value != 0){
+                widgetWidth = widgetWidthData.value + widgetWidthData.unit;
+            }
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
             // console.log("--------------------------------------->>>>>>");
@@ -558,7 +607,8 @@ import { getRatings } from './ratings';
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
-                    sliderClass: "recs-slider"
+                    sliderClass: "_unbxd_recs-slider",
+                    widgetWidth: widgetWidth
                 }
                 _unbxd_generateRexContent(options);
             }
@@ -567,6 +617,12 @@ import { getRatings } from './ratings';
 
         function renderWidgetDataVertical(widget, recommendations, heading) {
             var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
+            console.log("======<<<<",verticalConfig);
+            var widgetWidthData = verticalConfig.width;
+            var widgetWidth = "";
+            if(widgetWidthData.value && widgetWidthData.value != 0){
+                widgetWidth = widgetWidthData.value + widgetWidthData.unit;
+            }
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
             if (recommendations.length) {
@@ -574,7 +630,7 @@ import { getRatings } from './ratings';
                     recommendations = recommendations.splice(0, maxProducts);
                 }
 
-                var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
+                // var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
                
                 var options = {
                     template: verticalTemplate,
@@ -586,7 +642,8 @@ import { getRatings } from './ratings';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     isVertical: true,
-                    sliderClass: "recs-vertical-slider",
+                    sliderClass: "_unbxd_recs-vertical-slider",
+                    widgetWidth: widgetWidth
 
                 }
                 _unbxd_generateRexContent(options);
@@ -607,14 +664,12 @@ import { getRatings } from './ratings';
                 var widget1Data = recommendationsResponse.widget1;
                 var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
-                // console.log("------>widget1");
                 renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
             }
             if (widget2) {
                 var widget2Data = recommendationsResponse.widget2;
                 var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
-                // console.log("------>widget2");
                 renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
             }
 
