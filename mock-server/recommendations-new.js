@@ -836,7 +836,7 @@ module.exports = {
         ],
         "debug": null,
         "templateId": null,
-        "widgetTitle": "Widget 2 title"
+        "widgetTitle": "Widget 3 title"
     },
     "error": null,
     "template": {
@@ -923,7 +923,7 @@ module.exports = {
                 },
                 "products": {
                     "max": 18,
-                    "visible": 4,
+                    "visible": 2,
                     "fieldsCount": 3,
                     "fields": [
                         {
