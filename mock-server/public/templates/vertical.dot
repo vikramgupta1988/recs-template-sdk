@@ -5,17 +5,14 @@
         <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--bottom' onclick='_unbxd_recsSliderScrollBottom(event)'></button>
     </div>
     <div class='_unbxd_recs-vertical-slider-container' id='_unbxd_recs-vertical-slider-container'>
-      
         <div class='_unbxd_recs-vertical-slider' id='_unbxd_recs-vertical-slider'> 
             {{~it.recommendations :value:index}}
                 <div class='_unbxd_recs-vertical-list' id='vt-level1-{{=index}}'>
                        {{ for(var prop in value) { }}
-
                         <div class='_unbxd_recs-vertical-slider__item' id='vt-level2-{{=prop}}'>
                             <img src='{{=value[prop].imageUrl || value[prop].imageUrl[0]}}' />
                         </div> 
-                       {{ } }}
-                       
+                       {{ } }}     
                 </div>
             {{~}}
         </div>

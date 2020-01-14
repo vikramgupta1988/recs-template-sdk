@@ -578,8 +578,14 @@ import { getRatings } from './ratings';
 
         requestUrl += "&uid=" + userId;
 
-        function renderWidgetDataHorizontal(widget, recommendations, heading, widget2Width) {
+        function renderWidgetDataHorizontal(widget, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
+            console.log("======<",horizontalConfig);
+            var widgetWidthData = horizontalConfig.width;
+            var widgetWidth = "";
+            if(widgetWidthData.value && widgetWidthData.value != 0){
+                widgetWidth = widgetWidthData.value + widgetWidthData.unit;
+            }
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
             // console.log("--------------------------------------->>>>>>");
@@ -602,7 +608,7 @@ import { getRatings } from './ratings';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     sliderClass: "_unbxd_recs-slider",
-                    widgetWidth: widget2Width
+                    widgetWidth: widgetWidth
                 }
                 _unbxd_generateRexContent(options);
             }
@@ -611,6 +617,12 @@ import { getRatings } from './ratings';
 
         function renderWidgetDataVertical(widget, recommendations, heading) {
             var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
+            console.log("======<<<<",verticalConfig);
+            var widgetWidthData = verticalConfig.width;
+            var widgetWidth = "";
+            if(widgetWidthData.value && widgetWidthData.value != 0){
+                widgetWidth = widgetWidthData.value + widgetWidthData.unit;
+            }
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
             if (recommendations.length) {
@@ -631,7 +643,7 @@ import { getRatings } from './ratings';
                     clickHandler: clickHandler,
                     isVertical: true,
                     sliderClass: "_unbxd_recs-vertical-slider",
-                    widgetWidth: widget3Width
+                    widgetWidth: widgetWidth
 
                 }
                 _unbxd_generateRexContent(options);
@@ -652,17 +664,13 @@ import { getRatings } from './ratings';
                 var widget1Data = recommendationsResponse.widget1;
                 var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
-                console.log("------>",widget1Width)
-                // console.log("------>widget1");
                 renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
             }
             if (widget2) {
                 var widget2Data = recommendationsResponse.widget2;
                 var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
-                // console.log("------>widget2");
-                console.log("------>",widget2Width)
-                renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading, widget2Width);
+                renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
             }
 
         }
