@@ -183,12 +183,6 @@ export var style = `
     opacity:.5;
     cursor:not-allowed;
 }
-.recs-vertical-slider-btn.rex-vertical-slider--top img {
-   
-}
-.recs-vertical-slider-btn.rex-vertical-slider--bottom img {
-
-}
 .recs-vertical-slider__content {
     text-overflow:ellipsis;
     overflow:hidden;
@@ -223,10 +217,10 @@ export var style = `
     padding:16px 5px
 }
 .rex-slider--prev {
-    left:0
+    left:5px;
 }
 .rex-slider--next {
-    right:0
+    right:5px;
 }
 .recs-slider__content {
     margin-top:5px;

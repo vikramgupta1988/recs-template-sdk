@@ -4,18 +4,15 @@
         <button class='recs-vertical-slider-btn rex-vertical-slider--top' onclick='recsSliderScrollTop(event)'></button>
         <button class='recs-vertical-slider-btn rex-vertical-slider--bottom' onclick='recsSliderScrollBottom(event)'></button>
     </div>
-    <div class='recs-vertical-slider-container' id='recs-vertical-slider-container'>
-      
+    <div class='recs-vertical-slider-container' id='recs-vertical-slider-container'> 
         <div class='recs-vertical-slider' id='recs-vertical-slider'> 
             {{~it.recommendations :value:index}}
                 <div class='recs-vertical-list'>
                        {{ for(var prop in value) { }}
-
                         <div class='recs-vertical-slider__item'>
                             <img src='{{=value[prop].imageUrl || value[prop].imageUrl[0]}}' />
                         </div> 
-                       {{ } }}
-                       
+                       {{ } }}     
                 </div>
             {{~}}
         </div>
