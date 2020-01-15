@@ -153,6 +153,7 @@ export var style = `
     overflow-x:hidden;
 }
 ._unbxd_recs-vertical-button-container {
+    padding: 0 10px;
     text-align:right;
 }
 ._unbxd_recs-vertical-slider {
