@@ -262,7 +262,11 @@ import { getRatings } from './ratings';
 
                     setTimeout(function () {
                         var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " .unbxd-recs-slider");
+                        var sliderRootContainer = sliderParentContainer.parentElement;
                         sliderParentContainer.style.width = widgetWidth || "initial";
+                        if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
+                            sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
+                        }
                         sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
                         // console.log("sliderContainer.style.width",sliderContainer.style.width)
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
@@ -279,7 +283,13 @@ import { getRatings } from './ratings';
                 }
                 else {
                     var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " ._unbxd_vertical-recs-slider");
+                    var sliderRootContainer = sliderParentContainer.parentElement;
+                    // if root container width is less than configuration width, then
+                    // the container inherits root container width 
                     sliderParentContainer.style.width = widgetWidth || "initial";
+                    if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
+                        sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
+                    }
                     var targetDomElement = document.querySelector("#"+targetDOMElementId);
                     sliderContainer.style.width = (targetDomElement.clientWidth);
                     setTimeout(function(){     
@@ -513,10 +523,6 @@ import { getRatings } from './ratings';
         widget1 = getWidgetId(pageType, 'widget1', widgets);
         widget2 = getWidgetId(pageType, 'widget2', widgets);
         widget3 = getWidgetId(pageType, 'widget3', widgets);
-        var widget1Width = widgets['widget1'] ? widgets['widget1'].width : '';
-        var widget2Width = widgets['widget2'] ? widgets['widget2'].width : '';
-        console.log("=======>", widgets)
-        var widget3Width = widgets['widget3'] ? widgets['widget3'].width : '';
         if (!widget1 && !widget2 && !widget3) {
             throw new Error('No widget id provided');
         }
