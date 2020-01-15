@@ -290,7 +290,7 @@ import { getRatings } from './ratings';
                         // the container inherits root container width 
                         sliderParentContainer.style.width = widgetWidth || "initial";
                         if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
-                            sliderParentContainer.style.width = sliderRootContainer.clientWidth;
+                            sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
                         }
                         for (i = 0; i < sliderItems.length; i++) {
                             sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
