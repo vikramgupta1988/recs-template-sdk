@@ -888,11 +888,11 @@ module.exports = {
                 "assets": [
                     {
                         "tag": "next_arrow",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-next.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-next.svg"
                     },
                     {
                         "tag": "prev_arrow",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-prev.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-prev.svg"
                     },
                     {
                         "tag": "empty_rating",
@@ -957,11 +957,11 @@ module.exports = {
                 "assets": [
                     {
                         "tag": "next_arrow",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-next.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-next.svg"
                     },
                     {
                         "tag": "prev_arrow",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-prev.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-prev.svg"
                     },
                     {
                         "tag": "empty_rating",

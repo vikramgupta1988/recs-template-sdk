@@ -161,7 +161,7 @@ export var style = `
 }
 ._unbxd_recs-vertical-slider__item {
     cursor: pointer;
-    margin:10px 10px;
+    margin:3px 10px;
 }
 ._unbxd_recs-vertical-slider__item img {
     height:auto;width:100%
@@ -228,13 +228,9 @@ export var style = `
     margin-bottom:0;
     width:inherit;
     overflow:hidden;
-    font-family:OpenSans;
-    font-size:14px;
-    font-weight:600;
     font-stretch:normal;
     font-style:normal;
     text-align:center;
-    color:#445870
 }
 ._unbxd_content--ratings .recs-star {
     height:15px;

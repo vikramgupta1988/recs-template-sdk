@@ -153,7 +153,7 @@ import { getRatings } from './ratings';
         var sliderContainer = document.querySelector(domSelector);
         var widgetWidth = options.widgetWidth;
 
-        console.log("----widgetWidth---", widgetWidth);
+        // console.log("----widgetWidth---", widgetWidth);
 
         if (!sliderContainer) {
             return sendWarning('The slider container id was not found. Script can not continue');
@@ -513,9 +513,6 @@ import { getRatings } from './ratings';
         widget1 = getWidgetId(pageType, 'widget1', widgets);
         widget2 = getWidgetId(pageType, 'widget2', widgets);
         widget3 = getWidgetId(pageType, 'widget3', widgets);
-        var widget1Width = widgets['widget1'] ? widgets['widget1'].width : '';
-        var widget2Width = widgets['widget2'] ? widgets['widget2'].width : '';
-        console.log("=======>", widgets)
         var widget3Width = widgets['widget3'] ? widgets['widget3'].width : '';
         if (!widget1 && !widget2 && !widget3) {
             throw new Error('No widget id provided');
@@ -586,7 +583,7 @@ import { getRatings } from './ratings';
 
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
-            console.log("======<",horizontalConfig);
+            // console.log("======<",horizontalConfig);
             // var widgetWidthData = horizontalConfig.width;
             // var widgetWidth = "";
             // if(widgetWidthData.value && widgetWidthData.value != 0){
