@@ -185,9 +185,6 @@ export var style = `
     cursor:not-allowed;
 }
 ._unbxd_recs-vertical-slider__content{
-    text-overflow:ellipsis;
-    overflow:hidden;
-    white-space:nowrap;
     text-align:center
 }
 ._unbxd_recs-vertical-slider__content{

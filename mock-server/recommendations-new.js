@@ -914,7 +914,7 @@ module.exports = {
             "conf": {
                 "width":{
                     "unit":"px",
-                    "value":"270"
+                    "value":"100"
                 },
                 "header": {
                     "alignment": "center",
