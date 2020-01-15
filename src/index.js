@@ -12,7 +12,7 @@ import { getRatings } from './ratings';
     /** Function for fetching api requests */
     function fetchData(url, cb) {
         var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
+        xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
                 // Typical action to be performed when the document is ready:
                 cb(null, xhttp.responseText);
@@ -21,7 +21,7 @@ import { getRatings } from './ratings';
                 cb('Invalid network request: ' + url);
             }
         };
-        xhttp.onerror = function() {
+        xhttp.onerror = function () {
             cb('Failed network request: ' + url);
         }
         xhttp.open("GET", url, true);
@@ -39,28 +39,28 @@ import { getRatings } from './ratings';
     var PRODUCT_PAGE = 'product';
     var CATEGORY_PAGE = 'category';
     var CART_PAGE = 'cart';
-    var allowedPageTypes = [ HOME_PAGE, PRODUCT_PAGE, CATEGORY_PAGE, CART_PAGE ];
+    var allowedPageTypes = [HOME_PAGE, PRODUCT_PAGE, CATEGORY_PAGE, CART_PAGE];
 
     var widgetIdMap = {};
     widgetIdMap[HOME_PAGE] = {
-            'widget1': 'unbxd_rex_'+HOME_PAGE+'_w1',
-            'widget2': 'unbxd_rex_'+HOME_PAGE+'_w2',
-            'widget3': 'unbxd_rex_'+HOME_PAGE+'_w3'
+        'widget1': 'unbxd_rex_' + HOME_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + HOME_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + HOME_PAGE + '_w3'
     };
     widgetIdMap[PRODUCT_PAGE] = {
-            'widget1': 'unbxd_rex_'+PRODUCT_PAGE+'_w1',
-            'widget2': 'unbxd_rex_'+PRODUCT_PAGE+'_w2',
-            'widget3': 'unbxd_rex_'+PRODUCT_PAGE+'_w3'
+        'widget1': 'unbxd_rex_' + PRODUCT_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + PRODUCT_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + PRODUCT_PAGE + '_w3'
     };
     widgetIdMap[CATEGORY_PAGE] = {
-            'widget1': 'unbxd_rex_'+CATEGORY_PAGE+'_w1',
-            'widget2': 'unbxd_rex_'+CATEGORY_PAGE+'_w2',
-            'widget3': 'unbxd_rex_'+CATEGORY_PAGE+'_w3'
+        'widget1': 'unbxd_rex_' + CATEGORY_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + CATEGORY_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + CATEGORY_PAGE + '_w3'
     };
     widgetIdMap[CART_PAGE] = {
-            'widget1': 'unbxd_rex_'+CART_PAGE+'_w1',
-            'widget2': 'unbxd_rex_'+CART_PAGE+'_w2',
-            'widget3': 'unbxd_rex_'+CART_PAGE+'_w3'
+        'widget1': 'unbxd_rex_' + CART_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + CART_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + CART_PAGE + '_w3'
     }
 
     // Declaration of template containers
@@ -166,32 +166,32 @@ import { getRatings } from './ratings';
             return sendWarning('Found 0 nodes with class : ' + sliderContent.sliderItemClassSelector);
         }
 
-        var productFields = rexConsoleConfigs.products.fields || missingValueError('products.fields', rexConsoleConfigs );
+        var productFields = rexConsoleConfigs.products.fields || missingValueError('products.fields', rexConsoleConfigs);
 
         var dimension = sliderContent.dimension;
 
-        if(clickHandler){
-            if(sliderContent.dimension == "width"){
-                sliderContainer.addEventListener("click",function(event){
+        if (clickHandler) {
+            if (sliderContent.dimension == "width") {
+                sliderContainer.addEventListener("click", function (event) {
                     // we are considering clicks on image only
-                    if(event.target.tagName == "IMG"){
+                    if (event.target.tagName == "IMG") {
                         var parentId = event.target.parentElement.id;
                         var hzRegex = /hz-item/;
-                        if(hzRegex.test(parentId)){
+                        if (hzRegex.test(parentId)) {
                             var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
                             clickHandler(recommendations[arrayIndex]);
                         }
                     }
                 });
             }
-            else{
-                sliderContainer.addEventListener("click",function(event){
+            else {
+                sliderContainer.addEventListener("click", function (event) {
                     // we are considering clicks on image only
-                    if(event.target.tagName == "IMG"){
+                    if (event.target.tagName == "IMG") {
                         var parent2Id = event.target.parentElement.id;
                         var parent1Id = event.target.parentElement.parentElement.id;
                         var vtRegex = /vt-level2-/;
-                        if(vtRegex.test(parent2Id)){
+                        if (vtRegex.test(parent2Id)) {
                             var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
                             var parent2ArrayIndex = parent2Id.split("-")[2];
                             clickHandler(recommendationsModified[parent1ArrayIndex][parent2ArrayIndex]);
@@ -207,7 +207,7 @@ import { getRatings } from './ratings';
 
             for (var j = 0; j < productFields.length; j++) {
                 // console.log(productFields[j])
-                var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]) ;
+                var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
                 // console.log(dimensionKey);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
@@ -261,10 +261,10 @@ import { getRatings } from './ratings';
                 if (sliderContent.dimension == "width") {
 
                     setTimeout(function () {
-                        var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " .unbxd-recs-slider");
+                        var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " .unbxd-recs-slider");
                         var sliderRootContainer = sliderParentContainer.parentElement;
                         sliderParentContainer.style.width = widgetWidth || "initial";
-                        if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
+                        if (sliderRootContainer.clientWidth < sliderParentContainer.clientWidth) {
                             sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
                         }
                         sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
@@ -282,27 +282,27 @@ import { getRatings } from './ratings';
                     }, 0);
                 }
                 else {
-                    var sliderParentContainer = document.querySelector("#"+targetDOMElementId + " ._unbxd_vertical-recs-slider");
-                    var sliderRootContainer = sliderParentContainer.parentElement;
-                    // if root container width is less than configuration width, then
-                    // the container inherits root container width 
-                    sliderParentContainer.style.width = widgetWidth || "initial";
-                    if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
-                        sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
-                    }
-                    var targetDomElement = document.querySelector("#"+targetDOMElementId);
-                    sliderContainer.style.width = (targetDomElement.clientWidth);
-                    setTimeout(function(){     
-                            for(i=0; i< sliderItems.length; i++){
-                                sliderItems[i].style.width = targetDomElement.clientWidth - 2*margin +"px";
-                            }
+
+                    setTimeout(function () {
+                        var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " ._unbxd_vertical-recs-slider");
+                        var sliderRootContainer = sliderParentContainer.parentElement;
+                        // if root container width is less than configuration width, then
+                        // the container inherits root container width 
+                        sliderParentContainer.style.width = widgetWidth || "initial";
+                        if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
+                            sliderParentContainer.style.width = sliderRootContainer.clientWidth;
+                        }
+                        for (i = 0; i < sliderItems.length; i++) {
+                            sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                        }
+                        recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
                     }, 0);
-                    recsSlider.style.width = (targetDomElement.clientWidth) * recommendationsModified.length + "px";
+
                     // console.log("sliderItemHeight", sliderItemHeight);
                     // console.log("itemsToShow", itemsToShow);
                     // console.log("margin" + margin);
                     // console.log("sum", (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin);
-    
+
                     // recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
                     // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
                 }
@@ -312,8 +312,8 @@ import { getRatings } from './ratings';
         }
 
         var imgs = document.images,
-        len = imgs.length,
-        counter = 0;
+            len = imgs.length,
+            counter = 0;
 
         [].forEach.call(imgs, function (img) {
             if (img.complete)
@@ -392,7 +392,7 @@ import { getRatings } from './ratings';
         /** Template rendering logic */
         var template = options.template || missingValueError('template', options);
         var targetDOMElementId = options.targetDOMElementId || missingValueError('targetDOMElementId', options);
-        var recommendations = options.recommendations || missingValueError('recommendations', options) ;
+        var recommendations = options.recommendations || missingValueError('recommendations', options);
         var heading = options.heading || missingValueError('heading', options);
         var rexConsoleConfigs = options.rexConsoleConfigs || missingValueError('rexConsoleConfigs', options);
         var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
@@ -403,19 +403,19 @@ import { getRatings } from './ratings';
         var widgetWidthData = options.rexConsoleConfigs.width || missingValueError('products.max', rexConsoleConfigs);
         // var widgetWidthData = verticalConfig.width;
         var widgetWidth = "";
-        if(widgetWidthData.value && widgetWidthData.value != 0){
+        if (widgetWidthData.value && widgetWidthData.value != 0) {
             widgetWidth = widgetWidthData.value + widgetWidthData.unit;
         }
-        if(isVertical){
+        if (isVertical) {
             recommendationsModified = [];
-            for(var i=0;i<recommendations.length;i++){
-                if(i %(itemsToShow) === 0){
-                    var slicedItems = recommendations.slice(i, i+itemsToShow);
+            for (var i = 0; i < recommendations.length; i++) {
+                if (i % (itemsToShow) === 0) {
+                    var slicedItems = recommendations.slice(i, i + itemsToShow);
                     recommendationsModified.push(slicedItems);
                 }
             }
         }
-       
+
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
 
@@ -438,7 +438,7 @@ import { getRatings } from './ratings';
         var sliderOptionsConfig = {
             rexConsoleConfigs: rexConsoleConfigs,
             recommendations: recommendations,
-            recommendationsModified:recommendationsModified,
+            recommendationsModified: recommendationsModified,
             clickHandler: clickHandler,
             itemsToShow: itemsToShow,
             maxProducts: maxProducts,
@@ -475,7 +475,7 @@ import { getRatings } from './ratings';
             } else {
                 widgetIdLocal = widgetIdMap[pageType.toLowerCase()][widgetKey];
                 // Check if widget exists in the page
-                if(document.getElementById(widgetIdLocal)) {
+                if (document.getElementById(widgetIdLocal)) {
                     return widgetIdLocal;
                 } else {
                     return null;
@@ -506,11 +506,11 @@ import { getRatings } from './ratings';
         function getProductIdsAsUrlParams(productIdsList) {
             var queryStringLocal = '';
             if (productIdsList instanceof Array) {
-                productIdsList.forEach(function(item){
-                    queryStringLocal+='&'+getUrlEncodedParam('id', item);
+                productIdsList.forEach(function (item) {
+                    queryStringLocal += '&' + getUrlEncodedParam('id', item);
                 });
             } else {
-                queryStringLocal+='&'+getUrlEncodedParam('id', productIdsList);
+                queryStringLocal += '&' + getUrlEncodedParam('id', productIdsList);
             }
             return queryStringLocal;
         }
@@ -585,7 +585,7 @@ import { getRatings } from './ratings';
             case HOME_PAGE:
                 break;
             default:
-                throw new Error("Invalid page type: "+pageType);
+                throw new Error("Invalid page type: " + pageType);
         }
 
         requestUrl += "&uid=" + userId;
@@ -642,7 +642,7 @@ import { getRatings } from './ratings';
                 }
 
                 // var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
-               
+
                 var options = {
                     template: verticalTemplate,
                     targetDOMElementId: targetDOMElementId,
