@@ -1,3 +1,4 @@
+"use strict";
 import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
 import { compressedStyle } from './config';
@@ -213,6 +214,8 @@ import { getRatings } from './ratings';
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
                     var newnode = document.createElement("p");
+                    console.log("recommendations to append");
+                    console.log(recommendations);
                     var dimension = recommendations[i][dimensionKey];
                     newnode.className = sliderContent.sliderContentClass;
                     if (dimensionKey == "rating") {
@@ -397,6 +400,8 @@ import { getRatings } from './ratings';
         var rexConsoleConfigs = options.rexConsoleConfigs || missingValueError('rexConsoleConfigs', options);
         var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs);
+        console.log("----max-products-----");
+        console.log(maxProducts);
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
         var recommendationsModified = null;
@@ -406,15 +411,7 @@ import { getRatings } from './ratings';
         if (widgetWidthData.value && widgetWidthData.value != 0) {
             widgetWidth = widgetWidthData.value + widgetWidthData.unit;
         }
-        if (isVertical) {
-            recommendationsModified = [];
-            for (var i = 0; i < recommendations.length; i++) {
-                if (i % (itemsToShow) === 0) {
-                    var slicedItems = recommendations.slice(i, i + itemsToShow);
-                    recommendationsModified.push(slicedItems);
-                }
-            }
-        }
+        
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -428,6 +425,19 @@ import { getRatings } from './ratings';
             recommendations = recommendations.splice(0, maxProducts);
             // console.log("recommendations",recommendations);
         }
+
+        if (isVertical) {
+            recommendationsModified = [];
+            for (var i = 0; i < recommendations.length; i++) {
+                if (i % (itemsToShow) === 0) {
+                    var slicedItems = recommendations.slice(i, i + itemsToShow);
+                    recommendationsModified.push(slicedItems);
+                }
+            }
+        }
+
+        console.log("----modified recommendations---");
+        console.log(recommendationsModified);
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
             recommendations: recommendationsModified || recommendations,
