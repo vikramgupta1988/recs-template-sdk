@@ -888,23 +888,23 @@ module.exports = {
                 "assets": [
                     {
                         "tag": "next_arrow",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-next.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-next.svg"
                     },
                     {
                         "tag": "prev_arrow",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-prev.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/recs-slider-prev.svg"
                     },
                     {
                         "tag": "empty_rating",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/empty-star.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/empty-star.svg"
                     },
                     {
                         "tag": "half_rating",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/half-star.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/half-star.svg"
                     },
                     {
                         "tag": "full_rating",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/full-star.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/full-star.svg"
                     }
                 ]
             }
@@ -914,7 +914,7 @@ module.exports = {
             "conf": {
                 "width":{
                     "unit":"px",
-                    "value":"400"
+                    "value":"200"
                 },
                 "header": {
                     "alignment": "center",
@@ -965,15 +965,15 @@ module.exports = {
                     },
                     {
                         "tag": "empty_rating",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/empty-star.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/empty-star.svg"
                     },
                     {
                         "tag": "half_rating",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/half-star.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/half-star.svg"
                     },
                     {
                         "tag": "full_rating",
-                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/full-star.png"
+                        "src": "http://dx63c0414f4j1.cloudfront.net/rex_template_content/static/images/full-star.svg"
                     }
                 ]
             }
