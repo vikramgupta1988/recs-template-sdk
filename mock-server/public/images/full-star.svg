@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="23px" viewBox="0 0 23 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>full</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-1.0%" y="-1.5%" width="102.0%" height="103.1%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.266666667   0 0 0 0 0.345098039   0 0 0 0 0.439215686  0 0 0 0.3 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFE6A6" offset="0%"></stop>
+            <stop stop-color="#FF9F00" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="layout" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="layout_007" transform="translate(-55.000000, -418.000000)" fill="url(#linearGradient-2)" stroke="#DC8900">
+            <g id="Group-3">
+                <g id="Group-7" filter="url(#filter-1)" transform="translate(31.000000, 127.000000)">
+                    <g id="Group-2">
+                        <g id="Group-18" transform="translate(20.000000, 283.000000)">
+                            <g id="Group-5-Copy">
+                                <g id="Group-15">
+                                    <path d="M21.8938372,17.0165422 C21.8247085,16.7882271 21.6408613,16.6218358 21.419571,16.5873636 L17.6665664,16.0020934 L15.9881286,12.3515321 C15.8891551,12.1362912 15.6849022,12 15.4613011,12 C15.2376609,12 15.033408,12.1362912 14.9344736,12.3515321 L13.2561534,16.0020513 L9.50303126,16.5873216 C9.28174099,16.6218358 9.09785466,16.7882271 9.02876509,17.0165001 C8.95967553,17.2448152 9.01728933,17.4954111 9.17744082,17.6629375 L11.8932012,20.5040332 L11.2518511,24.5165103 C11.2140555,24.7531071 11.3046474,24.9921842 11.4855571,25.1332679 C11.5878989,25.2131004 11.709119,25.2537103 11.8309266,25.2537103 C11.9244168,25.2537103 12.0182987,25.22979 12.104269,25.1812767 L15.461262,23.2870307 L18.8182158,25.1812767 C18.9046952,25.2300843 18.9993996,25.253332 19.0932032,25.2537103 C19.4173053,25.2532059 19.679877,24.9710805 19.679877,24.6231218 C19.679877,24.5746926 19.6747854,24.5274825 19.6651504,24.4822063 L19.0293619,20.5040753 L21.7451223,17.6629375 C21.9053129,17.4954111 21.9629267,17.2448152 21.8938372,17.0165422 Z" id="full"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

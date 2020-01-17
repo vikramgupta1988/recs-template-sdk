@@ -1,17 +1,82 @@
 <html>
-    <head>
-        <title>
-            Recs template container
-        </title>
-        <style>
-            /* #recommendations{
+<head>
+    <title>
+        Recs template container
+    </title>
+    <style>
+        #recommendations3 {
+            width: 200px;
+        }
+        /* #recommendations{
                 padding: 20px 40px;
             } */
-        </style>
-    </head>
-    <body>
-            <div id="recommendations">
+        .slider-item {
+            background-color: red;
+            height: 200px;
+            width: 200px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-                </div>
-    </body>
+        #ddd {
+            width: 200px;
+            height: calc(100vh - 20px);
+            overflow-y: auto;
+        }
+
+        .horizontal-section {
+            flex-grow: 1;
+        }
+
+        .root {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="root">
+        <div id="recommendations3"></div>
+        <div class="horizontal-section">
+            <div id="recommendations"></div>
+            <div id="recommendations2"></div>
+            <div id="unbxd_rex_home_w1"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="build/unbxd_rex_template_sdk.js"></script>
+    <script>
+        function fetchData() {
+            console.log('parent site fetch data')
+        }
+        var context = {
+            widgets: {
+                widget2: {
+                    name: "recommendations"
+                },
+                widget3: {
+                    name: "recommendations3"
+                }
+            },
+            userInfo: {
+                userId: 'uid-1510789640554-83175',
+                siteKey: 'demo2-com11555668711',
+                apiKey: '19762cd9ce8ffcdb88fee1404e3fb802'
+            },
+            pageInfo: {
+                pageType: 'PRODUCT',
+                productIds: ['1234', '5678']
+            },
+            itemClickHandler: function (product) {
+                // product information will be provided here
+                alert(JSON.stringify(product));
+            }
+        };
+        window.onload = function () {
+            console.log("-----------> loaded");
+        }
+        window._unbxd_getRecommendations(context);
+    </script>
+<script type="text/javascript" src="build/unbxd_rex_template_sdk.js"></script></body>
+
 </html>

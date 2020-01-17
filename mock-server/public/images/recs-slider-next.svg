@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="11px" height="16px" viewBox="0 0 11 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>right_icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="layout" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="layout_001-_V2-Copy" transform="translate(-1125.000000, -517.000000)" fill="#445870" stroke="#445870">
+            <g id="Group-7" transform="translate(405.000000, 405.000000)">
+                <g id="Group-5" transform="translate(709.000000, 89.000000)">
+                    <g id="Page-1" transform="translate(16.500000, 31.500000) scale(-1, 1) rotate(90.000000) translate(-16.500000, -31.500000) translate(9.000000, 27.000000)">
+                        <path d="M7.07683668,8.73027001 L7.06962397,8.73027001 C6.85083843,8.72858558 6.64166983,8.63173124 6.49180574,8.46328889 L0.215946485,1.41734569 C-0.0861859302,1.07793437 -0.0693562731,0.544814354 0.25361286,0.227300537 C0.576581993,-0.0902132793 1.08387594,-0.073369045 1.38600836,0.266884488 L7.08725504,6.66685131 L12.7724735,0.500177133 C13.0810172,0.165819082 13.5883111,0.158239177 13.9056704,0.481648475 C14.2230296,0.805057773 14.2318452,1.33817779 13.9233014,1.67253584 L7.65225067,8.47423765 C7.50158516,8.63762672 7.29401939,8.73027001 7.07683668,8.73027001" id="right_icon"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

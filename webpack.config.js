@@ -7,7 +7,7 @@ module.exports = {
     mode: "production",
     output: {
         path: path.resolve(__dirname, "build"),
-        filename: "bundle.js",
+        filename: "unbxd_rex_template_sdk.js",
         publicPath: 'build/'
     },
     devServer: {

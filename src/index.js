@@ -1,6 +1,7 @@
+"use strict";
 import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
-import { style } from './config';
+import { compressedStyle } from './config';
 import { getRatings } from './ratings';
 
 (function (global) {
@@ -18,9 +19,12 @@ import { getRatings } from './ratings';
                 cb(null, xhttp.responseText);
             }
             else if (this.readyState == 4 && (this.status != 200 || this.status != 204)) {
-                cb('error');
+                cb('Invalid network request: ' + url);
             }
         };
+        xhttp.onerror = function () {
+            cb('Failed network request: ' + url);
+        }
         xhttp.open("GET", url, true);
         xhttp.send();
     }
@@ -29,6 +33,36 @@ import { getRatings } from './ratings';
     /** Global variables */
     // the domain url
     var platformDomain = 'http://localhost:4201/';
+    // var platformDomain = 'http://console-lohika.0126-int-use2.unbxd.io/v2.0/';
+
+    // Constants
+    var HOME_PAGE = 'home';
+    var PRODUCT_PAGE = 'product';
+    var CATEGORY_PAGE = 'category';
+    var CART_PAGE = 'cart';
+    var allowedPageTypes = [HOME_PAGE, PRODUCT_PAGE, CATEGORY_PAGE, CART_PAGE];
+
+    var widgetIdMap = {};
+    widgetIdMap[HOME_PAGE] = {
+        'widget1': 'unbxd_rex_' + HOME_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + HOME_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + HOME_PAGE + '_w3'
+    };
+    widgetIdMap[PRODUCT_PAGE] = {
+        'widget1': 'unbxd_rex_' + PRODUCT_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + PRODUCT_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + PRODUCT_PAGE + '_w3'
+    };
+    widgetIdMap[CATEGORY_PAGE] = {
+        'widget1': 'unbxd_rex_' + CATEGORY_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + CATEGORY_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + CATEGORY_PAGE + '_w3'
+    };
+    widgetIdMap[CART_PAGE] = {
+        'widget1': 'unbxd_rex_' + CART_PAGE + '_w1',
+        'widget2': 'unbxd_rex_' + CART_PAGE + '_w2',
+        'widget3': 'unbxd_rex_' + CART_PAGE + '_w3'
+    }
 
     // Declaration of template containers
     var widget1;
@@ -55,20 +89,21 @@ import { getRatings } from './ratings';
     /** Adding event handlers for the horizontal slider to the DOM */
 
 
-    global.recsSliderScrollNext = eventHandlers.recsSliderScrollNext;
-    global.recsSliderScrollPrev = eventHandlers.recsSliderScrollPrev;
-    global.recsSliderSideScroll = eventHandlers.recsSliderSideScroll;
+    global._unbxd_recsSliderScrollNext = eventHandlers._unbxd_recsSliderScrollNext;
+    global._unbxd_recsSliderScrollPrev = eventHandlers._unbxd_recsSliderScrollPrev;
+    global._unbxd_recsSliderSideScroll = eventHandlers._unbxd_recsSliderSideScroll;
 
-    global.recsSliderScrollBottom = eventHandlers.recsSliderScrollBottom;
-    global.recsSliderScrollTop = eventHandlers.recsSliderScrollTop;
-    global.recsSliderVerticalScroll = eventHandlers.recsSliderVerticalScroll;
+    global._unbxd_recsSliderScrollBottom = eventHandlers._unbxd_recsSliderScrollBottom;
+    global._unbxd_recsSliderScrollTop = eventHandlers._unbxd_recsSliderScrollTop;
+    global._unbxd_recsSliderVerticalScroll = eventHandlers._unbxd_recsSliderVerticalScroll;
 
 
     /** Attaching styles for the slider */
     var eventHandlerStyle = document.createElement('style');
     eventHandlerStyle.type = 'text/css';
-    // innerHTML needs to stay as es5 since it will be embedded duirectly to client's browser
-    eventHandlerStyle.innerHTML = style;
+    // innerHTML needs to stay as es5 since it will be embedded directly to client's browser
+    // console.log('compressedStyle', compressedStyle)
+    eventHandlerStyle.innerHTML = compressedStyle;
     document.head.appendChild(eventHandlerStyle);
 
     /** End of Scripts and styles that are appended to the DOM */
@@ -77,31 +112,35 @@ import { getRatings } from './ratings';
     // Configuration object for vertical/horizontal sliders
     var sliderConfig = {
         horizontal: {
-            containerId: " #recs-slider-container",
-            sliderItemClassSelector: " .recs-slider__item",
+            containerId: " #_unbxd_recs-slider-container",
+            sliderItemClassSelector: " ._unbxd_recs-slider__item",
             dimension: "width",
             offsetDimension: "offsetWidth",
-            buttonClassSelector: ".recs-slider-btn",
-            prevButtonClass: "rex-slider--prev",
-            nextButtonClass: "rex-slider--next",
-            headingContainerId: " #recs-slider-heading",
-            sliderContentClass: "recs-slider__content"
+            buttonClassSelector: "._unbxd_recs-slider-btn",
+            prevButtonClass: "_unbxd_rex-slider--prev",
+            nextButtonClass: "_unbxd_rex-slider--next",
+            headingContainerId: " #_unbxd_recs-slider-heading",
+            sliderContentClass: "_unbxd_recs-slider__content"
         },
         vertical: {
-            containerId: " #recs-vertical-slider-container",
-            sliderItemClassSelector: " .recs-vertical-slider__item",
+            containerId: " #_unbxd_recs-vertical-slider-container",
+            sliderItemClassSelector: " ._unbxd_recs-vertical-slider__item",
             dimension: "height",
             offsetDimension: "offsetHeight",
-            buttonClassSelector: ".recs-vertical-slider-btn",
-            prevButtonClass: "rex-vertical-slider--top",
-            nextButtonClass: "rex-vertical-slider--bottom",
-            headingContainerId: " #recs-vertical-slider-heading",
-            sliderContentClass: "recs-vertical-slider__content"
+            buttonClassSelector: "._unbxd_recs-vertical-slider-btn",
+            prevButtonClass: "_unbxd_rex-vertical-slider--top",
+            nextButtonClass: "_unbxd_rex-vertical-slider--bottom",
+            headingContainerId: " #_unbxd_recs-vertical-slider-heading",
+            sliderContentClass: "_unbxd_recs-vertical-slider__content"
         }
     }
 
+    function missingValueError(valueKey, contentObject) {
+        throw new Error('Error: ' + valueKey + ' not found in ' + JSON.stringify(contentObject));
+    }
+
     function handleSizeCalculations(targetDOMElementId, options) {
-        var config = options.config;
+        var rexConsoleConfigs = options.rexConsoleConfigs;
         var recommendations = options.recommendations;
         var clickHandler = options.clickHandler;
         var itemsToShow = options.itemsToShow;
@@ -109,9 +148,14 @@ import { getRatings } from './ratings';
         var assets = options.assets;
         var sliderType = options.sliderType;
         var sliderClass = options.sliderClass;
+        var recommendationsModified = options.recommendationsModified;
         var sliderContent = sliderConfig[sliderType]
         var domSelector = "#" + targetDOMElementId + sliderContent.containerId;
         var sliderContainer = document.querySelector(domSelector);
+        var widgetWidth = options.widgetWidth;
+
+        // console.log("----widgetWidth---", widgetWidth);
+
         if (!sliderContainer) {
             return sendWarning('The slider container id was not found. Script can not continue');
         }
@@ -123,40 +167,65 @@ import { getRatings } from './ratings';
             return sendWarning('Found 0 nodes with class : ' + sliderContent.sliderItemClassSelector);
         }
 
-        var productFields = config.products.fields;
+        var productFields = rexConsoleConfigs.products.fields || missingValueError('products.fields', rexConsoleConfigs);
 
         var dimension = sliderContent.dimension;
 
+        if (clickHandler) {
+            if (sliderContent.dimension == "width") {
+                sliderContainer.addEventListener("click", function (event) {
+                    // we are considering clicks on image only
+                    if (event.target.tagName == "IMG") {
+                        var parentId = event.target.parentElement.id;
+                        var hzRegex = /hz-item/;
+                        if (hzRegex.test(parentId)) {
+                            var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
+                            clickHandler(recommendations[arrayIndex]);
+                        }
+                    }
+                });
+            }
+            else {
+                sliderContainer.addEventListener("click", function (event) {
+                    // we are considering clicks on image only
+                    if (event.target.tagName == "IMG") {
+                        var parent2Id = event.target.parentElement.id;
+                        var parent1Id = event.target.parentElement.parentElement.id;
+                        var vtRegex = /vt-level2-/;
+                        if (vtRegex.test(parent2Id)) {
+                            var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
+                            var parent2ArrayIndex = parent2Id.split("-")[2];
+                            clickHandler(recommendationsModified[parent1ArrayIndex][parent2ArrayIndex]);
+                        }
+                    }
+                });
+            }
+        }
+
         for (var i = 0; i < sliderItems.length; i++) {
 
-            // adding click handler to each item
-            if (clickHandler) {
-                (function (index) {
-                    sliderItems[i].addEventListener("click", function () {
-                        clickHandler(recommendations[index]);
-                    });
-                })(i);
-            }
+            var fragment = document.createDocumentFragment();
 
             for (var j = 0; j < productFields.length; j++) {
                 // console.log(productFields[j])
-                var dimensionKey = productFields[j].unbxdDimensionKey || productFields[j].unbxd_dimension_key;
+                var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
                 // console.log(dimensionKey);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
                     var newnode = document.createElement("p");
+                    console.log("recommendations to append");
+                    console.log(recommendations);
                     var dimension = recommendations[i][dimensionKey];
                     newnode.className = sliderContent.sliderContentClass;
                     if (dimensionKey == "rating") {
-                        newnode.className = sliderContent.sliderContentClass + " content--ratings";
+                        newnode.className = sliderContent.sliderContentClass + " _unbxd_content--ratings";
                         if (!dimension) {
                             newnode.innerHTML = "";
                         }
                         else {
                             newnode.innerHTML = getRatings(dimension);
                         }
-
                     }
                     else {
                         if (!dimension) {
@@ -167,10 +236,12 @@ import { getRatings } from './ratings';
                         }
                     }
                     if (newnode.innerHTML) {
-                        sliderItems[i].appendChild(newnode);
+                        fragment.appendChild(newnode);
                     }
                 }
             }
+
+            sliderItems[i].appendChild(fragment);
         }
 
         // Setting width of each slider item and
@@ -186,7 +257,6 @@ import { getRatings } from './ratings';
             maxprodLimit = recommendations.length
         }
 
-
         function incrementCounter() {
             counter++;
             if (counter === len) {
@@ -194,12 +264,18 @@ import { getRatings } from './ratings';
                 if (sliderContent.dimension == "width") {
 
                     setTimeout(function () {
-                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension];
+                        var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " .unbxd-recs-slider");
+                        var sliderRootContainer = sliderParentContainer.parentElement;
+                        sliderParentContainer.style.width = widgetWidth || "initial";
+                        if (sliderRootContainer.clientWidth < sliderParentContainer.clientWidth) {
+                            sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
+                        }
+                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
                         // console.log("sliderContainer.style.width",sliderContainer.style.width)
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
                         for (i = 0; i < sliderItems.length; i++) {
                             sliderItems[i].style.width = hzSliderWidth + "px";
-                            // console.log("itemwidtgh",sliderItems[i].style.width);
+                            // console.log("itemWidth",sliderItems[i].style.width);
                             // console.log("maxProducts",maxprodLimit);
                             // console.log("hzSliderWidth",hzSliderWidth);
                             // console.log("margin",margin);
@@ -209,24 +285,38 @@ import { getRatings } from './ratings';
                     }, 0);
                 }
                 else {
-                    var sliderItemHeight = sliderItems[0].getBoundingClientRect().height;
+
+                    setTimeout(function () {
+                        var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " ._unbxd_vertical-recs-slider");
+                        var sliderRootContainer = sliderParentContainer.parentElement;
+                        // if root container width is less than configuration width, then
+                        // the container inherits root container width 
+                        sliderParentContainer.style.width = widgetWidth || "initial";
+                        if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
+                            sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
+                        }
+                        for (i = 0; i < sliderItems.length; i++) {
+                            sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                        }
+                        recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
+                    }, 0);
+
                     // console.log("sliderItemHeight", sliderItemHeight);
                     // console.log("itemsToShow", itemsToShow);
                     // console.log("margin" + margin);
                     // console.log("sum", (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin);
-    
-                    recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
+
+                    // recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
                     // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
-                    recsSlider.style.overflow = "hidden";
                 }
-        
-                
+                var opaqueElSelector = document.querySelector("._unxbd_slider_hide");
+                opaqueElSelector.classList.remove("_unxbd_slider_hide");
             }
         }
 
         var imgs = document.images,
-        len = imgs.length,
-        counter = 0;
+            len = imgs.length,
+            counter = 0;
 
         [].forEach.call(imgs, function (img) {
             if (img.complete)
@@ -234,8 +324,6 @@ import { getRatings } from './ratings';
             else
                 img.addEventListener('load', incrementCounter, false);
         });
-
-       
 
 
         /** Setting styles for carousel buttons */
@@ -266,9 +354,9 @@ import { getRatings } from './ratings';
         var classMap = {
             "next_arrow": sliderContent.nextButtonClass,
             "prev_arrow": sliderContent.prevButtonClass,
-            "empty_rating": "rex-empty-star",
-            "half_rating": "rex-half-star",
-            "full_rating": "rex-full-star"
+            "empty_rating": "_unbxd_rex-empty-star",
+            "half_rating": "_unbxd_rex-half-star",
+            "full_rating": "_unbxd_rex-full-star"
         }
         for (i = 0; i < assets.length; i++) {
             var horizontalAssetItem = assets[i];
@@ -286,7 +374,7 @@ import { getRatings } from './ratings';
         /** Setting styles for heading */
 
         var headingSelector = "#" + targetDOMElementId + sliderContent.headingContainerId;
-        var styleConfig = config.header;
+        var styleConfig = rexConsoleConfigs.header;
         var headingEl = document.querySelector(headingSelector);
         if (headingEl.innerHTML == "null" || headingEl.innerHTML == "undefined") {
             headingEl.style.display = "none";
@@ -299,22 +387,31 @@ import { getRatings } from './ratings';
         }
 
         /** End of Setting styles for heading */
-
     }
 
     /** exporting a global function to initialize recs slider */
-    global.recsSliderInit = function (options) {
+    global._unbxd_generateRexContent = function (options) {
+        console.log(options)
         /** Template rendering logic */
-        var template = options.template;
-        var targetDOMElementId = options.targetDOMElementId;
-        var recommendations = options.recommendations;
-        var heading = options.heading;
-        var config = options.config;
-        var itemsToShow = config.products.visible || config.products.visible_products;
-        var maxProducts = config.products.max || config.products.max_products;
+        var template = options.template || missingValueError('template', options);
+        var targetDOMElementId = options.targetDOMElementId || missingValueError('targetDOMElementId', options);
+        var recommendations = options.recommendations || missingValueError('recommendations', options);
+        var heading = options.heading || missingValueError('heading', options);
+        var rexConsoleConfigs = options.rexConsoleConfigs || missingValueError('rexConsoleConfigs', options);
+        var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
+        var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs);
+        console.log("----max-products-----");
+        console.log(maxProducts);
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
-
+        var recommendationsModified = null;
+        var widgetWidthData = options.rexConsoleConfigs.width || missingValueError('products.max', rexConsoleConfigs);
+        // var widgetWidthData = verticalConfig.width;
+        var widgetWidth = "";
+        if (widgetWidthData.value && widgetWidthData.value != 0) {
+            widgetWidth = widgetWidthData.value + widgetWidthData.unit;
+        }
+        
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -329,59 +426,117 @@ import { getRatings } from './ratings';
             // console.log("recommendations",recommendations);
         }
 
+        if (isVertical) {
+            recommendationsModified = [];
+            for (var i = 0; i < recommendations.length; i++) {
+                if (i % (itemsToShow) === 0) {
+                    var slicedItems = recommendations.slice(i, i + itemsToShow);
+                    recommendationsModified.push(slicedItems);
+                }
+            }
+        }
+
+        console.log("----modified recommendations---");
+        console.log(recommendationsModified);
+
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
-            recommendations: recommendations,
+            recommendations: recommendationsModified || recommendations,
             heading: heading, getRatings: getRatings
         });
 
-
-
         /** Dynamically adjusting width based on no of items to be shown */
-
         var sliderOptionsConfig = {
-            config: config,
+            rexConsoleConfigs: rexConsoleConfigs,
             recommendations: recommendations,
+            recommendationsModified: recommendationsModified,
             clickHandler: clickHandler,
             itemsToShow: itemsToShow,
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ? "recs-vertical-slider" : "recs-slider"
+            sliderClass: isVertical ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider",
+            widgetWidth: widgetWidth
         }
 
         // no of items to be shown
         if (isVertical) {
-            global.recsItemToScrollVt = itemsToShow;
+            global._unbxd_recsItemToScrollVt = itemsToShow;
         }
         else {
-            global.recsItemToScrollHz = itemsToShow;
+            global._unbxd_recsItemToScrollHz = itemsToShow;
         }
-
-
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
     }
 
 
-    /** The initialization function that has to be exposed to the merchandizer website
+    /** The initialization function that has to be exposed to the merchandiser website
         *  it takes context object from the client html
         *  and makes a call to the recommender proxy
         *  and updates the dom as per the response
         */
-    global.unbxdTemplateInit = function (context) {
-        var widgets = context.widgets;
+    global._unbxd_getRecommendations = function (context) {
 
-        if (!widgets) {
-            throw new Error("Widgets information is missing");
+        // Get widget id
+        function getWidgetId(pageType, widgetKey, widgetDetails) {
+            console.log(pageType, widgetKey, widgetDetails)
+            var widgetIdLocal;
+            if (widgetDetails) {
+                return widgetDetails[widgetKey] ? widgetDetails[widgetKey].name : null;
+            } else {
+                widgetIdLocal = widgetIdMap[pageType.toLowerCase()][widgetKey];
+                // Check if widget exists in the page
+                if (document.getElementById(widgetIdLocal)) {
+                    return widgetIdLocal;
+                } else {
+                    return null;
+                }
+            }
+            return null;
         }
 
-        // retrieve ids for widget containers
-        widget1 = widgets.widget1;
-        widget2 = widgets.widget2;
-        widget3 = widgets.widget3;
+        function getPageDetails(pageInfo) {
+            if (!pageInfo || !pageInfo.pageType) {
+                throw new Error("Page type info missing");
+            }
+            var pageTypeLocal = pageInfo.pageType;
+            if (allowedPageTypes.indexOf(pageTypeLocal.toLowerCase()) == -1) {
+                throw new Error("Invalid value for page type");
+            }
+            return pageTypeLocal;
+        }
 
+        function getClickHandler(context) {
+            return context.itemClickHandler;
+        }
+
+        function getUrlEncodedParam(paramName, paramValue) {
+            return "" + paramName + "=" + encodeURIComponent(paramValue);
+        }
+
+        function getProductIdsAsUrlParams(productIdsList) {
+            var queryStringLocal = '';
+            if (productIdsList instanceof Array) {
+                productIdsList.forEach(function (item) {
+                    queryStringLocal += '&' + getUrlEncodedParam('id', item);
+                });
+            } else {
+                queryStringLocal += '&' + getUrlEncodedParam('id', productIdsList);
+            }
+            return queryStringLocal;
+        }
+
+        // getting page info
+        var pageType = getPageDetails(context.pageInfo);
+
+        // get widget if
+        var widgets = context.widgets;
+        widget1 = getWidgetId(pageType, 'widget1', widgets);
+        widget2 = getWidgetId(pageType, 'widget2', widgets);
+        widget3 = getWidgetId(pageType, 'widget3', widgets);
         if (!widget1 && !widget2 && !widget3) {
             throw new Error('No widget id provided');
         }
+        var itemClickHandler = getClickHandler(context);
 
         // getting userId, siteKey and apiKey
         var userInfo = context.userInfo;
@@ -407,34 +562,17 @@ import { getRatings } from './ratings';
             throw new Error("api key is missing");
         }
 
-
-        // getting page info
-
+        requestUrl += encodeURIComponent(pageType);
         var pageInfo = context.pageInfo;
-
-        if (!pageInfo) {
-            throw new Error("Page info missing")
-        }
-
-        var pageType = pageInfo.pageType;
-        // check if the value for page type is valid
-        var allowedPageTypes = ["HOME", "CATEGORY", "PRODUCT", "CART", "BRAND"];
-        if (allowedPageTypes.indexOf(pageType) == -1) {
-            throw error("Invalid value for page type");
-        }
-
-
-        requestUrl += pageType
-        switch (pageType) {
-            case "PRODUCT":
-            case "CART":
-                var productId = pageInfo.productId;
-                if (!productId) {
+        switch (pageType.toLowerCase()) {
+            case PRODUCT_PAGE:
+            case CART_PAGE:
+                if (!pageInfo.productIds) {
                     throw new Error("product id is missing for page type:" + pageType);
                 }
-                requestUrl += "&id=" + productId;
+                requestUrl += getProductIdsAsUrlParams(pageInfo.productIds);
                 break;
-            case "CATEGORY":
+            case CATEGORY_PAGE:
                 var catlevel1Name = pageInfo.catlevel1Name;
                 if (!catlevel1Name) {
                     throw new Error("catlevel1Name is mandatory for page type:" + pageType);
@@ -442,28 +580,36 @@ import { getRatings } from './ratings';
                 var catlevel2Name = pageInfo.catlevel2Name;
                 var catlevel3Name = pageInfo.catlevel3Name;
                 var catlevel4Name = pageInfo.catlevel4Name;
-                var categoryUrl = "&catlevel1Name=" + catlevel1Name;
-                categoryUrl += catlevel2Name ? ("&catlevel2Name=" + catlevel2Name) : "";
-                categoryUrl += catlevel3Name ? ("&catlevel3Name=" + catlevel3Name) : "";
-                categoryUrl += catlevel4Name ? ("&catlevel4Name=" + catlevel4Name) : "";
+                var categoryUrl = getUrlEncodedParam("catlevel1Name", catlevel1Name);
+                if (catlevel2Name) {
+                    categoryUrl += getUrlEncodedParam("catlevel2Name", catlevel2Name);
+                    if (catlevel3Name) {
+                        categoryUrl += getUrlEncodedParam("catlevel3Name=", catlevel3Name);
+                        if (catlevel4Name) {
+                            categoryUrl += getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                        }
+                    }
+                }
                 requestUrl += categoryUrl;
                 break;
-            case "BRAND":
-                var brand = pageInfo.brand;
-                if (!brand) {
-                    throw new Error("brand is mandatory for page type:" + pageType);
-                }
-                requestUrl += "&brand=" + brand;
+            case HOME_PAGE:
                 break;
+            default:
+                throw new Error("Invalid page type: " + pageType);
         }
 
         requestUrl += "&uid=" + userId;
 
-
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
-            var targetDOMElementId = widget.name;
-            var clickHandler = widget.clickHandler;
+            // console.log("======<",horizontalConfig);
+            // var widgetWidthData = horizontalConfig.width;
+            // var widgetWidth = "";
+            // if(widgetWidthData.value && widgetWidthData.value != 0){
+            //     widgetWidth = widgetWidthData.value + widgetWidthData.unit;
+            // }
+            var targetDOMElementId = widget;
+            var clickHandler = itemClickHandler;
             // console.log("--------------------------------------->>>>>>");
             // console.log(recommendations);
             if (recommendations.length) {
@@ -479,39 +625,48 @@ import { getRatings } from './ratings';
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
                     heading: heading,
-                    config: horizontalConfig,
+                    rexConsoleConfigs: horizontalConfig,
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
-                    sliderClass: "recs-slider"
+                    sliderClass: "_unbxd_recs-slider",
                 }
-                recsSliderInit(options);
+                _unbxd_generateRexContent(options);
             }
         }
 
 
         function renderWidgetDataVertical(widget, recommendations, heading) {
             var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
-            var targetDOMElementId = widget.name;
-            var clickHandler = widget.clickHandler;
+            // console.log("======<<<<",verticalConfig);
+            // var widgetWidthData = verticalConfig.width;
+            // var widgetWidth = "";
+            // if(widgetWidthData.value && widgetWidthData.value != 0){
+            //     widgetWidth = widgetWidthData.value + widgetWidthData.unit;
+            // }
+            var targetDOMElementId = widget;
+            var clickHandler = itemClickHandler;
             if (recommendations.length) {
                 if (maxProducts < recommendations.length) {
                     recommendations = recommendations.splice(0, maxProducts);
                 }
+
+                // var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
+
                 var options = {
                     template: verticalTemplate,
                     targetDOMElementId: targetDOMElementId,
                     recommendations: recommendations,
                     heading: heading,
-                    config: verticalConfig,
+                    rexConsoleConfigs: verticalConfig,
                     assets: verticalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     isVertical: true,
-                    sliderClass: "recs-vertical-slider"
+                    sliderClass: "_unbxd_recs-vertical-slider"
 
                 }
-                recsSliderInit(options);
+                _unbxd_generateRexContent(options);
             }
         }
 
@@ -529,14 +684,12 @@ import { getRatings } from './ratings';
                 var widget1Data = recommendationsResponse.widget1;
                 var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
-                // console.log("------>widget1");
                 renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
             }
             if (widget2) {
                 var widget2Data = recommendationsResponse.widget2;
                 var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
-                // console.log("------>widget2");
                 renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
             }
 
@@ -562,7 +715,7 @@ import { getRatings } from './ratings';
             handleWidgetRenderingVertical();
         }
 
-        /** Fetch recomendations response */
+        /** Fetch recommendations response */
         // to store recommendations response
         var recommendationsResponse;
         // to store template string
@@ -597,7 +750,6 @@ import { getRatings } from './ratings';
             fetchData(templateUrlVertical, verticalTemplateHandler);
 
         });
-
     }
 })(window);
 
