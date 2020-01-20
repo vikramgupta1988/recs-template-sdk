@@ -1,7 +1,7 @@
 "use strict";
 import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
-import { compressedStyle } from './config';
+// import { compressedStyle } from './config';
 import { getRatings } from './ratings';
 
 (function (global) {
@@ -98,13 +98,7 @@ import { getRatings } from './ratings';
     global._unbxd_recsSliderVerticalScroll = eventHandlers._unbxd_recsSliderVerticalScroll;
 
 
-    /** Attaching styles for the slider */
-    var eventHandlerStyle = document.createElement('style');
-    eventHandlerStyle.type = 'text/css';
-    // innerHTML needs to stay as es5 since it will be embedded directly to client's browser
-    // console.log('compressedStyle', compressedStyle)
-    eventHandlerStyle.innerHTML = compressedStyle;
-    document.head.appendChild(eventHandlerStyle);
+
 
     /** End of Scripts and styles that are appended to the DOM */
 
@@ -153,8 +147,6 @@ import { getRatings } from './ratings';
         var domSelector = "#" + targetDOMElementId + sliderContent.containerId;
         var sliderContainer = document.querySelector(domSelector);
         var widgetWidth = options.widgetWidth;
-
-        // console.log("----widgetWidth---", widgetWidth);
 
         if (!sliderContainer) {
             return sendWarning('The slider container id was not found. Script can not continue');
@@ -207,15 +199,11 @@ import { getRatings } from './ratings';
             var fragment = document.createDocumentFragment();
 
             for (var j = 0; j < productFields.length; j++) {
-                // console.log(productFields[j])
                 var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
-                // console.log(dimensionKey);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
                     var newnode = document.createElement("p");
-                    console.log("recommendations to append");
-                    console.log(recommendations);
                     var dimension = recommendations[i][dimensionKey];
                     newnode.className = sliderContent.sliderContentClass;
                     if (dimensionKey == "rating") {
@@ -260,7 +248,6 @@ import { getRatings } from './ratings';
         function incrementCounter() {
             counter++;
             if (counter === len) {
-                // console.log('All images loaded!');
                 if (sliderContent.dimension == "width") {
 
                     setTimeout(function () {
@@ -271,15 +258,9 @@ import { getRatings } from './ratings';
                             sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
                         }
                         sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
-                        // console.log("sliderContainer.style.width",sliderContainer.style.width)
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
                         for (i = 0; i < sliderItems.length; i++) {
                             sliderItems[i].style.width = hzSliderWidth + "px";
-                            // console.log("itemWidth",sliderItems[i].style.width);
-                            // console.log("maxProducts",maxprodLimit);
-                            // console.log("hzSliderWidth",hzSliderWidth);
-                            // console.log("margin",margin);
-                            // console.log(maxprodLimit*(margin + hzSliderWidth))
                             recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
                         }
                     }, 0);
@@ -300,14 +281,6 @@ import { getRatings } from './ratings';
                         }
                         recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
                     }, 0);
-
-                    // console.log("sliderItemHeight", sliderItemHeight);
-                    // console.log("itemsToShow", itemsToShow);
-                    // console.log("margin" + margin);
-                    // console.log("sum", (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin);
-
-                    // recsSlider.style[sliderContent.dimension] = (sliderItemHeight * itemsToShow) + (itemsToShow * margin) + margin + "px";
-                    // console.log("recsSliderHeight", recsSlider.style[sliderContent.dimension]);
                 }
                 var opaqueElSelector = document.querySelector("._unxbd_slider_hide");
                 opaqueElSelector.classList.remove("_unxbd_slider_hide");
@@ -400,10 +373,9 @@ import { getRatings } from './ratings';
         var rexConsoleConfigs = options.rexConsoleConfigs || missingValueError('rexConsoleConfigs', options);
         var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs);
-        console.log("----max-products-----");
-        console.log(maxProducts);
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
+        var compressedStyle = options.compressedStyle;
         var recommendationsModified = null;
         var widgetWidthData = options.rexConsoleConfigs.width || missingValueError('products.max', rexConsoleConfigs);
         // var widgetWidthData = verticalConfig.width;
@@ -421,9 +393,7 @@ import { getRatings } from './ratings';
         }
 
         if (maxProducts < recommendations.length) {
-            // console.log("maxProducts",maxProducts);
             recommendations = recommendations.splice(0, maxProducts);
-            // console.log("recommendations",recommendations);
         }
 
         if (isVertical) {
@@ -435,9 +405,6 @@ import { getRatings } from './ratings';
                 }
             }
         }
-
-        console.log("----modified recommendations---");
-        console.log(recommendationsModified);
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
             recommendations: recommendationsModified || recommendations,
@@ -465,6 +432,15 @@ import { getRatings } from './ratings';
         else {
             global._unbxd_recsItemToScrollHz = itemsToShow;
         }
+
+
+            /** Attaching styles for the slider */
+        var eventHandlerStyle = document.createElement('style');
+        eventHandlerStyle.type = 'text/css';
+        // innerHTML needs to stay as es5 since it will be embedded directly to client's browser
+        eventHandlerStyle.innerHTML = compressedStyle;
+        document.head.appendChild(eventHandlerStyle);
+
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
     }
 
@@ -602,23 +578,11 @@ import { getRatings } from './ratings';
 
         function renderWidgetDataHorizontal(widget, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
-            // console.log("======<",horizontalConfig);
-            // var widgetWidthData = horizontalConfig.width;
-            // var widgetWidth = "";
-            // if(widgetWidthData.value && widgetWidthData.value != 0){
-            //     widgetWidth = widgetWidthData.value + widgetWidthData.unit;
-            // }
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
-            // console.log("--------------------------------------->>>>>>");
-            // console.log(recommendations);
             if (recommendations.length) {
-                // console.log("--------------------------------------->");
-                // console.log(maxProducts)
                 if (maxProducts < recommendations.length) {
-                    // console.log("maxProducts", maxProducts);
                     recommendations = recommendations.splice(0, maxProducts);
-                    // console.log("recommendations", recommendations);
                 }
                 var options = {
                     template: horizontalTemplate,
@@ -630,6 +594,7 @@ import { getRatings } from './ratings';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     sliderClass: "_unbxd_recs-slider",
+                    compressedStyle: compressedStyle
                 }
                 _unbxd_generateRexContent(options);
             }
@@ -638,20 +603,12 @@ import { getRatings } from './ratings';
 
         function renderWidgetDataVertical(widget, recommendations, heading) {
             var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
-            // console.log("======<<<<",verticalConfig);
-            // var widgetWidthData = verticalConfig.width;
-            // var widgetWidth = "";
-            // if(widgetWidthData.value && widgetWidthData.value != 0){
-            //     widgetWidth = widgetWidthData.value + widgetWidthData.unit;
-            // }
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
             if (recommendations.length) {
                 if (maxProducts < recommendations.length) {
                     recommendations = recommendations.splice(0, maxProducts);
                 }
-
-                // var itemsToShow = verticalConfig.products.visible || missingValueError('products.visible', rexConsoleConfigs);
 
                 var options = {
                     template: verticalTemplate,
@@ -663,7 +620,8 @@ import { getRatings } from './ratings';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     isVertical: true,
-                    sliderClass: "_unbxd_recs-vertical-slider"
+                    sliderClass: "_unbxd_recs-vertical-slider",
+                    compressedStyle: compressedStyleVertical
 
                 }
                 _unbxd_generateRexContent(options);
@@ -701,7 +659,6 @@ import { getRatings } from './ratings';
             }
             // populating the template string
             horizontalTemplate = res;
-            // console.log("------>horizontalTemplateHandler");
             handleWidgetRendering();
         }
 
@@ -711,9 +668,43 @@ import { getRatings } from './ratings';
             }
             // populating the template string
             verticalTemplate = res;
-            // console.log("------>verticalTemplateHandler");
             handleWidgetRenderingVertical();
         }
+
+        /** handling of widget styles */
+        function handleStyleRenderingHorizontal(err,data){
+            if(err){
+                throw new Error("Error fetching horizontal styles");
+            }
+            compressedStyle = data;
+            var templateUrlHorizontal = horizontalTemplate.scriptUrl;
+            if(templateUrlHorizontal){
+                /** Fetch template layout string */
+                fetchData(templateUrlHorizontal, horizontalTemplateHandler);
+            }
+            else{
+                console.warn("script url not found for horizontal template")
+            }
+        
+        }
+
+        function handleStyleRenderingVertical(err,data){
+            if(err){
+                throw new Error("Error fetching vertical styles");
+            }
+            compressedStyleVertical = data;
+            var templateUrlVertical = verticalTemplate.scriptUrl;
+            if(templateUrlVertical){
+                /** Fetch vertical template layout string */
+                fetchData(templateUrlVertical, verticalTemplateHandler);
+            }
+            else{
+                console.warn("script url not found for vertical template")
+            }
+
+     
+        }
+
 
         /** Fetch recommendations response */
         // to store recommendations response
@@ -722,6 +713,8 @@ import { getRatings } from './ratings';
         var horizontalTemplate;
         // to store vertical template string
         var verticalTemplate;
+        var compressedStyle;
+        var compressedStyleVertical;
         fetchData(requestUrl, function (err, res) {
             // fetching data specific to a page type
             if (err) {
@@ -730,25 +723,31 @@ import { getRatings } from './ratings';
             recommendationsResponse = JSON.parse(res);
 
             // horizontal templates configuration
-            var horizontalTemplate = recommendationsResponse.template.horizontal;
-            horizontalConfig = horizontalTemplate.conf;
-            horizontalAssets = horizontalConfig.assets;
-            var templateUrlHorizontal = horizontalTemplate.scriptUrl;
-
-            // console.log("templateUrlHorizontal---->", templateUrlHorizontal);
-
-            /** Fetch template layout string */
-            fetchData(templateUrlHorizontal, horizontalTemplateHandler);
-
+            horizontalTemplate = recommendationsResponse.template.horizontal;
+            if(horizontalTemplate){
+                horizontalConfig = horizontalTemplate.conf;
+                horizontalAssets = horizontalConfig.assets;
+                // fetching styles configuration
+                if(horizontalTemplate.styleUrl){
+                    fetchData(horizontalTemplate.styleUrl, handleStyleRenderingHorizontal);
+                }
+                else{
+                    console.warn("style url not found for horizontal template");
+                }
+            }       
             // vertical templates configuration
-            var verticalTemplate = recommendationsResponse.template.vertical;
-            verticalConfig = verticalTemplate.conf;
-            verticalAssets = verticalConfig.assets;
-            var templateUrlVertical = verticalTemplate.scriptUrl;
-
-            /** Fetch vertical template layout string */
-            fetchData(templateUrlVertical, verticalTemplateHandler);
-
+            verticalTemplate = recommendationsResponse.template.vertical;
+            if(verticalTemplate){
+                verticalConfig = verticalTemplate.conf;
+                verticalAssets = verticalConfig.assets;
+                // fetching styles configurationf for vertical slider
+                if(verticalTemplate.styleUrl){
+                    fetchData(verticalTemplate.styleUrl, handleStyleRenderingVertical);
+                }
+                else{
+                    console.warn("style url not found for vertical template");
+                }
+            }
         });
     }
 })(window);

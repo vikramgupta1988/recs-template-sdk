@@ -842,6 +842,7 @@ module.exports = {
     "template": {
         "horizontal": {
             "scriptUrl": "http://localhost:4201/templates/default.dot",
+            "styleUrl": "http://localhost:4201/templates/default.css",
             "conf": {
                 "width":{
                     "unit":"px",
@@ -911,6 +912,7 @@ module.exports = {
         },
         "vertical": {
             "scriptUrl": "http://localhost:4201/templates/vertical.dot",
+            "styleUrl": "http://localhost:4201/templates/vertical.css",
             "conf": {
                 "width":{
                     "unit":"px",
