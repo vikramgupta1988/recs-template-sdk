@@ -375,7 +375,7 @@ import { getRatings } from './ratings';
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs);
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
-        var compressedStyle = options.compressedStyle;
+        var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
         var widgetWidthData = options.rexConsoleConfigs.width || missingValueError('products.max', rexConsoleConfigs);
         // var widgetWidthData = verticalConfig.width;
@@ -671,41 +671,6 @@ import { getRatings } from './ratings';
             handleWidgetRenderingVertical();
         }
 
-        /** handling of widget styles */
-        function handleStyleRenderingHorizontal(err,data){
-            if(err){
-                throw new Error("Error fetching horizontal styles");
-            }
-            compressedStyle = data;
-            var templateUrlHorizontal = horizontalTemplate.scriptUrl;
-            if(templateUrlHorizontal){
-                /** Fetch template layout string */
-                fetchData(templateUrlHorizontal, horizontalTemplateHandler);
-            }
-            else{
-                console.warn("script url not found for horizontal template")
-            }
-        
-        }
-
-        function handleStyleRenderingVertical(err,data){
-            if(err){
-                throw new Error("Error fetching vertical styles");
-            }
-            compressedStyleVertical = data;
-            var templateUrlVertical = verticalTemplate.scriptUrl;
-            if(templateUrlVertical){
-                /** Fetch vertical template layout string */
-                fetchData(templateUrlVertical, verticalTemplateHandler);
-            }
-            else{
-                console.warn("script url not found for vertical template")
-            }
-
-     
-        }
-
-
         /** Fetch recommendations response */
         // to store recommendations response
         var recommendationsResponse;
@@ -727,12 +692,13 @@ import { getRatings } from './ratings';
             if(horizontalTemplate){
                 horizontalConfig = horizontalTemplate.conf;
                 horizontalAssets = horizontalConfig.assets;
-                // fetching styles configuration
-                if(horizontalTemplate.styleUrl){
-                    fetchData(horizontalTemplate.styleUrl, handleStyleRenderingHorizontal);
+                var templateUrlHorizontal = horizontalTemplate.scriptUrl;
+                if(templateUrlHorizontal){
+                    /** Fetch template layout string */
+                    fetchData(templateUrlHorizontal, horizontalTemplateHandler);
                 }
                 else{
-                    console.warn("style url not found for horizontal template");
+                    console.warn("script url not found for horizontal template")
                 }
             }       
             // vertical templates configuration
@@ -740,12 +706,13 @@ import { getRatings } from './ratings';
             if(verticalTemplate){
                 verticalConfig = verticalTemplate.conf;
                 verticalAssets = verticalConfig.assets;
-                // fetching styles configurationf for vertical slider
-                if(verticalTemplate.styleUrl){
-                    fetchData(verticalTemplate.styleUrl, handleStyleRenderingVertical);
+                var templateUrlVertical = verticalTemplate.scriptUrl;
+                if(templateUrlVertical){
+                    /** Fetch vertical template layout string */
+                    fetchData(templateUrlVertical, verticalTemplateHandler);
                 }
                 else{
-                    console.warn("style url not found for vertical template");
+                    console.warn("script url not found for vertical template")
                 }
             }
         });
