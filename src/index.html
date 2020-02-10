@@ -46,9 +46,7 @@
 
     <script type="text/javascript" src="build/unbxd_rex_template_sdk.js"></script>
     <script>
-        function fetchData() {
-            console.log('parent site fetch data')
-        }
+
         var context = {
             widgets: {
                 widget2: {
@@ -72,9 +70,6 @@
                 alert(JSON.stringify(product));
             }
         };
-        window.onload = function () {
-            console.log("-----------> loaded");
-        }
         window._unbxd_getRecommendations(context);
     </script>
 <script type="text/javascript" src="build/unbxd_rex_template_sdk.js"></script></body>
