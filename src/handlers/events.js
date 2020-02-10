@@ -168,7 +168,6 @@ export var eventHandlers = {
         var eventualSteps = initialSteps + itemsToScroll * 5;
 
         // the entire width of the slider visible at once exclusive of margin
-        console.log(sliderItem.clientWidth)
         var tileSliderWidth = (sliderItem.clientWidth + 20) * itemsToScroll;
 
         // the total distance to scroll inclusive of margin. 10 is the constant margin
@@ -230,7 +229,6 @@ export var eventHandlers = {
             return;
         }
         var targetElId = targetEl.id;
-        console.log(targetElId)
         var topButtonSelector = "#" + targetElId + " ._unbxd_rex-vertical-slider--top";
         var topButton = document.querySelector(topButtonSelector);
         if (!topButton) {
