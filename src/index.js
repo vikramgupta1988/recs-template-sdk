@@ -3,7 +3,7 @@ import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
 // import { compressedStyle } from './config';
 import { getRatings } from './ratings';
-
+import { strikeThrough } from './strikeThrough';
 (function (global) {
 
     /**
@@ -197,8 +197,10 @@ import { getRatings } from './ratings';
         for (var i = 0; i < sliderItems.length; i++) {
 
             var fragment = document.createDocumentFragment();
+            
 
             for (var j = 0; j < productFields.length; j++) {
+                
                 var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
@@ -215,6 +217,11 @@ import { getRatings } from './ratings';
                             newnode.innerHTML = getRatings(dimension);
                         }
                     }
+                    else if(rexConsoleConfigs.striked_price && rexConsoleConfigs.striked_price.enabled
+                        && dimensionKey == rexConsoleConfigs.striked_price.display_price_map.unbxd_key){
+                        var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs);
+                        newnode.innerHTML = strikedContent;
+                    }
                     else {
                         if (!dimension) {
                             newnode.innerHTML = "";
@@ -223,6 +230,9 @@ import { getRatings } from './ratings';
                             newnode.innerHTML = dimension;
                         }
                     }
+
+                   
+
                     if (newnode.innerHTML) {
                         fragment.appendChild(newnode);
                     }
@@ -364,7 +374,7 @@ import { getRatings } from './ratings';
 
     /** exporting a global function to initialize recs slider */
     global._unbxd_generateRexContent = function (options) {
-        console.log(options)
+        // console.log(options)
         /** Template rendering logic */
         var template = options.template || missingValueError('template', options);
         var targetDOMElementId = options.targetDOMElementId || missingValueError('targetDOMElementId', options);

@@ -17,6 +17,8 @@ module.exports = {
                 "title": "best loved longer soft v-neck cami",
                 "productId": "06414260",
                 "price": 19.9,
+                "old_price": 21.9,
+                "display_price": "$19.9",
                 "uniqueId": "06414260",
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
@@ -53,6 +55,8 @@ module.exports = {
                     "women"
                 ],
                 "price": 88,
+                "old_price": 100,
+                "display_price": "$88",
                 "catlevel1Name": "women",
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
@@ -98,6 +102,7 @@ module.exports = {
                 "catlevel1Name": "women",
                 "catlevel3Name": "Petite New Arrivals",
                 "availability": "YES",
+                
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
                     "algorithmId": 4,
@@ -111,6 +116,8 @@ module.exports = {
                 "catlevel1Name": "women",
                 "productUrl": "/clothing/women/slim-fit-convertible-sleeve-portofino-shirt/pro/9791754C/cat890004",
                 "price": 49.9,
+                "old_price": 58.9,
+                "display_price": "$49.9",
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
                     "algorithmId": 4,
@@ -145,6 +152,8 @@ module.exports = {
                 "productId": "03754822",
                 "catlevel3Name": "Express One Eleven",
                 "price": 19.9,
+                "old_price": 21.9,
+                "display_price": "$19.9",
                 "catlevel1Name": "women",
                 "title": "express one eleven slub v-neck easy tank",
                 "uniqueId": "03754822",
@@ -197,6 +206,8 @@ module.exports = {
                     "Blue"
                 ],
                 "price": 88,
+                "old_price": 120,
+                "display_price": "$88",
                 "catlevel1Name": "women"
             },
             {
@@ -229,6 +240,8 @@ module.exports = {
                 ],
                 "availability": "NO",
                 "price": 29.9,
+                "old_price": 21.9,
+                "display_price": "$29.9",
                 "catlevel2Name": "Clearance  Women"
             },
             {
@@ -242,6 +255,8 @@ module.exports = {
                 "uniqueId": "08633346",
                 "availability": "YES",
                 "price": 39.9,
+                "old_price": 41.9,
+                "display_price": "$39.9",
                 "productUrl": "/clothing/women/downtown-cami/pro/08633346/cat430028",
                 "gender": [
                     "women"
@@ -267,6 +282,8 @@ module.exports = {
             },
             {
                 "price": 79.9,
+                "old_price": 81.9,
+                "display_price": "$79.9",
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0092_07249422_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -302,6 +319,8 @@ module.exports = {
                     "Blue"
                 ],
                 "price": 88,
+                "old_price": 98,
+                "display_price": "$88",
                 "productId": "07108693",
                 "gender": [
                     "women"
@@ -356,7 +375,9 @@ module.exports = {
                     "Red"
                 ],
                 "productUrl": "/clothing/women/cable-knit-split-back-pullover-sweater/pro/08260374C/cat890004",
-                "price": 59.9
+                "price": 59.9,
+                "old_price": 61.9,
+                "display_price": "$59.9"
             },
             {
                 "color": [
@@ -387,7 +408,9 @@ module.exports = {
                 },
                 "uniqueId": "07479434",
                 "type": "Dress Pants",
-                "price": 79.9
+                "price": 79.9,
+                "old_price": 21.9,
+                "display_price": "$79.9"
             },
             {
                 "color": [
@@ -395,6 +418,8 @@ module.exports = {
                 ],
                 "catlevel1Name": "women",
                 "price": 79.9,
+                "old_price": 81.9,
+                "display_price": "$79.9",
                 "gender": [
                     "women"
                 ],
@@ -432,6 +457,8 @@ module.exports = {
                 "title": "best loved longer soft v-neck cami",
                 "productId": "06414260",
                 "price": 19.9,
+                "old_price": 21.9,
+                "display_price": "$19.9",
                 "uniqueId": "06414260",
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
@@ -468,6 +495,8 @@ module.exports = {
                     "women"
                 ],
                 "price": 88,
+                "old_price": 100,
+                "display_price": "$88",
                 "catlevel1Name": "women",
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
@@ -513,6 +542,7 @@ module.exports = {
                 "catlevel1Name": "women",
                 "catlevel3Name": "Petite New Arrivals",
                 "availability": "YES",
+                
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
                     "algorithmId": 4,
@@ -526,6 +556,8 @@ module.exports = {
                 "catlevel1Name": "women",
                 "productUrl": "/clothing/women/slim-fit-convertible-sleeve-portofino-shirt/pro/9791754C/cat890004",
                 "price": 49.9,
+                "old_price": 58.9,
+                "display_price": "$49.9",
                 "unbxdMetaInformation": {
                     "algorithmName": "Top Sellers",
                     "algorithmId": 4,
@@ -560,6 +592,8 @@ module.exports = {
                 "productId": "03754822",
                 "catlevel3Name": "Express One Eleven",
                 "price": 19.9,
+                "old_price": 21.9,
+                "display_price": "$19.9",
                 "catlevel1Name": "women",
                 "title": "express one eleven slub v-neck easy tank",
                 "uniqueId": "03754822",
@@ -612,6 +646,8 @@ module.exports = {
                     "Blue"
                 ],
                 "price": 88,
+                "old_price": 120,
+                "display_price": "$88",
                 "catlevel1Name": "women"
             },
             {
@@ -644,6 +680,8 @@ module.exports = {
                 ],
                 "availability": "NO",
                 "price": 29.9,
+                "old_price": 21.9,
+                "display_price": "$29.9",
                 "catlevel2Name": "Clearance  Women"
             },
             {
@@ -657,6 +695,8 @@ module.exports = {
                 "uniqueId": "08633346",
                 "availability": "YES",
                 "price": 39.9,
+                "old_price": 41.9,
+                "display_price": "$39.9",
                 "productUrl": "/clothing/women/downtown-cami/pro/08633346/cat430028",
                 "gender": [
                     "women"
@@ -682,6 +722,8 @@ module.exports = {
             },
             {
                 "price": 79.9,
+                "old_price": 81.9,
+                "display_price": "$79.9",
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0092_07249422_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -717,6 +759,8 @@ module.exports = {
                     "Blue"
                 ],
                 "price": 88,
+                "old_price": 98,
+                "display_price": "$88",
                 "productId": "07108693",
                 "gender": [
                     "women"
@@ -771,7 +815,9 @@ module.exports = {
                     "Red"
                 ],
                 "productUrl": "/clothing/women/cable-knit-split-back-pullover-sweater/pro/08260374C/cat890004",
-                "price": 59.9
+                "price": 59.9,
+                "old_price": 61.9,
+                "display_price": "$59.9"
             },
             {
                 "color": [
@@ -802,7 +848,9 @@ module.exports = {
                 },
                 "uniqueId": "07479434",
                 "type": "Dress Pants",
-                "price": 79.9
+                "price": 79.9,
+                "old_price": 21.9,
+                "display_price": "$79.9"
             },
             {
                 "color": [
@@ -810,6 +858,8 @@ module.exports = {
                 ],
                 "catlevel1Name": "women",
                 "price": 79.9,
+                "old_price": 81.9,
+                "display_price": "$79.9",
                 "gender": [
                     "women"
                 ],
@@ -836,7 +886,7 @@ module.exports = {
         ],
         "debug": null,
         "templateId": null,
-        "widgetTitle": "Widget 3 title"
+        "widgetTitle": "Widget 2 title"
     },
     "error": null,
     "template": {
@@ -844,11 +894,41 @@ module.exports = {
             "scriptUrl": "http://localhost:4201/templates/default.dot",
             "styleUrl": "http://localhost:4201/templates/default.css",
             "conf": {
+                "striked_price": {
+                    "enabled": true,
+                    "strike_price_map": {
+                        "unbxd_key": "old_price",
+                        "currency": "$",
+                        "styles": {
+                            "color": "red",
+                            "font_size": "12px"
+                        }
+                    },
+                    "display_price_map": {
+                        "unbxd_key": "price",
+                        "currency": "$",
+                        "text": "Sale Price",
+                        "styles": {
+                            "color": "black",
+                            "font_size": "12px"
+                        }
+                    },
+                    "discount_map": {
+                        "enabled": true,
+                        "currency": "$",
+                        "mode": "percentage",
+                        "text": "You Save",
+                        "styles": {
+                            "color": "black",
+                            "font_size": "12px"
+                        }
+                    }
+                },
                 "width":{
                     "unit":"px",
                     "value":"900"
                 },
-                "css":"._unbxd_recs-slider{overflow:auto;}._unbxd_recs-slider-heading{display:block;}._unbxd_recs-slider__item{cursor:pointer;float:left;margin-right:5px;margin-left:5px;text-align:center}._unbxd_recs-slider__item:last-of-type{margin-right:0}._unbxd_recs-slider__item img{margin-bottom:3px;width:inherit}._unbxd_recs-slider-container{margin-top:8px;overflow:hidden;width:100%}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
+                "css":"._unbxd_strike_through_text{margin:2px; text-decoration: line-through}._unbxd_original_price_container{margin:2px;}._unbxd_original_price_container ._unbxd_item_display_text{font-weight:bold;}._unbxd_item_discount_text{margin:2px;}._unbxd_item_discount_text ._unbxd_discount_text_label{font-weight:bold;}._unbxd_recs-slider{overflow:auto;}._unbxd_recs-slider-heading{display:block;}._unbxd_recs-slider__item{cursor:pointer;float:left;margin-right:5px;margin-left:5px;text-align:center}._unbxd_recs-slider__item:last-of-type{margin-right:0}._unbxd_recs-slider__item img{margin-bottom:3px;width:inherit}._unbxd_recs-slider-container{margin-top:8px;overflow:hidden;width:100%}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
                 "header": {
                     "alignment": "left",
                     "type": "text",
@@ -884,6 +964,12 @@ module.exports = {
                             "sequence": 3,
                             "unbxdDimensionKey": "title",
                             "catalogKey": "product_title"
+                        },
+                        {
+                            "display": "Price",
+                            "sequence": 3,
+                            "unbxdDimensionKey": "price",
+                            "catalogKey": "product_price"
                         }
                     ]
                 },
@@ -916,6 +1002,36 @@ module.exports = {
             "styleUrl": "http://localhost:4201/templates/vertical.css",
       
             "conf": {
+                "striked_price": {
+                    "enabled": true,
+                    "strike_price_map": {
+                        "unbxd_key": "old_price",
+                        "currency": "$",
+                        "styles": {
+                            "color": "red",
+                            "font_size": "12px"
+                        }
+                    },
+                    "display_price_map": {
+                        "unbxd_key": "price",
+                        "currency": "$",
+                        "text": "Sale Price",
+                        "styles": {
+                            "color": "black",
+                            "font_size": "12px"
+                        }
+                    },
+                    "discount_map": {
+                        "enabled": true,
+                        "currency": "$",
+                        "mode": "percentage",
+                        "text": "You Save",
+                        "styles": {
+                            "color": "black",
+                            "font_size": "12px"
+                        }
+                    }
+                },
                 "width":{
                     "unit":"px",
                     "value":"200"
@@ -956,6 +1072,12 @@ module.exports = {
                             "sequence": 3,
                             "unbxdDimensionKey": "title",
                             "catalogKey": "product_title"
+                        },
+                        {
+                            "display": "Price",
+                            "sequence": 3,
+                            "unbxdDimensionKey": "price",
+                            "catalogKey": "product_price"
                         }
                     ]
                 },
