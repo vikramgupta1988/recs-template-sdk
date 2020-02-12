@@ -894,33 +894,31 @@ module.exports = {
             "scriptUrl": "http://localhost:4201/templates/default.dot",
             "styleUrl": "http://localhost:4201/templates/default.css",
             "conf": {
+                "currency": "$",
                 "striked_price": {
                     "enabled": true,
                     "strike_price_map": {
                         "unbxd_key": "old_price",
-                        "currency": "$",
                         "styles": {
                             "color": "red",
-                            "font_size": "12px"
+                            "fontSize": "12px"
                         }
                     },
                     "display_price_map": {
                         "unbxd_key": "price",
-                        "currency": "$",
                         "text": "Sale Price",
                         "styles": {
                             "color": "black",
-                            "font_size": "12px"
+                            "fontSize": "12px"
                         }
                     },
                     "discount_map": {
                         "enabled": true,
-                        "currency": "$",
-                        "mode": "percentage",
+                        "mode": "value",
                         "text": "You Save",
                         "styles": {
                             "color": "black",
-                            "font_size": "12px"
+                            "fontSize": "12px"
                         }
                     }
                 },
@@ -951,25 +949,41 @@ module.exports = {
                             "display": "Image",
                             "sequence": 1,
                             "unbxdDimensionKey": "imageUrl",
-                            "catalogKey": "image_url"
+                            "catalogKey": "image_url",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         },
                         {
                             "display": "Rating",
                             "sequence": 2,
                             "unbxdDimensionKey": "rating",
-                            "catalogKey": "product_rating"
+                            "catalogKey": "product_rating",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         },
                         {
                             "display": "Title",
                             "sequence": 3,
                             "unbxdDimensionKey": "title",
-                            "catalogKey": "product_title"
+                            "catalogKey": "product_title",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         },
                         {
                             "display": "Price",
                             "sequence": 3,
                             "unbxdDimensionKey": "price",
-                            "catalogKey": "product_price"
+                            "catalogKey": "product_price",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         }
                     ]
                 },
@@ -1002,33 +1016,31 @@ module.exports = {
             "styleUrl": "http://localhost:4201/templates/vertical.css",
       
             "conf": {
+                "currency": "$",
                 "striked_price": {
                     "enabled": true,
                     "strike_price_map": {
                         "unbxd_key": "old_price",
-                        "currency": "$",
                         "styles": {
                             "color": "red",
-                            "font_size": "12px"
+                            "fontSize": "12px"
                         }
                     },
                     "display_price_map": {
                         "unbxd_key": "price",
-                        "currency": "$",
                         "text": "Sale Price",
                         "styles": {
                             "color": "black",
-                            "font_size": "12px"
+                            "fontSize": "12px"
                         }
                     },
                     "discount_map": {
                         "enabled": true,
-                        "currency": "$",
                         "mode": "percentage",
                         "text": "You Save",
                         "styles": {
                             "color": "black",
-                            "font_size": "12px"
+                            "fontSize": "12px"
                         }
                     }
                 },
@@ -1059,25 +1071,41 @@ module.exports = {
                             "display": "Image",
                             "sequence": 1,
                             "unbxdDimensionKey": "imageUrl",
-                            "catalogKey": "image_url"
+                            "catalogKey": "image_url",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         },
                         {
                             "display": "Rating",
                             "sequence": 2,
                             "unbxdDimensionKey": "rating",
-                            "catalogKey": "product_rating"
+                            "catalogKey": "product_rating",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         },
                         {
                             "display": "Title",
                             "sequence": 3,
                             "unbxdDimensionKey": "title",
-                            "catalogKey": "product_title"
+                            "catalogKey": "product_title",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         },
                         {
                             "display": "Price",
                             "sequence": 3,
                             "unbxdDimensionKey": "price",
-                            "catalogKey": "product_price"
+                            "catalogKey": "product_price",
+                            "styles":{
+                                "fontSize":"12px",
+                                "fontWeight": "500"
+                            }
                         }
                     ]
                 },

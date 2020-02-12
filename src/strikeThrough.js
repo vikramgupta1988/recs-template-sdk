@@ -8,16 +8,16 @@ export var strikeThrough = function (recommendation, config) {
     // if old price exists
     var priceHtml = "";
     if(oldPrice && oldPrice > currentPrice){
-      priceHtml = "<p class='_unbxd_strike_through_text'>"+ strikeThroughObj.currency + oldPrice +"</p>";
+      priceHtml = "<p class='_unbxd_strike_through_text'>"+ config.currency + oldPrice +"</p>";
       priceHtml += "<p class='_unbxd_original_price_container'>"+ displayObjectText(displayPriceObj)+
-        displayPriceObj.currency+ currentPrice +    
+        config.currency+ currentPrice +    
         displayDiscountText(discountObj, oldPrice, currentPrice, config)+
         "</p>";
       // calling paint and reflow for original and old price  
       styleStrikeThroughItems(config);
     }
     else{
-      priceHtml = "<p class='_unbxd_original_price_container'>"+displayPriceObj.currency+ currentPrice +"</p>"
+      priceHtml = "<p class='_unbxd_original_price_container'>"+config.currency+ currentPrice +"</p>"
     }
     return priceHtml;
 }
@@ -35,10 +35,14 @@ function displayDiscountText(discountObj, oldPrice, newPrice, config){
         var mode = discountObj.mode;
         var discountVal = 0;
         if(mode == "percentage"){
-            discountVal = parseInt(((oldPrice - newPrice)/ oldPrice) * 100) + "%";
+            var discPercent = ((oldPrice - newPrice)/ oldPrice) * 100;
+            discountVal = discPercent % 1 === 0 ? discPercent : parseFloat(discPercent).toFixed(2);
+            discountVal += "%";
         }
         else{
-            discountVal = discountObj.currency+ parseFloat((oldPrice - newPrice)).toFixed(2);
+            var discVal = oldPrice - newPrice;
+            discVal = discVal % 1 === 0 ? discVal : parseFloat(discVal).toFixed(2);
+            discountVal = config.currency+ discVal;
         }
         if(discountObj.text){ 
             discountHtml = "<p class='_unbxd_item_discount_text'>"+"<span class='_unbxd_discount_text_label'>"+
@@ -59,8 +63,10 @@ function styleStrikeThroughItems(config){
         var strikedObjConfStyles = config.striked_price.strike_price_map.styles;  
         for(var i=0; i<strikethroughItems.length; i++){
             (function(index){
-                strikethroughItems[index].style.color = strikedObjConfStyles.color;
-                strikethroughItems[index].style.fontSize = strikedObjConfStyles.font_size;
+                var stylesArr = Object.keys(strikedObjConfStyles);
+                for(var j=0; j<stylesArr.length; j++){
+                    strikethroughItems[index].style[stylesArr[j]] = strikedObjConfStyles[stylesArr[j]];
+                }
             })(i);
         }
     },0);

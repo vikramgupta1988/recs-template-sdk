@@ -200,8 +200,9 @@ import { strikeThrough } from './strikeThrough';
             
 
             for (var j = 0; j < productFields.length; j++) {
-                
+                var styles = productFields[j].styles || missingValueError('styles', productFields[j]);
                 var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
+                var cssArr = Object.keys(styles);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
@@ -217,10 +218,14 @@ import { strikeThrough } from './strikeThrough';
                             newnode.innerHTML = getRatings(dimension);
                         }
                     }
-                    else if(rexConsoleConfigs.striked_price && rexConsoleConfigs.striked_price.enabled
-                        && dimensionKey == rexConsoleConfigs.striked_price.display_price_map.unbxd_key){
-                        var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs);
-                        newnode.innerHTML = strikedContent;
+                    else if(rexConsoleConfigs.striked_price && dimensionKey == rexConsoleConfigs.striked_price.display_price_map.unbxd_key){
+                        if(rexConsoleConfigs.striked_price.enabled){
+                            var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs);
+                            newnode.innerHTML = strikedContent;
+                        }
+                        else{
+                            newnode.innerHTML = rexConsoleConfigs.currency+ dimension;
+                        }
                     }
                     else {
                         if (!dimension) {
@@ -231,9 +236,10 @@ import { strikeThrough } from './strikeThrough';
                         }
                     }
 
-                   
-
                     if (newnode.innerHTML) {
+                        for(var k=0; k< cssArr.length; k++){
+                            newnode.style[cssArr[k]] = styles[cssArr[k]];
+                        }
                         fragment.appendChild(newnode);
                     }
                 }
