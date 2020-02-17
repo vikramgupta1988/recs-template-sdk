@@ -894,39 +894,11 @@ module.exports = {
             "scriptUrl": "http://localhost:4201/templates/default.dot",
             "styleUrl": "http://localhost:4201/templates/default.css",
             "conf": {
-                "currency": "$",
-                "striked_price": {
-                    "enabled": true,
-                    "strike_price_map": {
-                        "unbxd_key": "old_price",
-                        "styles": {
-                            "color": "red",
-                            "fontSize": "12px"
-                        }
-                    },
-                    "display_price_map": {
-                        "unbxd_key": "price",
-                        "text": "Sale Price",
-                        "styles": {
-                            "color": "black",
-                            "fontSize": "12px"
-                        }
-                    },
-                    "discount_map": {
-                        "enabled": true,
-                        "mode": "value",
-                        "text": "You Save",
-                        "styles": {
-                            "color": "black",
-                            "fontSize": "12px"
-                        }
-                    }
-                },
                 "width":{
                     "unit":"px",
                     "value":"900"
                 },
-                "css":"._unbxd_strike_through_text{margin:2px; text-decoration: line-through}._unbxd_original_price_container{margin:2px;}._unbxd_original_price_container ._unbxd_item_display_text{font-weight:bold;}._unbxd_item_discount_text{margin:2px;}._unbxd_item_discount_text ._unbxd_discount_text_label{font-weight:bold;}._unbxd_recs-slider{overflow:auto;}._unbxd_recs-slider-heading{display:block;}._unbxd_recs-slider__item{cursor:pointer;float:left;margin-right:5px;margin-left:5px;text-align:center}._unbxd_recs-slider__item:last-of-type{margin-right:0}._unbxd_recs-slider__item img{margin-bottom:3px;width:inherit}._unbxd_recs-slider-container{margin-top:8px;overflow:hidden;width:100%}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
+                "css":"._unbxd_strike_through_container{margin:2px;}._unbxd_original_price_container{margin:2px;}._unbxd_item_discount_text{margin:2px;}._unbxd_recs-slider{overflow:auto;}._unbxd_recs-slider-heading{display:block;}._unbxd_recs-slider__item{cursor:pointer;float:left;margin-right:5px;margin-left:5px;text-align:center}._unbxd_recs-slider__item:last-of-type{margin-right:0}._unbxd_recs-slider__item img{margin-bottom:3px;width:inherit}._unbxd_recs-slider-container{margin-top:8px;overflow:hidden;width:100%}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
                 "header": {
                     "alignment": "left",
                     "type": "text",
@@ -941,6 +913,7 @@ module.exports = {
                     }
                 },
                 "products": {
+                    "currency": "$",
                     "max": 18,
                     "visible": 4,
                     "fieldsCount": 3,
@@ -985,7 +958,60 @@ module.exports = {
                                 "fontWeight": "500"
                             }
                         }
-                    ]
+                    ],
+                    "strike_price_feature": {
+                        "enabled": true,
+                        "old": {
+                            "prefix":{
+                                "text": "",
+                                "styles": {
+                                }
+                            },
+                            "value":{
+                                "styles": {
+                                    "color": "red",
+                                    "fontSize": "12px",
+                                    "textDecoration": "line-through"
+                                }
+                            },
+                            "field": "old_price",    
+                        },
+                        "new": {
+                            "field": "price",
+                            "prefix":{
+                                "text": "Sale Price: ",
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px",
+                                    "fontWeight": "bold"
+                                }
+                            },
+                            "value":{
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px"
+                                }
+                            }
+                        },
+                        "discount": {
+                            "enabled": true,
+                            "mode": "value",
+                            "prefix": {
+                                "text": "You Save: ",
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px",
+                                    "fontWeight": "bold"
+                                }
+                            },
+                            "value": {
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px"
+                                }
+                            }
+                        }
+                    }
                 },
                 "assets": [
                     {
@@ -1016,39 +1042,11 @@ module.exports = {
             "styleUrl": "http://localhost:4201/templates/vertical.css",
       
             "conf": {
-                "currency": "$",
-                "striked_price": {
-                    "enabled": true,
-                    "strike_price_map": {
-                        "unbxd_key": "old_price",
-                        "styles": {
-                            "color": "red",
-                            "fontSize": "12px"
-                        }
-                    },
-                    "display_price_map": {
-                        "unbxd_key": "price",
-                        "text": "Sale Price",
-                        "styles": {
-                            "color": "black",
-                            "fontSize": "12px"
-                        }
-                    },
-                    "discount_map": {
-                        "enabled": true,
-                        "mode": "percentage",
-                        "text": "You Save",
-                        "styles": {
-                            "color": "black",
-                            "fontSize": "12px"
-                        }
-                    }
-                },
                 "width":{
                     "unit":"px",
                     "value":"200"
                 },
-                "css":"._unbxd_vertical-recs-slider{width:inherit;position:relative}._unbxd_recs-vertical-slider-container{overflow-x:hidden}._unbxd_recs-vertical-button-container{padding:0 10px;text-align:right}._unbxd_recs-vertical-slider{overflow:hidden}._unbxd_recs-vertical-slider__item{cursor:pointer;margin:3px 10px}._unbxd_recs-vertical-slider__item img{height:auto;width:100%}._unbxd_recs-vertical-list{float:left}._unbxd_recs-vertical-slider-btn{cursor:pointer;display:inline-block;vertical-align:top;width:30px;height:30px;background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3)}._unbxd_recs-vertical-slider-btn:disabled{opacity:.5;cursor:not-allowed}._unbxd_recs-vertical-slider__content{text-align:center}._unbxd_recs-vertical-slider__content{margin:0;padding:5px 0}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
+                "css":"._unbxd_strike_through_container{margin:2px;}._unbxd_original_price_container{margin:2px;}._unbxd_item_discount_text{margin:2px;}._unbxd_vertical-recs-slider{width:inherit;position:relative}._unbxd_recs-vertical-slider-container{overflow-x:hidden}._unbxd_recs-vertical-button-container{padding:0 10px;text-align:right}._unbxd_recs-vertical-slider{overflow:hidden}._unbxd_recs-vertical-slider__item{cursor:pointer;margin:3px 10px}._unbxd_recs-vertical-slider__item img{height:auto;width:100%}._unbxd_recs-vertical-list{float:left}._unbxd_recs-vertical-slider-btn{cursor:pointer;display:inline-block;vertical-align:top;width:30px;height:30px;background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3)}._unbxd_recs-vertical-slider-btn:disabled{opacity:.5;cursor:not-allowed}._unbxd_recs-vertical-slider__content{text-align:center}._unbxd_recs-vertical-slider__content{margin:0;padding:5px 0}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
                 "header": {
                     "alignment": "center",
                     "type": "text",
@@ -1063,6 +1061,7 @@ module.exports = {
                     }
                 },
                 "products": {
+                    "currency": "$",
                     "max": 18,
                     "visible": 2,
                     "fieldsCount": 3,
@@ -1107,7 +1106,59 @@ module.exports = {
                                 "fontWeight": "500"
                             }
                         }
-                    ]
+                    ],
+                    "strike_price_feature": {
+                        "enabled": true,
+                        "old": {
+                            "field": "old_price",
+                            "prefix":{
+                                "text": "",
+                                "styles": {
+                                }
+                            },
+                            "value":{
+                                "styles": {
+                                    "color": "green",
+                                    "fontSize": "12px",
+                                    "textDecoration": "line-through"
+                                }
+                            },
+                        },
+                        "new": {
+                            "field": "price",
+                            "prefix":{
+                                "text": "Sale Price: ",
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px",
+                                    "fontWeight": "bold"
+                                }
+                            },
+                            "value":{
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px"
+                                }
+                            }
+                        },
+                        "discount": {
+                            "enabled": true,
+                            "mode": "percentage",
+                            "prefix": {
+                                "text": "You Save: ",
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px"
+                                }
+                            },
+                            "value": {
+                                "styles": {
+                                    "color": "black",
+                                    "fontSize": "12px"
+                                }
+                            }
+                        }
+                    }
                 },
                 "assets": [
                     {

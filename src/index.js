@@ -218,13 +218,14 @@ import { strikeThrough } from './strikeThrough';
                             newnode.innerHTML = getRatings(dimension);
                         }
                     }
-                    else if(rexConsoleConfigs.striked_price && dimensionKey == rexConsoleConfigs.striked_price.display_price_map.unbxd_key){
-                        if(rexConsoleConfigs.striked_price.enabled){
-                            var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs);
+        
+                    else if(rexConsoleConfigs.products.strike_price_feature && dimensionKey == rexConsoleConfigs.products.strike_price_feature.new.field){
+                        if(rexConsoleConfigs.products.strike_price_feature.enabled){
+                            var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
                             newnode.innerHTML = strikedContent;
                         }
                         else{
-                            newnode.innerHTML = rexConsoleConfigs.currency+ dimension;
+                            newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
                         }
                     }
                     else {
