@@ -3,7 +3,7 @@ import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
 // import { compressedStyle } from './config';
 import { getRatings } from './ratings';
-
+import { strikeThrough } from './strikeThrough';
 (function (global) {
 
     /**
@@ -197,9 +197,12 @@ import { getRatings } from './ratings';
         for (var i = 0; i < sliderItems.length; i++) {
 
             var fragment = document.createDocumentFragment();
+            
 
             for (var j = 0; j < productFields.length; j++) {
+                var styles = productFields[j].styles || missingValueError('styles', productFields[j]);
                 var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
+                var cssArr = Object.keys(styles);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
                 if (dimensionKey != "imageUrl") {
@@ -215,6 +218,16 @@ import { getRatings } from './ratings';
                             newnode.innerHTML = getRatings(dimension);
                         }
                     }
+        
+                    else if(rexConsoleConfigs.products.strike_price_feature && dimensionKey == rexConsoleConfigs.products.strike_price_feature.new.field){
+                        if(rexConsoleConfigs.products.strike_price_feature.enabled){
+                            var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
+                            newnode.innerHTML = strikedContent;
+                        }
+                        else{
+                            newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
+                        }
+                    }
                     else {
                         if (!dimension) {
                             newnode.innerHTML = "";
@@ -223,7 +236,11 @@ import { getRatings } from './ratings';
                             newnode.innerHTML = dimension;
                         }
                     }
+
                     if (newnode.innerHTML) {
+                        for(var k=0; k< cssArr.length; k++){
+                            newnode.style[cssArr[k]] = styles[cssArr[k]];
+                        }
                         fragment.appendChild(newnode);
                     }
                 }
@@ -364,7 +381,7 @@ import { getRatings } from './ratings';
 
     /** exporting a global function to initialize recs slider */
     global._unbxd_generateRexContent = function (options) {
-        console.log(options)
+        // console.log(options)
         /** Template rendering logic */
         var template = options.template || missingValueError('template', options);
         var targetDOMElementId = options.targetDOMElementId || missingValueError('targetDOMElementId', options);
