@@ -32,8 +32,8 @@ import { strikeThrough } from './strikeThrough';
 
     /** Global variables */
     // the domain url
-    var platformDomain = 'http://localhost:4201/';
-    // var platformDomain = 'http://console-lohika.0126-int-use2.unbxd.io/v2.0/';
+    // var platformDomain = 'http://localhost:4201/';
+    var platformDomain = 'https://console-lohika.0126-int-use2.unbxd.io/v2.0/';
 
     // Constants
     var HOME_PAGE = 'home';
@@ -389,12 +389,12 @@ import { strikeThrough } from './strikeThrough';
         var heading = options.heading || missingValueError('heading', options);
         var rexConsoleConfigs = options.rexConsoleConfigs || missingValueError('rexConsoleConfigs', options);
         var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
-        var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs);
+        var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs.products);
         var clickHandler = options.clickHandler;
         var isVertical = options.isVertical;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
-        var widgetWidthData = options.rexConsoleConfigs.width || missingValueError('products.max', rexConsoleConfigs);
+        var widgetWidthData = rexConsoleConfigs.widget.width || missingValueError('products.widget.width', rexConsoleConfigs.widget);
         // var widgetWidthData = verticalConfig.width;
         var widgetWidth = "";
         if (widgetWidthData.value && widgetWidthData.value != 0) {

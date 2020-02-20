@@ -1,0 +1,10 @@
+<div class='unbxd-recs-slider _unxbd_slider_hide'>
+    <div class='_unbxd_recs-slider-heading' id='_unbxd_recs-slider-heading'>{{=it.heading}}</div>
+    <div class='_unbxd_recs-slider-container' id='_unbxd_recs-slider-container'>
+        <div class='_unbxd_recs-slider' id='_unbxd_recs-slider'> {{~it.recommendations :value:index}}
+        <div class='_unbxd_recs-slider__item' id='hz-item-{{=index}}'>
+            <img src='{{=value.imageUrl || value.imageUrl[0]}}' />
+        </div> {{~}}
+    </div>
+    </div>
+</div>
