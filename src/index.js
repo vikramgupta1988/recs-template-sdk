@@ -4,6 +4,7 @@ import { eventHandlers, setImagesSource, sendWarning } from './handlers';
 // import { compressedStyle } from './config';
 import { getRatings } from './ratings';
 import { strikeThrough } from './strikeThrough';
+import environment from './environment';
 (function (global) {
 
     /**
@@ -33,7 +34,9 @@ import { strikeThrough } from './strikeThrough';
     /** Global variables */
     // the domain url
     // var platformDomain = 'http://localhost:4201/';
-    var platformDomain = 'https://console-lohika.0126-int-use2.unbxd.io/v2.0/';
+    // console.log(process.env.NODE_ENV);
+    var platformDomain = environment[process.env.NODE_ENV].url;
+    // var platformDomain = 'https://console-lohika.0126-int-use2.unbxd.io/v2.0/';
 
     // Constants
     var HOME_PAGE = 'home';
@@ -394,13 +397,12 @@ import { strikeThrough } from './strikeThrough';
         var isVertical = options.isVertical;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
-        var widgetWidthData = rexConsoleConfigs.widget.width || missingValueError('products.widget.width', rexConsoleConfigs.widget);
+        var widgetWidthData = rexConsoleConfigs.width || missingValueError('products.widget.width', rexConsoleConfigs.widget);
         // var widgetWidthData = verticalConfig.width;
         var widgetWidth = "";
         if (widgetWidthData.value && widgetWidthData.value != 0) {
             widgetWidth = widgetWidthData.value + widgetWidthData.unit;
         }
-        
 
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
@@ -468,7 +470,6 @@ import { strikeThrough } from './strikeThrough';
         *  and updates the dom as per the response
         */
     global._unbxd_getRecommendations = function (context) {
-
         // Get widget id
         function getWidgetId(pageType, widgetKey, widgetDetails) {
             console.log(pageType, widgetKey, widgetDetails)
@@ -711,6 +712,7 @@ import { strikeThrough } from './strikeThrough';
                 horizontalAssets = horizontalConfig.assets;
                 var templateUrlHorizontal = horizontalTemplate.scriptUrl;
                 if(templateUrlHorizontal){
+                    
                     /** Fetch template layout string */
                     fetchData(templateUrlHorizontal, horizontalTemplateHandler);
                 }
