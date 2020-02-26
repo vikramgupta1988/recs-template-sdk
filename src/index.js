@@ -37,7 +37,7 @@ import environment from './environment';
     // console.log(process.env.NODE_ENV);
     var platformDomain = environment[process.env.NODE_ENV].url;
     // var platformDomain = 'https://console-lohika.0126-int-use2.unbxd.io/v2.0/';
-
+    console.log("build check");
     // Constants
     var HOME_PAGE = 'home';
     var PRODUCT_PAGE = 'product';
