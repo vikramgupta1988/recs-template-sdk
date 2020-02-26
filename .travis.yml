@@ -7,16 +7,16 @@ install:
 script:
     - yarn build
 deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_ID
-  secret_access_key: $AWS_SECRET_ID
-  bucket: $AWS_S3_BUCKET
-  glob: *sdk.js
-  local_dir: build
-  upload-dir: $UPLOAD_DIR
-  region: $BUCKET_REGION
-  skip_cleanup: true
-  on:
-    branch: sprint_6_CI_CD
+    provider: s3
+    access_key_id: $AWS_ACCESS_ID
+    secret_access_key: $AWS_SECRET_ID
+    bucket: $AWS_S3_BUCKET
+    glob: *.js
+    local_dir: build
+    upload-dir: $UPLOAD_DIR
+    region: $BUCKET_REGION
+    skip_cleanup: true
+    on:
+        branch: sprint_6_CI_CD
 after_deploy:
-  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_ID -s $AWS_SECRET_ID -c $CF_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
+    - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_ID -s $AWS_SECRET_ID -c $CF_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
