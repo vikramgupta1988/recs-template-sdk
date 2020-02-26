@@ -201,7 +201,7 @@ import { strikeThrough } from './strikeThrough';
 
             for (var j = 0; j < productFields.length; j++) {
                 var styles = productFields[j].styles || missingValueError('styles', productFields[j]);
-                var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
+                var dimensionKey = productFields[j].unbxdDimensionKey || productFields[j].catalogKey || missingValueError('unbxdDimensionKey or catalogKey', productFields[j]);
                 var cssArr = Object.keys(styles);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
