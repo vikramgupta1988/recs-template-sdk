@@ -397,7 +397,7 @@ import environment from './environment';
         var isVertical = options.isVertical;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
-        var widgetWidthData = rexConsoleConfigs.width || missingValueError('products.widget.width', rexConsoleConfigs.widget);
+        var widgetWidthData = rexConsoleConfigs.widget.width || missingValueError('products.widget.width', rexConsoleConfigs.widget);
         // var widgetWidthData = verticalConfig.width;
         var widgetWidth = "";
         if (widgetWidthData.value && widgetWidthData.value != 0) {
