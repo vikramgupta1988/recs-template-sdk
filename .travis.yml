@@ -22,6 +22,7 @@ deploy:
 after_deploy:
   - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_ID -s $AWS_SECRET_ID -c $CF_ID -i '/rex_template_content/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST -o 'rex_template_dev'
 notifications:
-email:
-  - psrivastava@lohika.com
-  - neeraj.jha@lohika.com  
+  email:
+    recipients:
+      - psrivastava@lohika.com
+      - neeraj.jha@lohika.com  
