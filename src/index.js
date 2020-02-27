@@ -29,6 +29,11 @@ import { strikeThrough } from './strikeThrough';
         xhttp.send();
     }
 
+    /** This function find the node containing selector passed as param
+     *  closest to element passed as param 
+     *  The purpose of this function is to find the target tile parent w.r.t
+     *  event target. This was done to minimize the no of click handlers
+     * */
     function getClosestNode(elem, selector) {
 
         var firstChar = selector.charAt(0);
@@ -250,15 +255,15 @@ import { strikeThrough } from './strikeThrough';
             var fragment = document.createDocumentFragment();
             for (var j = 0; j < productFields.length; j++) {
                 var styles = productFields[j].styles || missingValueError('styles', productFields[j]);
-                var dimensionKey = productFields[j].unbxdDimensionKey || productFields[j].catalogKey || missingValueError('unbxdDimensionKey or catalogKey', productFields[j]);
+                var productAttributeKey = productFields[j].unbxdDimensionKey || productFields[j].catalogKey || missingValueError('unbxdDimensionKey or catalogKey', productFields[j]);
                 var cssArr = Object.keys(styles);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
-                if (dimensionKey != "imageUrl") {
+                if (productAttributeKey != "imageUrl") {
                     var newnode = document.createElement("p");
-                    var dimension = recommendations[i][dimensionKey];
+                    var dimension = recommendations[i][productAttributeKey];
                     newnode.className = sliderContent.sliderContentClass;
-                    if (dimensionKey == "rating") {
+                    if (productAttributeKey == "rating") {
                         newnode.className = sliderContent.sliderContentClass + " _unbxd_content--ratings";
                         if (!dimension) {
                             newnode.innerHTML = "";
@@ -268,7 +273,7 @@ import { strikeThrough } from './strikeThrough';
                         }
                     }
         
-                    else if(rexConsoleConfigs.products.strike_price_feature && dimensionKey == rexConsoleConfigs.products.strike_price_feature.new.field){
+                    else if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
                         if(rexConsoleConfigs.products.strike_price_feature.enabled){
                             var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
                             newnode.innerHTML = strikedContent;
