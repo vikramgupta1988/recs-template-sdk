@@ -4,8 +4,9 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server"
+    "build": "webpack --config prod.config.js",
+    "start": "webpack-dev-server",
+    "dev": "webpack"
   },
   "author": "",
   "license": "ISC",

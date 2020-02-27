@@ -1,0 +1,28 @@
+language: node_js
+node_js:
+  - '12'
+install:
+  - yarn global add travis-ci-cloudfront-invalidation
+  - yarn
+script:
+  - yarn build
+before_deploy:
+  - mkdir dist && mv build/unbxd_rex_template_sdk.js dist/
+deploy:
+  provider: s3
+  access_key_id: $AWS_ACCESS_ID
+  secret_access_key: $AWS_SECRET_ID
+  bucket: $AWS_S3_BUCKET
+  local_dir: dist
+  upload-dir: $UPLOAD_DIR
+  region: $BUCKET_REGION
+  skip_cleanup: true
+  on:
+    branch: rex_template_dev
+after_deploy:
+  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_ID -s $AWS_SECRET_ID -c $CF_ID -i '/rex_template_content/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST -o 'rex_template_dev'
+notifications:
+  email:
+    recipients:
+      - psrivastava@lohika.com
+      - neeraj.jha@lohika.com  
