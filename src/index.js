@@ -30,6 +30,50 @@ import environment from './environment';
         xhttp.send();
     }
 
+    /** This function find the node containing selector passed as param
+     *  closest to element passed as param 
+     *  The purpose of this function is to find the target tile parent w.r.t
+     *  event target. This was done to minimize the no of click handlers
+     * */
+    function getClosestNode(elem, selector) {
+
+        var firstChar = selector.charAt(0);
+    
+        // Get closest match
+        for ( ; elem && elem !== document; elem = elem.parentNode ) {
+    
+            // If selector is a class
+            if ( firstChar === '.' ) {
+                if ( elem.classList.contains( selector.substr(1) ) ) {
+                    return elem;
+                }
+            }
+    
+            // If selector is an ID
+            if ( firstChar === '#' ) {
+                if ( elem.id === selector.substr(1) ) {
+                    return elem;
+                }
+            } 
+    
+            // If selector is a data attribute
+            if ( firstChar === '[' ) {
+                if ( elem.hasAttribute( selector.substr(1, selector.length - 2) ) ) {
+                    return elem;
+                }
+            }
+    
+            // If selector is a tag
+            if ( elem.tagName.toLowerCase() === selector ) {
+                return elem;
+            }
+    
+        }
+    
+        return false;
+    
+    };
+
 
     /** Global variables */
     // the domain url
@@ -136,6 +180,23 @@ import environment from './environment';
         throw new Error('Error: ' + valueKey + ' not found in ' + JSON.stringify(contentObject));
     }
 
+    function handleHorizontalWidgetClicks(parentId, clickHandler, recommendations){
+        var hzRegex = /hz-item/;
+        if (hzRegex.test(parentId)) {
+            var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
+            clickHandler(recommendations[arrayIndex]);
+        }
+    }
+
+    function handleVerticalWidgetClicks(parent1Id, parent2Id, clickHandler, recommendationsModified){
+        var vtRegex = /vt-level2-/;
+        if (vtRegex.test(parent1Id)) {
+            var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
+            var parent2ArrayIndex = parent2Id.split("-")[2];
+            clickHandler(recommendationsModified[parent2ArrayIndex][parent1ArrayIndex]);
+        }
+    }
+
     function handleSizeCalculations(targetDOMElementId, options) {
         var rexConsoleConfigs = options.rexConsoleConfigs;
         var recommendations = options.recommendations;
@@ -169,50 +230,43 @@ import environment from './environment';
         if (clickHandler) {
             if (sliderContent.dimension == "width") {
                 sliderContainer.addEventListener("click", function (event) {
-                    // we are considering clicks on image only
-                    if (event.target.tagName == "IMG") {
-                        var parentId = event.target.parentElement.id;
-                        var hzRegex = /hz-item/;
-                        if (hzRegex.test(parentId)) {
-                            var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
-                            clickHandler(recommendations[arrayIndex]);
-                        }
+                    if (event.target.className == "_unbxd_recs-slider__item"){
+                        handleHorizontalWidgetClicks(event.target.id, clickHandler, recommendations);
+                    }
+                    else{
+                        var el = getClosestNode(event.target,"._unbxd_recs-slider__item")
+                        handleHorizontalWidgetClicks(el.id, clickHandler, recommendations);
                     }
                 });
             }
             else {
-                sliderContainer.addEventListener("click", function (event) {
-                    // we are considering clicks on image only
-                    if (event.target.tagName == "IMG") {
-                        var parent2Id = event.target.parentElement.id;
-                        var parent1Id = event.target.parentElement.parentElement.id;
-                        var vtRegex = /vt-level2-/;
-                        if (vtRegex.test(parent2Id)) {
-                            var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
-                            var parent2ArrayIndex = parent2Id.split("-")[2];
-                            clickHandler(recommendationsModified[parent1ArrayIndex][parent2ArrayIndex]);
-                        }
+                sliderContainer.addEventListener("click", function (event) {                
+                    if(event.target.className == "_unbxd_recs-vertical-slider__item"){
+                        var parentId = event.target.parentElement.id;
+                        handleVerticalWidgetClicks(event.target.id, parentId, clickHandler, recommendationsModified);
+                    }
+                    else{
+                        var el = getClosestNode(event.target,"._unbxd_recs-vertical-slider__item");
+                        var parentId = el.parentElement.id;
+                        handleVerticalWidgetClicks(el.id, parentId, clickHandler, recommendationsModified);
                     }
                 });
             }
         }
 
         for (var i = 0; i < sliderItems.length; i++) {
-
             var fragment = document.createDocumentFragment();
-            
-
             for (var j = 0; j < productFields.length; j++) {
                 var styles = productFields[j].styles || missingValueError('styles', productFields[j]);
-                var dimensionKey = productFields[j].unbxdDimensionKey || missingValueError('unbxdDimensionKey', productFields[j]);
+                var productAttributeKey = productFields[j].unbxdDimensionKey || productFields[j].catalogKey || missingValueError('unbxdDimensionKey or catalogKey', productFields[j]);
                 var cssArr = Object.keys(styles);
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
-                if (dimensionKey != "imageUrl") {
+                if (productAttributeKey != "imageUrl") {
                     var newnode = document.createElement("p");
-                    var dimension = recommendations[i][dimensionKey];
+                    var dimension = recommendations[i][productAttributeKey];
                     newnode.className = sliderContent.sliderContentClass;
-                    if (dimensionKey == "rating") {
+                    if (productAttributeKey == "rating") {
                         newnode.className = sliderContent.sliderContentClass + " _unbxd_content--ratings";
                         if (!dimension) {
                             newnode.innerHTML = "";
@@ -222,7 +276,7 @@ import environment from './environment';
                         }
                     }
         
-                    else if(rexConsoleConfigs.products.strike_price_feature && dimensionKey == rexConsoleConfigs.products.strike_price_feature.new.field){
+                    else if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
                         if(rexConsoleConfigs.products.strike_price_feature.enabled){
                             var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
                             newnode.innerHTML = strikedContent;
