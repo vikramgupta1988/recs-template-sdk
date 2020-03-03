@@ -4,16 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: './src/index.js',
     devtool: "source-map",
-    mode: "development",
+    mode: "production",
     output: {
         path: path.resolve(__dirname, "build"),
-        filename: "unbxd_rex_template_sdk_dev.js",
+        filename: "unbxd_rex_template_sdk.js",
         publicPath: 'build/'
-    },
-    devServer: {
-        contentBase: path.join(__dirname, "build"),
-        compress: true,
-        port: 9000
     },
     module: {
         rules: [
