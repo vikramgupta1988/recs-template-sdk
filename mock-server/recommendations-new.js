@@ -958,7 +958,7 @@ module.exports = {
                         },
                         {
                             "display": "Rating",
-                            "sequence": 2,
+                            "sequence": 4,
                             "unbxdDimensionKey": "rating",
                             "catalogKey": "product_rating",
                             "styles":{
@@ -968,7 +968,7 @@ module.exports = {
                         },
                         {
                             "display": "Title",
-                            "sequence": 3,
+                            "sequence": 2,
                             "unbxdDimensionKey": "title",
                             "catalogKey": "product_title",
                             "styles":{
@@ -1128,7 +1128,7 @@ module.exports = {
                         },
                         {
                             "display": "Rating",
-                            "sequence": 2,
+                            "sequence": 4,
                             "unbxdDimensionKey": "rating",
                             "catalogKey": "product_rating",
                             "styles":{
@@ -1138,7 +1138,7 @@ module.exports = {
                         },
                         {
                             "display": "Title",
-                            "sequence": 3,
+                            "sequence": 2,
                             "unbxdDimensionKey": "title",
                             "catalogKey": "product_title",
                             "styles":{

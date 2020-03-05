@@ -223,6 +223,13 @@ import environment from './environment';
 
         var productFields = rexConsoleConfigs.products.fields || missingValueError('products.fields', rexConsoleConfigs);
 
+        productFields = productFields.sort(function(b,a){
+           if(a.sequence < b.sequence){
+               return 1;
+           }
+           return -1;
+        });
+
         var dimension = sliderContent.dimension;
 
         if (clickHandler) {
