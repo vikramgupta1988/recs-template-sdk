@@ -20,7 +20,7 @@ deploy:
   on:
     branch: rex_template_dev
 after_deploy:
-  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_ID -s $AWS_SECRET_ID -c $CF_ID -i "/$UPLOAD_DIR/*"" -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST -o 'rex_template_dev'
+  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_ID -s $AWS_SECRET_ID -c $CF_ID -i "/$UPLOAD_DIR/*" -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST -o 'rex_template_dev'
 notifications:
   email:
     recipients:
