@@ -80,7 +80,6 @@ import environment from './environment';
     // console.log(process.env.NODE_ENV);
     var platformDomain = environment[process.env.NODE_ENV].url;
     // var platformDomain = 'https://console-lohika.0126-int-use2.unbxd.io/v2.0/';
-    console.log("build check");
     // Constants
     var HOME_PAGE = 'home';
     var PRODUCT_PAGE = 'product';
@@ -188,10 +187,10 @@ import environment from './environment';
     }
 
     function handleVerticalWidgetClicks(parent1Id, parent2Id, clickHandler, recommendationsModified){
-        var vtRegex = /vt-level2-/;
+        var vtRegex = /[0-9]-vt-level2-/;
         if (vtRegex.test(parent1Id)) {
-            var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
-            var parent2ArrayIndex = parent2Id.split("-")[2];
+            var parent1ArrayIndex = parent1Id.split("-")[3]; // fixed id of form *-vt-slider-0
+            var parent2ArrayIndex = parent2Id.split("-")[3];
             clickHandler(recommendationsModified[parent2ArrayIndex][parent1ArrayIndex]);
         }
     }

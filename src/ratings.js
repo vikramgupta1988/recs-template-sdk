@@ -52,7 +52,6 @@ function styleRatingValue(domSelector, ratingConfig){
             })(i);
             (function(index){
                 var stylesArr = Object.keys(ratingConfig.value.styles);
-                console.log(stylesArr)
                 for(var j=0; j<stylesArr.length; j++){
                     valueItemStyles[index].style[stylesArr[j]] = ratingConfig.value.styles[stylesArr[j]];
                 }
