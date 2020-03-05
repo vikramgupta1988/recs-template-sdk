@@ -273,8 +273,7 @@ import environment from './environment';
                     newnode.className = sliderContent.sliderContentClass;
                     if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
                         if(rexConsoleConfigs.products.strike_price_feature.enabled){
-                            var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
-                            newnode.innerHTML = strikedContent;
+                            newnode.innerHTML = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
                         }
                         else{
                             newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;

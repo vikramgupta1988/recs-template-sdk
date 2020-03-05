@@ -12,8 +12,7 @@ export var strikeThrough = function (recommendation, config, domSelector) {
       priceHtml = "<p class='_unbxd_strike_through_container'><span class='_unbxd_strike_through_prefix'>"+ oldPricePrefObject.text+"</span><span class='_unbxd_strike_through_text'>" + config.products.currency +  oldPrice +"</span></p>";
       priceHtml += "<p class='_unbxd_original_price_container'>"+ displayObjectText(displayPriceObj)+
         displayOriginalPrice(config, currentPrice) +    
-        displayDiscountText(discountObj, oldPrice, currentPrice, config, domSelector)+
-        "</p>";
+        "</p>" + displayDiscountText(discountObj, oldPrice, currentPrice, config, domSelector);
       // calling paint and reflow for original and old price  
       styleStrikeThroughItems(config, domSelector);
     }
