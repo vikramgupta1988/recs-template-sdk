@@ -1,8 +1,7 @@
 "use strict";
 import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
-// import { compressedStyle } from './config';
-import { getRatings } from './ratings';
+import { getRatingContent } from './ratings';
 import { strikeThrough } from './strikeThrough';
 import environment from './environment';
 (function (global) {
@@ -266,17 +265,7 @@ import environment from './environment';
                     var newnode = document.createElement("p");
                     var dimension = recommendations[i][productAttributeKey];
                     newnode.className = sliderContent.sliderContentClass;
-                    if (productAttributeKey == "rating") {
-                        newnode.className = sliderContent.sliderContentClass + " _unbxd_content--ratings";
-                        if (!dimension) {
-                            newnode.innerHTML = "";
-                        }
-                        else {
-                            newnode.innerHTML = getRatings(dimension);
-                        }
-                    }
-        
-                    else if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
+                    if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
                         if(rexConsoleConfigs.products.strike_price_feature.enabled){
                             var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
                             newnode.innerHTML = strikedContent;
@@ -284,6 +273,10 @@ import environment from './environment';
                         else{
                             newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
                         }
+                    }
+                    else if(rexConsoleConfigs.products.ratings_feature && productAttributeKey == rexConsoleConfigs.products.ratings_feature.field){
+                     
+                        newnode.innerHTML = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector);
                     }
                     else {
                         if (!dimension) {
@@ -481,7 +474,7 @@ import environment from './environment';
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
             recommendations: recommendationsModified || recommendations,
-            heading: heading, getRatings: getRatings
+            heading: heading
         });
 
         /** Dynamically adjusting width based on no of items to be shown */
