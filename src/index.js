@@ -626,13 +626,13 @@ import environment from './environment';
                 var catlevel2Name = pageInfo.catlevel2Name;
                 var catlevel3Name = pageInfo.catlevel3Name;
                 var catlevel4Name = pageInfo.catlevel4Name;
-                var categoryUrl = getUrlEncodedParam("catlevel1Name", catlevel1Name);
+                var categoryUrl = "&" + getUrlEncodedParam("catlevel1Name", catlevel1Name);
                 if (catlevel2Name) {
-                    categoryUrl += getUrlEncodedParam("catlevel2Name", catlevel2Name);
+                    categoryUrl += "&" + getUrlEncodedParam("catlevel2Name", catlevel2Name);
                     if (catlevel3Name) {
-                        categoryUrl += getUrlEncodedParam("catlevel3Name=", catlevel3Name);
+                        categoryUrl += "&" + getUrlEncodedParam("catlevel3Name=", catlevel3Name);
                         if (catlevel4Name) {
-                            categoryUrl += getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                            categoryUrl += "&" + getUrlEncodedParam("catlevel4Name=", catlevel4Name);
                         }
                     }
                 }
