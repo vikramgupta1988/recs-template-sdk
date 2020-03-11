@@ -8,10 +8,10 @@
         <div class='_unbxd_recs-vertical-slider' id='_unbxd_recs-vertical-slider'> 
             {{~it.recommendations :value:index}}
                 <div class='_unbxd_recs-vertical-list' id='{{=index}}-vt-level1-{{=index}}'>
-                       {{ for(var prop in value) { }}
-                        <div class='_unbxd_recs-vertical-slider__item' id='{{=prop}}-vt-level2-{{=prop}}'>
-                            <img src='{{=value[prop].imageUrl || value[prop].imageUrl[0]}}' />
-                        </div> 
+                       {{ for(var prop=0; prop<value.length; prop++) { }}
+                            <div class='_unbxd_recs-vertical-slider__item' id='{{=prop}}-vt-level2-{{=prop}}'>
+                                <img src='{{=value[prop] ? value[prop].imageUrl:value[prop].imageUrl[0]}}' />
+                            </div>
                        {{ } }}     
                 </div>
             {{~}}
