@@ -1,8 +1,7 @@
 "use strict";
 import './dot';
 import { eventHandlers, setImagesSource, sendWarning } from './handlers';
-// import { compressedStyle } from './config';
-import { getRatings } from './ratings';
+import { getRatingContent } from './ratings';
 import { strikeThrough } from './strikeThrough';
 import environment from './environment';
 (function (global) {
@@ -81,7 +80,6 @@ import environment from './environment';
     // console.log(process.env.NODE_ENV);
     var platformDomain = environment[process.env.NODE_ENV].url;
     // var platformDomain = 'https://console-lohika.0126-int-use2.unbxd.io/v2.0/';
-    console.log("build check");
     // Constants
     var HOME_PAGE = 'home';
     var PRODUCT_PAGE = 'product';
@@ -189,10 +187,10 @@ import environment from './environment';
     }
 
     function handleVerticalWidgetClicks(parent1Id, parent2Id, clickHandler, recommendationsModified){
-        var vtRegex = /vt-level2-/;
+        var vtRegex = /[0-9]-vt-level2-/;
         if (vtRegex.test(parent1Id)) {
-            var parent1ArrayIndex = parent1Id.split("-")[2]; // fixed id of form vt-slider-0
-            var parent2ArrayIndex = parent2Id.split("-")[2];
+            var parent1ArrayIndex = parent1Id.split("-")[3]; // fixed id of form *-vt-slider-0
+            var parent2ArrayIndex = parent2Id.split("-")[3];
             clickHandler(recommendationsModified[parent2ArrayIndex][parent1ArrayIndex]);
         }
     }
@@ -224,6 +222,15 @@ import environment from './environment';
         }
 
         var productFields = rexConsoleConfigs.products.fields || missingValueError('products.fields', rexConsoleConfigs);
+
+        productFields = productFields.sort(function(b,a){
+           a.sequence = a.sequence || a.sequence_number;
+           b.sequence = b.sequence || b.sequence_number;
+           if(a.sequence  < b.sequence){
+               return 1;
+           }
+           return -1;
+        });
 
         var dimension = sliderContent.dimension;
 
@@ -266,24 +273,17 @@ import environment from './environment';
                     var newnode = document.createElement("p");
                     var dimension = recommendations[i][productAttributeKey];
                     newnode.className = sliderContent.sliderContentClass;
-                    if (productAttributeKey == "rating") {
-                        newnode.className = sliderContent.sliderContentClass + " _unbxd_content--ratings";
-                        if (!dimension) {
-                            newnode.innerHTML = "";
-                        }
-                        else {
-                            newnode.innerHTML = getRatings(dimension);
-                        }
-                    }
-        
-                    else if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
+                    if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
                         if(rexConsoleConfigs.products.strike_price_feature.enabled){
-                            var strikedContent = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
-                            newnode.innerHTML = strikedContent;
+                            newnode.innerHTML = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
                         }
                         else{
                             newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
                         }
+                    }
+                    else if(rexConsoleConfigs.products.ratings_feature && rexConsoleConfigs.products.ratings_feature.enabled && productAttributeKey == rexConsoleConfigs.products.ratings_feature.field){
+                     
+                        newnode.innerHTML = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector);
                     }
                     else {
                         if (!dimension) {
@@ -337,7 +337,11 @@ import environment from './environment';
                             sliderItems[i].style.width = hzSliderWidth + "px";
                             recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
                         }
+                        var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
+                        opaqueElSelector.classList.remove("_unxbd_slider_hide");
+                       
                     }, 0);
+                
                 }
                 else {
 
@@ -354,10 +358,12 @@ import environment from './environment';
                             sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
                         }
                         recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
+                        var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
+                        opaqueElSelector.classList.remove("_unxbd_slider_hide");
                     }, 0);
+                 
                 }
-                var opaqueElSelector = document.querySelector("._unxbd_slider_hide");
-                opaqueElSelector.classList.remove("_unxbd_slider_hide");
+               
             }
         }
 
@@ -481,7 +487,7 @@ import environment from './environment';
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn({
             recommendations: recommendationsModified || recommendations,
-            heading: heading, getRatings: getRatings
+            heading: heading
         });
 
         /** Dynamically adjusting width based on no of items to be shown */
@@ -628,13 +634,13 @@ import environment from './environment';
                 var catlevel2Name = pageInfo.catlevel2Name;
                 var catlevel3Name = pageInfo.catlevel3Name;
                 var catlevel4Name = pageInfo.catlevel4Name;
-                var categoryUrl = getUrlEncodedParam("catlevel1Name", catlevel1Name);
+                var categoryUrl = "&" + getUrlEncodedParam("catlevel1Name", catlevel1Name);
                 if (catlevel2Name) {
-                    categoryUrl += getUrlEncodedParam("catlevel2Name", catlevel2Name);
+                    categoryUrl += "&" + getUrlEncodedParam("catlevel2Name", catlevel2Name);
                     if (catlevel3Name) {
-                        categoryUrl += getUrlEncodedParam("catlevel3Name=", catlevel3Name);
+                        categoryUrl += "&" + getUrlEncodedParam("catlevel3Name=", catlevel3Name);
                         if (catlevel4Name) {
-                            categoryUrl += getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                            categoryUrl += "&" + getUrlEncodedParam("catlevel4Name=", catlevel4Name);
                         }
                     }
                 }
