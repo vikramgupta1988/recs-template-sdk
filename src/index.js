@@ -232,8 +232,6 @@ import environment from './environment';
            return -1;
         });
 
-        console.log(productFields);
-
         var dimension = sliderContent.dimension;
 
         if (clickHandler) {
@@ -283,7 +281,7 @@ import environment from './environment';
                             newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
                         }
                     }
-                    else if(rexConsoleConfigs.products.ratings_feature && productAttributeKey == rexConsoleConfigs.products.ratings_feature.field){
+                    else if(rexConsoleConfigs.products.ratings_feature && rexConsoleConfigs.products.ratings_feature.enabled && productAttributeKey == rexConsoleConfigs.products.ratings_feature.field){
                      
                         newnode.innerHTML = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector);
                     }
@@ -324,7 +322,6 @@ import environment from './environment';
         function incrementCounter() {
             counter++;
             if (counter === len) {
-                console.log("done ;loading")
                 if (sliderContent.dimension == "width") {
 
                     setTimeout(function () {
