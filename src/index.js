@@ -283,7 +283,10 @@ import environment from './environment';
                     }
                     else if(rexConsoleConfigs.products.ratings_feature && rexConsoleConfigs.products.ratings_feature.enabled && productAttributeKey == rexConsoleConfigs.products.ratings_feature.field){
                      
-                        newnode.innerHTML = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector);
+                        var ratingContentData = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector);
+                        if(ratingContentData){
+                            newnode.innerHTML = ratingContentData;
+                        }
                     }
                     else {
                         if (!dimension) {

@@ -63,6 +63,9 @@ function styleRatingValue(domSelector, ratingConfig){
 
 
 export var getRatingContent = function(recommendation, ratingConfig, domSelector){
+    if(!recommendation[ratingConfig.field]){
+        return;
+    }
     var ratingData="";
     // if type selected is value only
         if(ratingConfig.type === "value"){
