@@ -1,6 +1,7 @@
 export var getRatings = function(rating){
         if(isNaN(rating)){
-            throw new Error("Invalid rating value provided");
+            console.warn("Invalid rating value provided");
+            return '';
         }
         // Divide the rating by 0.5
         // if the result is an even no e.g 8
