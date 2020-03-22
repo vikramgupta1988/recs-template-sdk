@@ -17,6 +17,7 @@ module.exports = {
                 "title": "best loved longer soft v-neck cami",
                 "productId": "06414260",
                 "price": 19.9,
+                "rating": 3.5,
                 "old_price": 21.9,
                 "display_price": "$19.9",
                 "uniqueId": "06414260",
@@ -50,6 +51,7 @@ module.exports = {
                 "color": [
                     "Blue"
                 ],
+                "rating": 2.8,
                 "catlevel3Name": "Petite Bottoms",
                 "gender": [
                     "women"
@@ -78,6 +80,7 @@ module.exports = {
             },
             {
                 "productId": "07459223",
+                "rating": 4.9,
                 "color": [
                     "Pink",
                     "Blue",
@@ -116,6 +119,7 @@ module.exports = {
                 "catlevel1Name": "women",
                 "productUrl": "/clothing/women/slim-fit-convertible-sleeve-portofino-shirt/pro/9791754C/cat890004",
                 "price": 49.9,
+                "rating": 1.5,
                 "old_price": 58.9,
                 "display_price": "$49.9",
                 "unbxdMetaInformation": {
@@ -145,6 +149,7 @@ module.exports = {
             },
             {
                 "type": "Tank",
+                "rating": 2,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0086_03754822_0343?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -192,6 +197,7 @@ module.exports = {
                     "fromFallbacks": false,
                     "pinned": false
                 },
+                "rating": 1.4,
                 "title": "mid rise denim perfect medium wash jean leggings",
                 "type": "Jeans",
                 "catlevel2Name": "Jeans",
@@ -219,6 +225,7 @@ module.exports = {
                 "catlevel1Name": "women",
                 "title": "express one eleven v-neck tie front easy tee",
                 "uniqueId": "09615303C",
+                "rating": 3.85,
                 "color": [
                     "Pink",
                     "Brown",
@@ -248,6 +255,7 @@ module.exports = {
                 "productId": "08633346",
                 "catlevel2Name": "Petite Clothing",
                 "catlevel1Name": "women",
+                "rating": 1.7,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0097_08633346_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -284,6 +292,7 @@ module.exports = {
                 "price": 79.9,
                 "old_price": 81.9,
                 "display_price": "$79.9",
+                "rating": 0.7,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0092_07249422_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -318,6 +327,7 @@ module.exports = {
                 "color": [
                     "Blue"
                 ],
+                "rating": 0.4,
                 "price": 88,
                 "old_price": 98,
                 "display_price": "$88",
@@ -348,6 +358,7 @@ module.exports = {
                 "title": "cable knit split back pullover sweater",
                 "productId": "08260374C",
                 "type": "Sweater",
+                "rating": 0.9,
                 "gender": [
                     "women"
                 ],
@@ -385,6 +396,7 @@ module.exports = {
                     "Blue",
                     "Black"
                 ],
+                "rating": 4.2,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0092_07479434_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -416,6 +428,7 @@ module.exports = {
                 "color": [
                     "Blue"
                 ],
+                "rating": 3.5,
                 "catlevel1Name": "women",
                 "price": 79.9,
                 "old_price": 81.9,
@@ -457,6 +470,7 @@ module.exports = {
                 "title": "best loved longer soft v-neck cami",
                 "productId": "06414260",
                 "price": 19.9,
+                "rating": 3.5,
                 "old_price": 21.9,
                 "display_price": "$19.9",
                 "uniqueId": "06414260",
@@ -490,6 +504,7 @@ module.exports = {
                 "color": [
                     "Blue"
                 ],
+                "rating": 2.8,
                 "catlevel3Name": "Petite Bottoms",
                 "gender": [
                     "women"
@@ -518,6 +533,7 @@ module.exports = {
             },
             {
                 "productId": "07459223",
+                "rating": 4.9,
                 "color": [
                     "Pink",
                     "Blue",
@@ -556,6 +572,7 @@ module.exports = {
                 "catlevel1Name": "women",
                 "productUrl": "/clothing/women/slim-fit-convertible-sleeve-portofino-shirt/pro/9791754C/cat890004",
                 "price": 49.9,
+                "rating": 1.5,
                 "old_price": 58.9,
                 "display_price": "$49.9",
                 "unbxdMetaInformation": {
@@ -585,6 +602,7 @@ module.exports = {
             },
             {
                 "type": "Tank",
+                "rating": 2,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0086_03754822_0343?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -632,6 +650,7 @@ module.exports = {
                     "fromFallbacks": false,
                     "pinned": false
                 },
+                "rating": 1.4,
                 "title": "mid rise denim perfect medium wash jean leggings",
                 "type": "Jeans",
                 "catlevel2Name": "Jeans",
@@ -659,6 +678,7 @@ module.exports = {
                 "catlevel1Name": "women",
                 "title": "express one eleven v-neck tie front easy tee",
                 "uniqueId": "09615303C",
+                "rating": 3.85,
                 "color": [
                     "Pink",
                     "Brown",
@@ -688,6 +708,7 @@ module.exports = {
                 "productId": "08633346",
                 "catlevel2Name": "Petite Clothing",
                 "catlevel1Name": "women",
+                "rating": 1.7,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0097_08633346_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -724,6 +745,7 @@ module.exports = {
                 "price": 79.9,
                 "old_price": 81.9,
                 "display_price": "$79.9",
+                "rating": 0.7,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0092_07249422_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -758,6 +780,7 @@ module.exports = {
                 "color": [
                     "Blue"
                 ],
+                "rating": 0.4,
                 "price": 88,
                 "old_price": 98,
                 "display_price": "$88",
@@ -788,6 +811,7 @@ module.exports = {
                 "title": "cable knit split back pullover sweater",
                 "productId": "08260374C",
                 "type": "Sweater",
+                "rating": 0.9,
                 "gender": [
                     "women"
                 ],
@@ -825,6 +849,7 @@ module.exports = {
                     "Blue",
                     "Black"
                 ],
+                "rating": 4.2,
                 "imageUrl": [
                     "https://images.express.com/is/image/expressfashion/0092_07479434_0058?cache=on&wid=361&fmt=jpeg&qlt=75,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon"
                 ],
@@ -856,6 +881,7 @@ module.exports = {
                 "color": [
                     "Blue"
                 ],
+                "rating": 3.5,
                 "catlevel1Name": "women",
                 "price": 79.9,
                 "old_price": 81.9,
@@ -900,7 +926,7 @@ module.exports = {
                         "value":"900"
                     }
                 },
-                "css":"._unbxd_strike_through_container{margin:2px;}._unbxd_original_price_container{margin:2px;}._unbxd_item_discount_text{margin:2px;}._unbxd_recs-slider{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;overflow:auto;}._unbxd_recs-slider-heading{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;display:block;}._unbxd_recs-slider__item{cursor:pointer;float:left;margin-right:5px;margin-left:5px;text-align:center}._unbxd_recs-slider__item:last-of-type{margin-right:0}._unbxd_recs-slider__item img{margin-bottom:3px;width:inherit}._unbxd_recs-slider-container{margin-top:8px;overflow:hidden;width:100%}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
+                "css":"._unbxd_strike_through_container{margin:2px;}._unbxd_original_price_container{margin:2px;}._unbxd_item_discount_text{margin:2px;}._unbxd_recs-slider{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;overflow:auto;}._unbxd_recs-slider-heading{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;display:block;}._unbxd_recs-slider__item{cursor:pointer;float:left;margin-right:5px;margin-left:5px;text-align:center}._unbxd_recs-slider__item:last-of-type{margin-right:0}._unbxd_recs-slider__item img{margin-bottom:3px;width:inherit}._unbxd_recs-slider-container{margin-top:8px;overflow:hidden;width:100%}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}._unbxd_rating-item{display:inline-block;margin-top:2px}",
                 "header": {
                     "alignment": "left",
                     "type": "text",
@@ -932,7 +958,7 @@ module.exports = {
                         },
                         {
                             "display": "Rating",
-                            "sequence": 2,
+                            "sequence": 4,
                             "unbxdDimensionKey": "rating",
                             "catalogKey": "product_rating",
                             "styles":{
@@ -942,7 +968,7 @@ module.exports = {
                         },
                         {
                             "display": "Title",
-                            "sequence": 3,
+                            "sequence": 2,
                             "unbxdDimensionKey": "title",
                             "catalogKey": "product_title",
                             "styles":{
@@ -961,6 +987,26 @@ module.exports = {
                             }
                         }
                     ],
+                    "ratings_feature": {
+                        "enabled": true,
+                        "field":"rating",
+                        "type": "both",
+                        "sequence": ["image", "value"],
+                        "prefix": {
+                            "text": "Rating: ",
+                            "styles": {
+                                "fontWeight":"bold",
+                                "fontSize":"12px",
+                                "marginRight":"5px"
+                            }
+                        },
+                        "value":{
+                            "styles": {
+                                "fontWeight":"bold",
+                                "fontSize":"12px"
+                            }
+                        }
+                    },
                     "strike_price_feature": {
                         "enabled": true,
                         "old": {
@@ -1050,7 +1096,7 @@ module.exports = {
                         "value":"200"
                     }
                 },
-                "css":"._unbxd_strike_through_container{margin:2px;}._unbxd_original_price_container{margin:2px;}._unbxd_item_discount_text{margin:2px;}._unbxd_vertical-recs-slider{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;width:inherit;position:relative}._unbxd_recs-vertical-slider-container{overflow-x:hidden}._unbxd_recs-vertical-button-container{padding:0 10px;text-align:right}._unbxd_recs-vertical-slider{overflow:hidden}._unbxd_recs-vertical-slider__item{cursor:pointer;margin:3px 10px}._unbxd_recs-vertical-slider__item img{height:auto;width:100%}._unbxd_recs-vertical-list{float:left}._unbxd_recs-vertical-slider-btn{cursor:pointer;display:inline-block;vertical-align:top;width:30px;height:30px;background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3)}._unbxd_recs-vertical-slider-btn:disabled{opacity:.5;cursor:not-allowed}._unbxd_recs-vertical-slider__content{text-align:center}._unbxd_recs-vertical-slider__content{margin:0;padding:5px 0}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}",
+                "css":"._unbxd_strike_through_container{margin:2px;}._unbxd_original_price_container{margin:2px;}._unbxd_item_discount_text{margin:2px;}._unbxd_vertical-recs-slider{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;width:inherit;position:relative}._unbxd_recs-vertical-slider-container{overflow-x:hidden}._unbxd_recs-vertical-button-container{padding:0 10px;text-align:right}._unbxd_recs-vertical-slider{overflow:hidden}._unbxd_recs-vertical-slider__item{cursor:pointer;margin:3px 10px}._unbxd_recs-vertical-slider__item img{height:inherit;width:inherit}._unbxd_recs-vertical-list{float:left}._unbxd_recs-vertical-slider-btn{cursor:pointer;display:inline-block;vertical-align:top;width:30px;height:30px;background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3)}._unbxd_recs-vertical-slider-btn:disabled{opacity:.5;cursor:not-allowed}._unbxd_recs-vertical-slider__content{text-align:center}._unbxd_recs-vertical-slider__content{margin:0;padding:5px 0}.unbxd-recs-slider{position:relative}._unbxd_recs-slider-btn{background-color:#fff;border-width:0;border-radius:3px;box-shadow:-3px 0 6px -3px rgba(68,88,112,.3);cursor:pointer;height:65px;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:30px}._unbxd_recs-slider-btn:disabled{cursor:not-allowed;opacity:.5}._unbxd_recs-slider-btn img{padding:16px 5px}._unbxd_rex-slider--prev{left:5px}._unbxd_rex-slider--next{right:5px}._unbxd_recs-slider__content{margin-top:5px;margin-bottom:0;width:inherit;overflow:hidden;font-stretch:normal;font-style:normal;text-align:center}._unbxd_content--ratings .recs-star{height:15px;width:15px}._unbxd_content--ratings .recs-star img{height:inherit;width:inherit;margin:0}._unxbd_slider_hide{opacity:0}._unbxd_rating-item{display:inline-block;margin-top:2px}",
                 "header": {
                     "alignment": "center",
                     "type": "text",
@@ -1082,7 +1128,7 @@ module.exports = {
                         },
                         {
                             "display": "Rating",
-                            "sequence": 2,
+                            "sequence": 4,
                             "unbxdDimensionKey": "rating",
                             "catalogKey": "product_rating",
                             "styles":{
@@ -1092,7 +1138,7 @@ module.exports = {
                         },
                         {
                             "display": "Title",
-                            "sequence": 3,
+                            "sequence": 2,
                             "unbxdDimensionKey": "title",
                             "catalogKey": "product_title",
                             "styles":{
@@ -1111,6 +1157,26 @@ module.exports = {
                             }
                         }
                     ],
+                    "ratings_feature": {
+                        "enabled": true,
+                        "field":"rating",
+                        "type": "both",
+                        "sequence": ["value", "image"],
+                        "prefix": {
+                            "text": "Rating: ",
+                            "styles": {
+                                "fontWeight":"bold",
+                                "fontSize":"12px",
+                                "marginRight":"5px"
+                            }
+                        },
+                        "value":{
+                            "styles": {
+                                "fontWeight":"bold",
+                                "fontSize":"12px",
+                            }
+                        }
+                    },
                     "strike_price_feature": {
                         "enabled": true,
                         "old": {
