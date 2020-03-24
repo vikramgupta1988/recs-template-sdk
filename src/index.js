@@ -267,6 +267,9 @@ import environment from './environment';
                 var styles = productFields[j].styles || missingValueError('styles', productFields[j]);
                 var productAttributeKey = productFields[j].unbxdDimensionKey || productFields[j].catalogKey || missingValueError('unbxdDimensionKey or catalogKey', productFields[j]);
                 var cssArr = Object.keys(styles);
+                if(!recommendations[i][productAttributeKey]){
+                    productAttributeKey = productFields[j].catalogKey;
+                }
                 // appending fields to slider item
                 // field appending doesn't applies to imageUrl
                 if (productAttributeKey != "imageUrl") {
@@ -282,7 +285,6 @@ import environment from './environment';
                         }
                     }
                     else if(rexConsoleConfigs.products.ratings_feature && rexConsoleConfigs.products.ratings_feature.enabled && productAttributeKey == rexConsoleConfigs.products.ratings_feature.field){
-                     
                         var ratingContentData = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector);
                         if(ratingContentData){
                             newnode.innerHTML = ratingContentData;
