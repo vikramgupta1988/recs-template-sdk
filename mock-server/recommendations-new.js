@@ -17,7 +17,6 @@ module.exports = {
                 "title": "best loved longer soft v-neck cami",
                 "productId": "06414260",
                 "price": 19.9,
-                "rating": 3.5,
                 "old_price": 21.9,
                 "display_price": "$19.9",
                 "uniqueId": "06414260",
@@ -51,7 +50,7 @@ module.exports = {
                 "color": [
                     "Blue"
                 ],
-                "rating": 2.8,
+                "rating": 0,
                 "catlevel3Name": "Petite Bottoms",
                 "gender": [
                     "women"
@@ -989,7 +988,6 @@ module.exports = {
                     ],
                     "ratings_feature": {
                         "enabled": true,
-                        "field":"rating",
                         "type": "both",
                         "sequence": ["image", "value"],
                         "prefix": {
@@ -1159,7 +1157,6 @@ module.exports = {
                     ],
                     "ratings_feature": {
                         "enabled": true,
-                        "field":"rating",
                         "type": "both",
                         "sequence": ["value", "image"],
                         "prefix": {
