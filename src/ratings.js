@@ -33,10 +33,10 @@ export var getRatings = function(rating){
         return resultString;
 }
 
-function getRatingValuePrefixed(recommendation,ratingConfig){
+function getRatingValuePrefixed(recommendation, ratingConfig, productAttributeKey){
     return "<span class='_unbxd-rating-value-container'><span class='_unbxd-rating-value-prefix _unbxd_rating-item'>"+
           ratingConfig.prefix.text + "</span><span class='_unbxd-rating-value'>"
-          +  recommendation[ratingConfig.field]
+          +  recommendation[productAttributeKey]
           + "</span></span>"
 }
 
@@ -62,33 +62,33 @@ function styleRatingValue(domSelector, ratingConfig){
 }
 
 
-export var getRatingContent = function(recommendation, ratingConfig, domSelector){
-    if(!recommendation[ratingConfig.field]){
+export var getRatingContent = function(recommendation, ratingConfig, domSelector, productAttributeKey){
+    if (!recommendation[productAttributeKey]) {
         return;
     }
     var ratingData="";
     // if type selected is value only
         if(ratingConfig.type === "value"){
-           ratingData = getRatingValuePrefixed(recommendation, ratingConfig, domSelector);
+           ratingData = getRatingValuePrefixed(recommendation, ratingConfig, productAttributeKey);
            styleRatingValue(domSelector, ratingConfig);
         }
     // if type selected is image only
         else if(ratingConfig.type === "image"){
-           ratingData = getRatings(recommendation[ratingConfig.field])
+           ratingData = getRatings(recommendation[productAttributeKey])
         }
     // else both
         else{
             // if image comes first
             if(ratingConfig.sequence[0] === "image"){
-                ratingData = getRatings(recommendation[ratingConfig.field]) +
+                ratingData = getRatings(recommendation[productAttributeKey]) +
                 "<br>" +
-                getRatingValuePrefixed(recommendation, ratingConfig, domSelector);
+                getRatingValuePrefixed(recommendation, ratingConfig, productAttributeKey);
             }
             // else 
             else{
-                ratingData = getRatingValuePrefixed(recommendation, ratingConfig, domSelector) +
+                ratingData = getRatingValuePrefixed(recommendation, ratingConfig, productAttributeKey) +
                 "<br>" +
-                getRatings(recommendation[ratingConfig.field]);
+                getRatings(recommendation[productAttributeKey]);
             }
             styleRatingValue(domSelector, ratingConfig);
         }

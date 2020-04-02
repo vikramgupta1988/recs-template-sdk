@@ -284,8 +284,11 @@ import environment from './environment';
                             newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
                         }
                     }
-                    else if(rexConsoleConfigs.products.ratings_feature && rexConsoleConfigs.products.ratings_feature.enabled && productAttributeKey == rexConsoleConfigs.products.ratings_feature.field){
-                        var ratingContentData = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector);
+                    else if(rexConsoleConfigs.products.ratings_feature &&
+                        rexConsoleConfigs.products.ratings_feature.enabled &&
+                        productFields[j].unbxdDimensionKey &&
+                        productFields[j].unbxdDimensionKey.toLowerCase() == "rating" ){
+                        var ratingContentData = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector, productAttributeKey);
                         if(ratingContentData){
                             newnode.innerHTML = ratingContentData;
                         }
@@ -607,7 +610,7 @@ import environment from './environment';
         var siteKey = userInfo.siteKey;
         var apiKey = userInfo.apiKey;
 
-        var requestUrl = platformDomain + apiKey + "/" + siteKey + '/items?pageType=';
+        var requestUrl = platformDomain + apiKey + "/" + siteKey + '/items?&template=true&pageType=';
 
         if (!userId) {
             throw new Error("user id is missing");
