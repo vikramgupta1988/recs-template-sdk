@@ -943,6 +943,7 @@ module.exports = {
                     "currency": "$",
                     "max": 18,
                     "visible": 4,
+                    "visibleOnMobile": 3,
                     "fieldsCount": 3,
                     "fields": [
                         {

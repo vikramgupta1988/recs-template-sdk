@@ -73,6 +73,42 @@ import environment from './environment';
     
     };
 
+    var MOBILE = 'mobile';
+    var DESKTOP = 'desktop';
+    var SMALL = 'small';
+    var LARGE = 'large';
+
+    function getDeviceType() {
+        console.log("screen.width: ", window.screen.width);
+        console.log("screen.height: ", window.screen.height);
+        const mediaQueryList = window.matchMedia("(orientation: portrait)");
+        if(mediaQueryList.matches) {
+            console.log('portrait mode')
+            if (window.screen.width <= 667) {
+                return MOBILE;
+            } else {
+                return DESKTOP;
+            }
+        } else {
+            console.log('landscape mode')
+            if (window.screen.height <=667) {
+                return MOBILE;
+            } else {
+                return DESKTOP;
+            }
+        }
+    }
+
+    function getBrowserSize() {
+        console.log("window.innerWidth: ", window.innerWidth);
+        console.log("window.innerHeight: ", window.innerHeight);
+        if (window.innerWidth <= 667) {
+            return SMALL;
+        } else {
+            return LARGE;
+        }
+    }
+
 
     /** Global variables */
     // the domain url
@@ -475,6 +511,15 @@ import environment from './environment';
         var renderFn = doT.template(template);
         var renderTargetEl = document.getElementById(targetDOMElementId);
 
+        // console.log(screen.width)
+        // console.log(window.innerWidth);
+        var device = getDeviceType();
+        var browserSize = getBrowserSize();
+        if (device === MOBILE || browserSize === SMALL) {
+            const itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
+            itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
+        }
+ 
         if (!renderTargetEl) {
             return sendWarning('The target element id <' + targetDOMElementId + '> is not present in DOM. Execution can not continue');
         }
