@@ -245,6 +245,7 @@ import environment from './environment';
         var domSelector = "#" + targetDOMElementId + sliderContent.containerId;
         var sliderContainer = document.querySelector(domSelector);
         var widgetWidth = options.widgetWidth;
+        var ratingFeature = rexConsoleConfigs.products.ratings_feature || rexConsoleConfigs.products.ratingsFeature;
 
         if (!sliderContainer) {
             return sendWarning('The slider container id was not found. Script can not continue');
@@ -320,11 +321,11 @@ import environment from './environment';
                             newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
                         }
                     }
-                    else if(rexConsoleConfigs.products.ratings_feature &&
-                        rexConsoleConfigs.products.ratings_feature.enabled &&
+                    else if(ratingFeature &&
+                        ratingFeature.enabled &&
                         productFields[j].unbxdDimensionKey &&
                         productFields[j].unbxdDimensionKey.toLowerCase() == "rating" ){
-                        var ratingContentData = getRatingContent(recommendations[i], rexConsoleConfigs.products.ratings_feature, domSelector, productAttributeKey);
+                        var ratingContentData = getRatingContent(recommendations[i], ratingFeature, domSelector, productAttributeKey);
                         if(ratingContentData){
                             newnode.innerHTML = ratingContentData;
                         }
