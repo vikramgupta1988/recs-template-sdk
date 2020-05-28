@@ -539,10 +539,17 @@ import environment from './environment';
             }
         }
 
-        document.getElementById(targetDOMElementId).innerHTML = renderFn({
+        var templateData = {
             recommendations: recommendationsModified || recommendations,
             heading: heading
-        });
+        }
+
+        /* Callback to make any modification to data and pass on the modified data to renderFn  */
+        if (typeof(context.dataParser) === "function") {
+            templateData = context.dataParser(templateData)
+         }
+
+        document.getElementById(targetDOMElementId).innerHTML = renderFn(templateData);
 
         /** Dynamically adjusting width based on no of items to be shown */
         var sliderOptionsConfig = {

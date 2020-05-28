@@ -72,6 +72,12 @@
             itemClickHandler: function (product) {
                 // product information will be provided here
                 alert(JSON.stringify(product));
+            },
+
+            dataParser: function(data){
+                // modify the data passed on 
+                console.log("template data");
+                //return data;
             }
         };
         window._unbxd_getRecommendations(context);
