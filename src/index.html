@@ -74,10 +74,10 @@
                 alert(JSON.stringify(product));
             },
 
-            dataParser: function(data){
-                // modify the data passed on 
-                console.log("template data");
-                return data;
+            dataParser: function(templateData){
+                // modify the data received from recommendation API in case required.
+                // console.log("template data");
+                return templateData;
             }
         };
         window._unbxd_getRecommendations(context);
