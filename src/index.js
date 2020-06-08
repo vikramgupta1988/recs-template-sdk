@@ -487,7 +487,7 @@ import environment from './environment';
         /** End of Setting styles for heading */
     }
 
-   // var global.dataParser =  dataParser;
+   var dataParser;
 
     global._unbxd_registerHook = function (callback){
         global.dataParser = callback;
@@ -775,6 +775,7 @@ import environment from './environment';
 
                 }
                 _unbxd_generateRexContent(options);
+                global.dataParser = null;
             }
         }
 

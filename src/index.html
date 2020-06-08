@@ -48,13 +48,13 @@
     <script type="text/javascript" src="build/unbxd_rex_template_sdk_dev.js"></script>
     <script>
         
-        dataParser = function(templateData){
+        templateDataModifier = function(templateData){
             // modify the data received from recommendation API in case required.
             console.log("template data");
             return templateData;
         }
 
-        window._unbxd_registerHook(dataParser);
+        window._unbxd_registerHook(templateDataModifier);
 
         var context = {
             widgets: {
