@@ -487,6 +487,13 @@ import environment from './environment';
         /** End of Setting styles for heading */
     }
 
+   // var global.dataParser =  dataParser;
+
+    global._unbxd_registerHook = function (callback){
+        global.dataParser = callback;
+    }
+
+
     /** exporting a global function to initialize recs slider */
     global._unbxd_generateRexContent = function (options) {
         // console.log(options)
@@ -546,8 +553,8 @@ import environment from './environment';
         }
 
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
-        if (dataParser && typeof(dataParser) === "function") {
-            templateData = dataParser(templateData);
+        if (global.dataParser && typeof(global.dataParser) === "function") {
+            templateData = global.dataParser(templateData);
          }
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn(templateData);
@@ -862,12 +869,7 @@ import environment from './environment';
         });
     }
 
-    var dataParser;
-
-    global._unbxd_registerHook = function (callback){
-        dataParser = callback;
-    }
-
+   
 })(window);
 
 
