@@ -54,7 +54,7 @@
             return templateData;
         }
 
-        window._unbxd_registerHook(templateDataModifier);
+        window._unbxd_registerHook("beforeTemplateRender", templateDataModifier);
 
         var context = {
             widgets: {

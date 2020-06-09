@@ -489,8 +489,12 @@ import environment from './environment';
 
    var dataParser;
 
-    global._unbxd_registerHook = function (callback){
-        global.dataParser = callback;
+    global._unbxd_registerHook = function (eventName, callback){
+        // eventName= "recommendation-received";
+        global.addEventListener(eventName, function(evt){
+            callback(evt.detail)
+        }, false);
+        //global.dataParser = callback;
     }
 
 
@@ -552,10 +556,13 @@ import environment from './environment';
             heading: heading
         }
 
-        /* Callback to make any modification to data and pass on the modified data to renderFn  */
-        if (global.dataParser && typeof(global.dataParser) === "function") {
-            templateData = global.dataParser(templateData);
-         }
+        // /* Callback to make any modification to data and pass on the modified data to renderFn  */
+        // if (global.dataParser && typeof(global.dataParser) === "function") {
+        //     templateData = global.dataParser(templateData);
+        //  }
+
+         var event = new CustomEvent("beforeTemplateRender", {detail: templateData});
+         global.dispatchEvent(event);
 
         document.getElementById(targetDOMElementId).innerHTML = renderFn(templateData);
 
@@ -648,6 +655,25 @@ import environment from './environment';
             return queryStringLocal;
         }
 
+        function getCookie(key) {
+            var allcookies = document.cookie;
+            var name, value;
+            document.write ("All Cookies : " + allcookies );
+            
+            // Get all the cookies pairs in an array
+            var cookiearray = allcookies.split(';');
+            
+            // Now take key value pair out of this array
+            for(var i=0; i<cookiearray.length; i++) {
+               name = cookiearray[i].split('=')[0];
+               value = cookiearray[i].split('=')[1];
+               //document.write ("Key is : " + name + " and Value is : " + value);
+               if(name === key){
+                   return value;
+               }
+            }
+         }
+
         // getting page info
         var pageType = getPageDetails(context.pageInfo);
 
@@ -663,14 +689,14 @@ import environment from './environment';
        // var dataParser = getDataParserHandler(context);
 
         // getting userId, siteKey and apiKey
-        var userInfo = context.userInfo;
+        var userInfo = getCookie('unbxd_userId') || context.userInfo;
         if (!userInfo) {
             throw new Error("User info missing")
         }
 
         var userId = userInfo.userId;
-        var siteKey = userInfo.siteKey;
-        var apiKey = userInfo.apiKey;
+        var siteKey = global.UnbxdSiteName || userInfo.siteKey;
+        var apiKey = global.UnbxdApiKey || userInfo.apiKey;
 
         var requestUrl = platformDomain + apiKey + "/" + siteKey + '/items?&template=true&pageType=';
 
