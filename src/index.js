@@ -11,7 +11,7 @@ import environment from './environment';
      */
 
     /** Function for fetching api requests */
-    function fetchData(url, cb) {
+    function fetchData(url, setHeader, cb) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
@@ -26,6 +26,8 @@ import environment from './environment';
             cb('Failed network request: ' + url);
         }
         xhttp.open("GET", url, true);
+        if(setHeader)
+            xhttp.setRequestHeader("unbxd-device-type", window.unbxdDeviceType);
         xhttp.send();
     }
 
@@ -72,7 +74,8 @@ import environment from './environment';
         return false;
     
     };
-
+    window.scrollLeft = 0;
+    window.scrollLeftPrev = 0;
     var MOBILE = 'mobile';
     var DESKTOP = 'desktop';
     var SMALL = 'small';
@@ -229,6 +232,44 @@ import environment from './environment';
             var parent2ArrayIndex = parent2Id.split("-")[3];
             clickHandler(recommendationsModified[parent2ArrayIndex][parent1ArrayIndex]);
         }
+    }
+    function debounce(func, wait) {
+        let timeout
+        return function(...args) {
+          const context = this
+          clearTimeout(timeout)
+          timeout = setTimeout(() => func.apply(context, args), wait)
+        }
+      }
+    function scrollHandler (event){
+            if(Math.abs(window.scrollLeft - this.scrollLeft) <= 2){
+                console.log("HHHHHHHHHH");
+            }else if(window.scrollLeft < (this.scrollLeft- 2)) {
+                // horizontally scrolled
+                // window.scrollLeftPrev = window.scrollLeft;
+                window.scrollLeft = this.scrollLeft;
+                global._unbxd_recsSliderSideScroll('recommendations', 'right');
+                // window.sliderContainer.removeEventListener("scroll", function(){
+                //     setTimeout(function(){
+                //         window.sliderContainer.addEventListener("scroll", debounce(scrollHandler.bind(window.sliderContainer),1000));
+                //     },100)
+                // });
+                
+                //return;
+            }else{
+                // window.scrollLeftPrev = window.scrollLeft;
+                window.scrollLeft = this.scrollLeft;
+                global._unbxd_recsSliderSideScroll('recommendations', 'left');
+                // window.sliderContainer.removeEventListener("scroll", function(){
+                //     setTimeout(function(){
+                //         window.sliderContainer.addEventListener("scroll", debounce(scrollHandler.bind(window.sliderContainer),1000));
+                //     },100)
+                // });
+            }
+            
+        // setTimeout(function(){
+        //     window.scrollDebounce = false
+        // }, 1000)
     }
 
     function handleSizeCalculations(targetDOMElementId, options) {
@@ -516,8 +557,13 @@ import environment from './environment';
         // console.log(window.innerWidth);
         var device = getDeviceType();
         var browserSize = getBrowserSize();
+        var itemsToShowOnMobile;
         if (device === MOBILE || browserSize === SMALL) {
-            const itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
+            itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
+            itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
+        }
+        if(window.unbxdDeviceType === "mobile-browser"){
+            itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
  
@@ -553,8 +599,8 @@ import environment from './environment';
             itemsToShow: itemsToShow,
             maxProducts: maxProducts,
             assets: options.assets,
-            sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider",
+            sliderType: (isVertical || !window.unbxdDeviceType === "mobile-browser") ? "vertical" : "horizontal",
+            sliderClass: (isVertical || !window.unbxdDeviceType === "mobile-browser") ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider",
             widgetWidth: widgetWidth
         }
 
@@ -562,10 +608,12 @@ import environment from './environment';
         if (isVertical) {
             global._unbxd_recsItemToScrollVt = itemsToShow;
         }
+        else if(window.unbxdDeviceType === "mobile-browser"){
+            global._unbxd_recsItemToScrollHz = itemsToShow;
+        }
         else {
             global._unbxd_recsItemToScrollHz = itemsToShow;
         }
-
 
             /** Attaching styles for the slider */
         var eventHandlerStyle = document.createElement('style');
@@ -613,6 +661,22 @@ import environment from './environment';
             return pageTypeLocal;
         }
 
+        function getTemplateDetails(context){
+            var device = getDeviceType();
+            var browserSize = getBrowserSize();
+
+            if(context.unbxdDeviceType && context.unbxdDeviceType.mobileBrowser)
+                return "mobile-browser";
+            else if(context.unbxdDeviceType && context.unbxdDeviceType.desktopBrowser)
+                return "desktop-browser";
+            else if(device === MOBILE || browserSize === SMALL){
+                return "mobile-browser";
+            }
+            else{
+                return "desktop-browser";
+            }
+        }
+
         function getClickHandler(context) {
             return context.itemClickHandler;
         }
@@ -635,6 +699,9 @@ import environment from './environment';
 
         // getting page info
         var pageType = getPageDetails(context.pageInfo);
+
+        // getting template Info
+       window.unbxdDeviceType = getTemplateDetails(context)
 
         // get widget if
         var widgets = context.widgets;
@@ -671,6 +738,7 @@ import environment from './environment';
         }
 
         requestUrl += encodeURIComponent(pageType);
+        // requestUrl += "&unbxdDeviceType=" + encodeURIComponent(window.unbxdDeviceType);
         var pageInfo = context.pageInfo;
         switch (pageType.toLowerCase()) {
             case PRODUCT_PAGE:
@@ -812,42 +880,42 @@ import environment from './environment';
         var verticalTemplate;
         var compressedStyle;
         var compressedStyleVertical;
-        fetchData(requestUrl, function (err, res) {
+        fetchData(requestUrl, true,  function (err, res) {
             // fetching data specific to a page type
             if (err) {
                 throw new Error('Failed to fetch recommendations');
             }
             recommendationsResponse = JSON.parse(res);
 
-            // horizontal templates configuration
-            horizontalTemplate = recommendationsResponse.template.horizontal;
-            if(horizontalTemplate){
-                horizontalConfig = horizontalTemplate.conf;
-                horizontalAssets = horizontalConfig.assets;
-                var templateUrlHorizontal = horizontalTemplate.scriptUrl;
-                if(templateUrlHorizontal){
-                    
-                    /** Fetch template layout string */
-                    fetchData(templateUrlHorizontal, horizontalTemplateHandler);
+            // horizontal desktop templates configuration
+                horizontalTemplate = recommendationsResponse.template.horizontal;
+                if(horizontalTemplate){
+                    horizontalConfig = horizontalTemplate.conf;
+                    horizontalAssets = horizontalConfig.assets;
+                    var templateUrlHorizontal = horizontalTemplate.scriptUrl;
+                    if(templateUrlHorizontal){
+                        
+                        /** Fetch template layout string */
+                        fetchData(templateUrlHorizontal,false,  horizontalTemplateHandler);
+                    }
+                    else{
+                        console.warn("script url not found for horizontal template")
+                    }
+                }       
+                // vertical templates configuration
+                verticalTemplate = recommendationsResponse.template.vertical;
+                if(verticalTemplate){
+                    verticalConfig = verticalTemplate.conf;
+                    verticalAssets = verticalConfig.assets;
+                    var templateUrlVertical = verticalTemplate.scriptUrl;
+                    if(templateUrlVertical){
+                        /** Fetch vertical template layout string */
+                        fetchData(templateUrlVertical,false,  verticalTemplateHandler);
+                    }
+                    else{
+                        console.warn("script url not found for vertical template")
+                    }
                 }
-                else{
-                    console.warn("script url not found for horizontal template")
-                }
-            }       
-            // vertical templates configuration
-            verticalTemplate = recommendationsResponse.template.vertical;
-            if(verticalTemplate){
-                verticalConfig = verticalTemplate.conf;
-                verticalAssets = verticalConfig.assets;
-                var templateUrlVertical = verticalTemplate.scriptUrl;
-                if(templateUrlVertical){
-                    /** Fetch vertical template layout string */
-                    fetchData(templateUrlVertical, verticalTemplateHandler);
-                }
-                else{
-                    console.warn("script url not found for vertical template")
-                }
-            }
         });
     }
 })(window);
