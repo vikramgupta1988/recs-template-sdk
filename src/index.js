@@ -540,6 +540,7 @@ import environment from './environment';
         var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs.products);
         var clickHandler = options.clickHandler;
+        var dataParser = options.dataParser;
         var isVertical = options.isVertical;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
@@ -585,10 +586,17 @@ import environment from './environment';
             }
         }
 
-        document.getElementById(targetDOMElementId).innerHTML = renderFn({
+        var templateData = {
             recommendations: recommendationsModified || recommendations,
             heading: heading
-        });
+        }
+
+        /* Callback to make any modification to data and pass on the modified data to renderFn  */
+        if (dataParser && typeof(dataParser) === "function") {
+            templateData = dataParser(templateData)
+         }
+
+        document.getElementById(targetDOMElementId).innerHTML = renderFn(templateData);
 
         /** Dynamically adjusting width based on no of items to be shown */
         var sliderOptionsConfig = {
@@ -681,6 +689,10 @@ import environment from './environment';
             return context.itemClickHandler;
         }
 
+        function getDataParserHandler(context) {
+            return context.dataParser;
+        }
+
         function getUrlEncodedParam(paramName, paramValue) {
             return "" + paramName + "=" + encodeURIComponent(paramValue);
         }
@@ -712,6 +724,7 @@ import environment from './environment';
             throw new Error('No widget id provided');
         }
         var itemClickHandler = getClickHandler(context);
+        var dataParser = getDataParserHandler(context);
 
         // getting userId, siteKey and apiKey
         var userInfo = context.userInfo;
@@ -793,6 +806,7 @@ import environment from './environment';
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
+                    dataParser: dataParser,
                     sliderClass: "_unbxd_recs-slider",
                     compressedStyle: compressedStyle
                 }
@@ -819,6 +833,7 @@ import environment from './environment';
                     assets: verticalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
+                    dataParser: dataParser,
                     isVertical: true,
                     sliderClass: "_unbxd_recs-vertical-slider",
                     compressedStyle: compressedStyleVertical
