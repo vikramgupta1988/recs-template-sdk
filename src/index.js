@@ -487,14 +487,10 @@ import environment from './environment';
         /** End of Setting styles for heading */
     }
 
-   var dataParser;
 
-    global._unbxd_registerHook = function (eventName, callback){
-        // eventName= "recommendation-received";
-        global.addEventListener(eventName, function(evt){
-            callback(evt.detail)
-        }, false);
-        //global.dataParser = callback;
+    global.eventQueue = {};
+    global._unbxd_registerHook = function (eventName, eventCallback){
+        global.eventQueue[eventName] = eventCallback;
     }
 
 
@@ -510,7 +506,7 @@ import environment from './environment';
         var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs.products);
         var clickHandler = options.clickHandler;
-        // var dataParser = options.dataParser;
+        var eventQueue = options.eventQueue;
         var isVertical = options.isVertical;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
@@ -556,14 +552,12 @@ import environment from './environment';
             heading: heading
         }
 
-        // /* Callback to make any modification to data and pass on the modified data to renderFn  */
-        // if (global.dataParser && typeof(global.dataParser) === "function") {
-        //     templateData = global.dataParser(templateData);
-        //  }
-
-         var event = new CustomEvent("beforeTemplateRender", {detail: templateData});
-         global.dispatchEvent(event);
-
+        /* Callback to make any modification to data and pass on the modified data to renderFn  */
+        if (eventQueue && typeof(eventQueue['beforeTemplateRender']) === "function") {
+            var beforeTemplateRenderCallback = eventQueue['beforeTemplateRender']
+            templateData = beforeTemplateRenderCallback(templateData);
+         }
+        
         document.getElementById(targetDOMElementId).innerHTML = renderFn(templateData);
 
         /** Dynamically adjusting width based on no of items to be shown */
@@ -597,6 +591,13 @@ import environment from './environment';
         document.head.appendChild(eventHandlerStyle);
 
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
+
+        /* Callback to make any modification to data and pass on the modified data to renderFn  */
+        if (eventQueue && typeof(eventQueue['afterTemplateRender']) === "function") {
+            var beforeTemplateRenderCallback = eventQueue['afterTemplateRender']
+            templateData = beforeTemplateRenderCallback(isVertical || false);
+         }
+     
     }
 
 
@@ -668,7 +669,7 @@ import environment from './environment';
                name = cookiearray[i].split('=')[0];
                value = cookiearray[i].split('=')[1];
                //document.write ("Key is : " + name + " and Value is : " + value);
-               if(name === key){
+               if(name.trim() === key){
                    return value;
                }
             }
@@ -686,17 +687,17 @@ import environment from './environment';
             throw new Error('No widget id provided');
         }
         var itemClickHandler = getClickHandler(context);
-       // var dataParser = getDataParserHandler(context);
+       var eventQueue = global.eventQueue;
 
         // getting userId, siteKey and apiKey
-        var userInfo = getCookie('unbxd_userId') || context.userInfo;
-        if (!userInfo) {
-            throw new Error("User info missing")
-        }
+        var userInfo = context.userInfo;
+        // if (!userInfo) {
+        //     throw new Error("User info missing")
+        // }
 
-        var userId = userInfo.userId;
-        var siteKey = global.UnbxdSiteName || userInfo.siteKey;
-        var apiKey = global.UnbxdApiKey || userInfo.apiKey;
+        var userId = (userInfo && userInfo.userId) || getCookie('unbxd_userId');
+        var siteKey = (userInfo && userInfo.siteKey) || global.UnbxdSiteName;
+        var apiKey =  (userInfo && userInfo.apiKey)  ||global.UnbxdApiKey;
 
         var requestUrl = platformDomain + apiKey + "/" + siteKey + '/items?&template=true&pageType=';
 
@@ -767,7 +768,7 @@ import environment from './environment';
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
-                    // dataParser: dataParser,
+                    eventQueue: eventQueue,
                     sliderClass: "_unbxd_recs-slider",
                     compressedStyle: compressedStyle
                 }
@@ -794,14 +795,13 @@ import environment from './environment';
                     assets: verticalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
-                    // dataParser: dataParser,
+                    eventQueue: eventQueue,
                     isVertical: true,
                     sliderClass: "_unbxd_recs-vertical-slider",
                     compressedStyle: compressedStyleVertical
 
                 }
                 _unbxd_generateRexContent(options);
-                global.dataParser = null;
             }
         }
 

@@ -47,14 +47,27 @@
 
     <script type="text/javascript" src="build/unbxd_rex_template_sdk_dev.js"></script>
     <script>
+        var UnbxdSiteName = 'demo2-com11555668711';
+        var UnbxdApiKey = '19762cd9ce8ffcdb88fee1404e3fb802';
         
-        templateDataModifier = function(templateData){
+        beforeTemplateRenderer = function(templateData){
             // modify the data received from recommendation API in case required.
             console.log("template data");
             return templateData;
         }
 
-        window._unbxd_registerHook("beforeTemplateRender", templateDataModifier);
+             //Perform activity after template render
+        afterTemplateRenderer = function(isVertical){
+            if(!isVertical){
+                console.log("Horizontal Template Rendered");
+            } else {
+                console.log("Vertical Template Rendered");
+            }
+        }
+
+        window._unbxd_registerHook("beforeTemplateRender", beforeTemplateRenderer);
+        window._unbxd_registerHook("afterTemplateRender", afterTemplateRenderer);
+
 
         var context = {
             widgets: {
