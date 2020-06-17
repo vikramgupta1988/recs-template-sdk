@@ -9,7 +9,10 @@
             {{~it.recommendations :value:index}}
                 <div class='_unbxd_recs-vertical-list' id='{{=index}}-vt-level1-{{=index}}'>
                        {{ for(var prop=0; prop<value.length; prop++) { }}
-                            <div class='_unbxd_recs-vertical-slider__item' id='{{=prop}}-vt-level2-{{=prop}}'>
+                            <div class='_unbxd_recs-vertical-slider__item' id='{{=prop}}-vt-level2-{{=prop}}'
+                             data-unbxdAttr='product' data-unbxdparam_experience_widget='{{=it.analyticsData.widgetNum}}'
+                             data-unbxdparam_experience_pagetype='{{=it.analyticsData.pageType}}' data-unbxdparam_sku='{{=value[0].uniqueId}}'
+                             data-unbxdparam_requestId='{{=it.analyticsData.requestId}}'>
                                 <img src='{{=value[prop] ? value[prop].imageUrl:value[prop].imageUrl[0]}}' />
                             </div>
                        {{ } }}     

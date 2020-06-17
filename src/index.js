@@ -14,9 +14,11 @@ import environment from './environment';
     function fetchData(url, cb) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
+
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
-                // Typical action to be performed when the document is ready:
-                cb(null, xhttp.responseText);
+           // Typical action to be performed when the document is ready:
+                var requestId = this.getResponseHeader("x-request-id");
+                cb(null, xhttp.responseText, requestId);
             }
             else if (this.readyState == 4 && (this.status != 200 || this.status != 204)) {
                 cb('Invalid network request: ' + url);
@@ -542,7 +544,12 @@ import environment from './environment';
 
         var templateData = {
             recommendations: recommendationsModified || recommendations,
-            heading: heading
+            heading: heading, 
+            analyticsData: {
+                widgetNum: 'WIDGET'+ options.widgetNum,
+                pageType: options.pageType,
+                requestId: options.reqId
+            }
         }
 
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
@@ -721,7 +728,7 @@ import environment from './environment';
 
         requestUrl += "&uid=" + userId;
 
-        function renderWidgetDataHorizontal(widget, recommendations, heading) {
+        function renderWidgetDataHorizontal(widget, widgetNum, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
@@ -739,15 +746,18 @@ import environment from './environment';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     dataParser: dataParser,
+                    widgetNum: widgetNum,
+                    pageType: pageType,
+                    reqId: reqId,
                     sliderClass: "_unbxd_recs-slider",
                     compressedStyle: compressedStyle
                 }
                 _unbxd_generateRexContent(options);
             }
-        }
+        } 
 
 
-        function renderWidgetDataVertical(widget, recommendations, heading) {
+        function renderWidgetDataVertical(widget, widgetNum, recommendations, heading) {
             var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
@@ -766,6 +776,9 @@ import environment from './environment';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     dataParser: dataParser,
+                    widgetNum: widgetNum,
+                    pageType: pageType,
+                    reqId: reqId,
                     isVertical: true,
                     sliderClass: "_unbxd_recs-vertical-slider",
                     compressedStyle: compressedStyleVertical
@@ -780,7 +793,7 @@ import environment from './environment';
                 var widget3Data = recommendationsResponse.widget3;
                 var widget3Heading = widget3Data.widgetTitle;
                 var widget3Recommendations = widget3Data.recommendations;
-                renderWidgetDataVertical(widget3, widget3Recommendations, widget3Heading);
+                renderWidgetDataVertical(widget3, 3, widget3Recommendations, widget3Heading);
             }
         }
 
@@ -789,13 +802,13 @@ import environment from './environment';
                 var widget1Data = recommendationsResponse.widget1;
                 var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
-                renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
+                renderWidgetDataHorizontal(widget1, 1, widget1Recommendations, widget1Heading);
             }
             if (widget2) {
                 var widget2Data = recommendationsResponse.widget2;
                 var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
-                renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
+                renderWidgetDataHorizontal(widget2, 2, widget2Recommendations, widget2Heading);
             }
 
         }
@@ -827,7 +840,8 @@ import environment from './environment';
         var verticalTemplate;
         var compressedStyle;
         var compressedStyleVertical;
-        fetchData(requestUrl, function (err, res) {
+        var reqId;
+        fetchData(requestUrl, function (err, res, requestId) {
             // fetching data specific to a page type
             if (err) {
                 throw new Error('Failed to fetch recommendations');
@@ -836,6 +850,7 @@ import environment from './environment';
 
             // horizontal templates configuration
             horizontalTemplate = recommendationsResponse.template.horizontal;
+            reqId = requestId;
             if(horizontalTemplate){
                 horizontalConfig = horizontalTemplate.conf;
                 horizontalAssets = horizontalConfig.assets;
