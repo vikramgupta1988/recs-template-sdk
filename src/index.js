@@ -506,6 +506,7 @@ import environment from './environment';
         var itemsToShow = rexConsoleConfigs.products.visible || missingValueError('products.visible', rexConsoleConfigs);
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs.products);
         var clickHandler = options.clickHandler;
+        var dataParser = options.dataParser;
         var eventQueue = options.eventQueue;
         var isVertical = options.isVertical;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
@@ -553,6 +554,9 @@ import environment from './environment';
         }
 
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
+        if (dataParser && typeof(dataParser) === "function") {
+            templateData = dataParser(templateData)
+        }
         if (eventQueue && typeof(eventQueue['beforeTemplateRender']) === "function") {
             var beforeTemplateRenderCallback = eventQueue['beforeTemplateRender']
             templateData = beforeTemplateRenderCallback(templateData);
@@ -640,6 +644,10 @@ import environment from './environment';
             return context.itemClickHandler;
         }
 
+        function getDataParserHandler(context) {
+            return context.dataParser;
+        }
+
         function getUrlEncodedParam(paramName, paramValue) {
             return "" + paramName + "=" + encodeURIComponent(paramValue);
         }
@@ -659,8 +667,7 @@ import environment from './environment';
         function getCookie(key) {
             var allcookies = document.cookie;
             var name, value;
-            document.write ("All Cookies : " + allcookies );
-            
+           
             // Get all the cookies pairs in an array
             var cookiearray = allcookies.split(';');
             
@@ -687,7 +694,8 @@ import environment from './environment';
             throw new Error('No widget id provided');
         }
         var itemClickHandler = getClickHandler(context);
-       var eventQueue = global.eventQueue;
+        var dataParser = getDataParserHandler(context);
+        var eventQueue = global.eventQueue;
 
         // getting userId, siteKey and apiKey
         var userInfo = context.userInfo;
@@ -768,6 +776,7 @@ import environment from './environment';
                     assets: horizontalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
+                    dataParser: dataParser,
                     eventQueue: eventQueue,
                     sliderClass: "_unbxd_recs-slider",
                     compressedStyle: compressedStyle
@@ -796,6 +805,7 @@ import environment from './environment';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     eventQueue: eventQueue,
+                    dataParser: dataParser,
                     isVertical: true,
                     sliderClass: "_unbxd_recs-vertical-slider",
                     compressedStyle: compressedStyleVertical
