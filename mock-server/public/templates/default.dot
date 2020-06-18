@@ -4,7 +4,10 @@
         <button class='_unbxd_recs-slider-btn _unbxd_rex-slider--prev' onclick='_unbxd_recsSliderScrollPrev(event)'></button>
         <button class='_unbxd_recs-slider-btn _unbxd_rex-slider--next' onclick='_unbxd_recsSliderScrollNext(event)'></button>
         <div class='_unbxd_recs-slider' id='_unbxd_recs-slider'> {{~it.recommendations :value:index}}
-        <div class='_unbxd_recs-slider__item' id='hz-item-{{=index}}'>
+        <div class='_unbxd_recs-slider__item' id='hz-item-{{=index}}'
+        data-unbxdAttr='product' data-unbxdparam_experience_widget='{{=it.analyticsData.widgetNum}}'
+        data-unbxdparam_experience_pagetype='{{=it.analyticsData.pageType}}' data-unbxdparam_sku='{{=value.uniqueId}}'
+        data-unbxdparam_requestId='{{=it.analyticsData.requestId}}'>
             <img src='{{=value.imageUrl || value.imageUrl[0]}}' />
         </div> {{~}}
     </div>
