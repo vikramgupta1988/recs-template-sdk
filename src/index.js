@@ -11,7 +11,7 @@ import environment from './environment';
      */
 
     /** Function for fetching api requests */
-    function fetchData(url, cb) {
+    function fetchData(url, setHeader, cb) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
@@ -26,6 +26,8 @@ import environment from './environment';
             cb('Failed network request: ' + url);
         }
         xhttp.open("GET", url, true);
+        if(setHeader)
+            xhttp.setRequestHeader("unbxd-device-type", window.unbxdDeviceType);
         xhttp.send();
     }
 
@@ -72,7 +74,6 @@ import environment from './environment';
         return false;
     
     };
-
     var MOBILE = 'mobile';
     var DESKTOP = 'desktop';
     var SMALL = 'small';
@@ -230,12 +231,13 @@ import environment from './environment';
             clickHandler(recommendationsModified[parent2ArrayIndex][parent1ArrayIndex]);
         }
     }
-
     function handleSizeCalculations(targetDOMElementId, options) {
         var rexConsoleConfigs = options.rexConsoleConfigs;
         var recommendations = options.recommendations;
         var clickHandler = options.clickHandler;
         var itemsToShow = options.itemsToShow;
+        var itemWidth = options.itemWidth;
+        var itemWidthUnit = options.itemWidthUnit;
         var maxProducts = options.maxProducts;
         var assets = options.assets;
         var sliderType = options.sliderType;
@@ -378,9 +380,26 @@ import environment from './environment';
                         }
                         sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
-                        for (i = 0; i < sliderItems.length; i++) {
-                            sliderItems[i].style.width = hzSliderWidth + "px";
-                            recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
+                        if(itemWidth){
+                            if(itemWidthUnit === "%"){
+                                var itemWidthPercentToPx = (itemWidth * 0.01 * sliderContainer[sliderContent.offsetDimension])
+                                for (var i = 0; i < sliderItems.length; i++) {
+                                    sliderItems[i].style.width = itemWidthPercentToPx + "px" ;
+                                    recsSlider.style.width = (maxprodLimit * itemWidthPercentToPx) + (maxprodLimit) * margin + "px";
+                                    
+                                }
+                            }else{
+                                for (var i = 0; i < sliderItems.length; i++) {
+                                    sliderItems[i].style.width = itemWidth + itemWidthUnit ;
+                                    recsSlider.style.width = (maxprodLimit * itemWidth) + (maxprodLimit) * margin + itemWidthUnit;
+                                    
+                                }
+                            }
+                        }else{
+                            for (var i = 0; i < sliderItems.length; i++) {
+                                sliderItems[i].style.width = hzSliderWidth + "px";
+                                recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
+                            }
                         }
                         var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
                         opaqueElSelector.classList.remove("_unxbd_slider_hide");
@@ -399,8 +418,14 @@ import environment from './environment';
                         if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
                             sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
                         }
-                        for (i = 0; i < sliderItems.length; i++) {
-                            sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                        if(itemWidth){
+                            for (var i = 0; i < sliderItems.length; i++) {
+                                sliderItems[i].style.width = itemWidth + itemWidthUnit ;
+                            }
+                        }else{
+                            for (var i = 0; i < sliderItems.length; i++) {
+                                sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                            }
                         }
                         recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
                         var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
@@ -456,7 +481,7 @@ import environment from './environment';
             "half_rating": "_unbxd_rex-half-star",
             "full_rating": "_unbxd_rex-full-star"
         }
-        for (i = 0; i < assets.length; i++) {
+        for (var i = 0; i < assets.length; i++) {
             var horizontalAssetItem = assets[i];
             imgArr.push(
                 {
@@ -517,10 +542,19 @@ import environment from './environment';
         // console.log(window.innerWidth);
         var device = getDeviceType();
         var browserSize = getBrowserSize();
-        if (device === MOBILE || browserSize === SMALL) {
-            const itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
+        var itemsToShowOnMobile, itemWidth, itemWidthUnit;
+        if (device === MOBILE || browserSize === SMALL || window.unbxdDeviceType === "mobile-browser") {
+            itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
+            itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
+            itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
+        // if(window.unbxdDeviceType === "mobile-browser"){
+        //     itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
+        //     itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
+        //     itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
+        //     itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
+        // }
  
         if (!renderTargetEl) {
             return sendWarning('The target element id <' + targetDOMElementId + '> is not present in DOM. Execution can not continue');
@@ -559,10 +593,12 @@ import environment from './environment';
             recommendationsModified: recommendationsModified,
             clickHandler: clickHandler,
             itemsToShow: itemsToShow,
+            itemWidth: itemWidth,
+            itemWidthUnit: itemWidthUnit,
             maxProducts: maxProducts,
             assets: options.assets,
-            sliderType: isVertical ? "vertical" : "horizontal",
-            sliderClass: isVertical ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider",
+            sliderType: (isVertical || !window.unbxdDeviceType === "mobile-browser") ? "vertical" : "horizontal",
+            sliderClass: (isVertical || !window.unbxdDeviceType === "mobile-browser") ? "_unbxd_recs-vertical-slider" : "_unbxd_recs-slider",
             widgetWidth: widgetWidth
         }
 
@@ -570,10 +606,12 @@ import environment from './environment';
         if (isVertical) {
             global._unbxd_recsItemToScrollVt = itemsToShow;
         }
+        else if(window.unbxdDeviceType === "mobile-browser"){
+            global._unbxd_recsItemToScrollHz = itemsToShow;
+        }
         else {
             global._unbxd_recsItemToScrollHz = itemsToShow;
         }
-
 
             /** Attaching styles for the slider */
         var eventHandlerStyle = document.createElement('style');
@@ -621,6 +659,22 @@ import environment from './environment';
             return pageTypeLocal;
         }
 
+        function getTemplateDetails(context){
+            var device = getDeviceType();
+            var browserSize = getBrowserSize();
+
+            if(context.unbxdDeviceType && context.unbxdDeviceType.mobileBrowser)
+                return "mobile-browser";
+            else if(context.unbxdDeviceType && context.unbxdDeviceType.desktopBrowser)
+                return "desktop-browser";
+            else if(device === MOBILE || browserSize === SMALL){
+                return "mobile-browser";
+            }
+            else{
+                return "desktop-browser";
+            }
+        }
+
         function getClickHandler(context) {
             return context.itemClickHandler;
         }
@@ -647,6 +701,9 @@ import environment from './environment';
 
         // getting page info
         var pageType = getPageDetails(context.pageInfo);
+
+        // getting template Info
+       window.unbxdDeviceType = getTemplateDetails(context)
 
         // get widget if
         var widgets = context.widgets;
@@ -684,6 +741,7 @@ import environment from './environment';
         }
 
         requestUrl += encodeURIComponent(pageType);
+        // requestUrl += "&unbxdDeviceType=" + encodeURIComponent(window.unbxdDeviceType);
         var pageInfo = context.pageInfo;
         switch (pageType.toLowerCase()) {
             case PRODUCT_PAGE:
@@ -827,42 +885,42 @@ import environment from './environment';
         var verticalTemplate;
         var compressedStyle;
         var compressedStyleVertical;
-        fetchData(requestUrl, function (err, res) {
+        fetchData(requestUrl, true,  function (err, res) {
             // fetching data specific to a page type
             if (err) {
                 throw new Error('Failed to fetch recommendations');
             }
             recommendationsResponse = JSON.parse(res);
 
-            // horizontal templates configuration
-            horizontalTemplate = recommendationsResponse.template.horizontal;
-            if(horizontalTemplate){
-                horizontalConfig = horizontalTemplate.conf;
-                horizontalAssets = horizontalConfig.assets;
-                var templateUrlHorizontal = horizontalTemplate.scriptUrl;
-                if(templateUrlHorizontal){
-                    
-                    /** Fetch template layout string */
-                    fetchData(templateUrlHorizontal, horizontalTemplateHandler);
+            // horizontal desktop templates configuration
+                horizontalTemplate = recommendationsResponse.template.horizontal;
+                if(horizontalTemplate){
+                    horizontalConfig = horizontalTemplate.conf;
+                    horizontalAssets = horizontalConfig.assets;
+                    var templateUrlHorizontal = horizontalTemplate.scriptUrl;
+                    if(templateUrlHorizontal){
+                        
+                        /** Fetch template layout string */
+                        fetchData(templateUrlHorizontal,false,  horizontalTemplateHandler);
+                    }
+                    else{
+                        console.warn("script url not found for horizontal template")
+                    }
+                }       
+                // vertical templates configuration
+                verticalTemplate = recommendationsResponse.template.vertical;
+                if(verticalTemplate){
+                    verticalConfig = verticalTemplate.conf;
+                    verticalAssets = verticalConfig.assets;
+                    var templateUrlVertical = verticalTemplate.scriptUrl;
+                    if(templateUrlVertical){
+                        /** Fetch vertical template layout string */
+                        fetchData(templateUrlVertical,false,  verticalTemplateHandler);
+                    }
+                    else{
+                        console.warn("script url not found for vertical template")
+                    }
                 }
-                else{
-                    console.warn("script url not found for horizontal template")
-                }
-            }       
-            // vertical templates configuration
-            verticalTemplate = recommendationsResponse.template.vertical;
-            if(verticalTemplate){
-                verticalConfig = verticalTemplate.conf;
-                verticalAssets = verticalConfig.assets;
-                var templateUrlVertical = verticalTemplate.scriptUrl;
-                if(templateUrlVertical){
-                    /** Fetch vertical template layout string */
-                    fetchData(templateUrlVertical, verticalTemplateHandler);
-                }
-                else{
-                    console.warn("script url not found for vertical template")
-                }
-            }
         });
     }
 })(window);
