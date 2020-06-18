@@ -382,21 +382,21 @@ import environment from './environment';
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
                         if(itemWidth){
                             if(itemWidthUnit === "%"){
-                                var itemWidthPRecentToPx = (itemWidth * 0.01 * sliderContainer[sliderContent.offsetDimension])
-                                for (i = 0; i < sliderItems.length; i++) {
-                                    sliderItems[i].style.width = itemWidthPRecentToPx + "px" ;
-                                    recsSlider.style.width = (maxprodLimit * itemWidthPRecentToPx) + (maxprodLimit) * margin + "px";
+                                var itemWidthPercentToPx = (itemWidth * 0.01 * sliderContainer[sliderContent.offsetDimension])
+                                for (var i = 0; i < sliderItems.length; i++) {
+                                    sliderItems[i].style.width = itemWidthPercentToPx + "px" ;
+                                    recsSlider.style.width = (maxprodLimit * itemWidthPercentToPx) + (maxprodLimit) * margin + "px";
                                     
                                 }
                             }else{
-                                for (i = 0; i < sliderItems.length; i++) {
+                                for (var i = 0; i < sliderItems.length; i++) {
                                     sliderItems[i].style.width = itemWidth + itemWidthUnit ;
                                     recsSlider.style.width = (maxprodLimit * itemWidth) + (maxprodLimit) * margin + itemWidthUnit;
                                     
                                 }
                             }
                         }else{
-                            for (i = 0; i < sliderItems.length; i++) {
+                            for (var i = 0; i < sliderItems.length; i++) {
                                 sliderItems[i].style.width = hzSliderWidth + "px";
                                 recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
                             }
@@ -419,11 +419,11 @@ import environment from './environment';
                             sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
                         }
                         if(itemWidth){
-                            for (i = 0; i < sliderItems.length; i++) {
+                            for (var i = 0; i < sliderItems.length; i++) {
                                 sliderItems[i].style.width = itemWidth + itemWidthUnit ;
                             }
                         }else{
-                            for (i = 0; i < sliderItems.length; i++) {
+                            for (var i = 0; i < sliderItems.length; i++) {
                                 sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
                             }
                         }
@@ -481,7 +481,7 @@ import environment from './environment';
             "half_rating": "_unbxd_rex-half-star",
             "full_rating": "_unbxd_rex-full-star"
         }
-        for (i = 0; i < assets.length; i++) {
+        for (var i = 0; i < assets.length; i++) {
             var horizontalAssetItem = assets[i];
             imgArr.push(
                 {
@@ -543,18 +543,18 @@ import environment from './environment';
         var device = getDeviceType();
         var browserSize = getBrowserSize();
         var itemsToShowOnMobile, itemWidth, itemWidthUnit;
-        if (device === MOBILE || browserSize === SMALL) {
+        if (device === MOBILE || browserSize === SMALL || window.unbxdDeviceType === "mobile-browser") {
             itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
             itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
             itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
-        if(window.unbxdDeviceType === "mobile-browser"){
-            itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
-            itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
-            itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
-            itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
-        }
+        // if(window.unbxdDeviceType === "mobile-browser"){
+        //     itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
+        //     itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
+        //     itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
+        //     itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
+        // }
  
         if (!renderTargetEl) {
             return sendWarning('The target element id <' + targetDOMElementId + '> is not present in DOM. Execution can not continue');
