@@ -1,47 +1,13 @@
-.smartphone {
-    position: relative;
-    width: 335px;
-    height: 500px;
-    margin: auto;
-    border: 16px black solid;
-    border-top-width: 60px;
-    border-bottom-width: 60px;
-    border-radius: 36px;
+._unbxd_strike_through_container {
+	margin: 2px;
 }
 
-/* The horizontal line on the top of the device */
-.smartphone:before {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 5px;
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #333;
-    border-radius: 10px;
+._unbxd_original_price_container {
+	margin: 2px;
 }
 
-/* The circle on the bottom of the device */
-.smartphone:after {
-    content: '';
-    display: block;
-    width: 35px;
-    height: 35px;
-    position: absolute;
-    left: 50%;
-    bottom: -65px;
-    transform: translate(-50%, -50%);
-    background: #333;
-    border-radius: 50%;
-}
-
-/* The screen (or content) of the device */
-.smartphone .content {
-    width: 335px;
-    height: 500px;
-    background: white;
+._unbxd_item_discount_text {
+	margin: 2px;
 }
 ._unbxd_recs-slider {
     overflow:auto;

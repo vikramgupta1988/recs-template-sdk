@@ -74,8 +74,6 @@ import environment from './environment';
         return false;
     
     };
-    window.scrollLeft = 0;
-    window.scrollLeftPrev = 0;
     var MOBILE = 'mobile';
     var DESKTOP = 'desktop';
     var SMALL = 'small';
@@ -233,50 +231,13 @@ import environment from './environment';
             clickHandler(recommendationsModified[parent2ArrayIndex][parent1ArrayIndex]);
         }
     }
-    function debounce(func, wait) {
-        let timeout
-        return function(...args) {
-          const context = this
-          clearTimeout(timeout)
-          timeout = setTimeout(() => func.apply(context, args), wait)
-        }
-      }
-    function scrollHandler (event){
-            if(Math.abs(window.scrollLeft - this.scrollLeft) <= 2){
-                console.log("HHHHHHHHHH");
-            }else if(window.scrollLeft < (this.scrollLeft- 2)) {
-                // horizontally scrolled
-                // window.scrollLeftPrev = window.scrollLeft;
-                window.scrollLeft = this.scrollLeft;
-                global._unbxd_recsSliderSideScroll('recommendations', 'right');
-                // window.sliderContainer.removeEventListener("scroll", function(){
-                //     setTimeout(function(){
-                //         window.sliderContainer.addEventListener("scroll", debounce(scrollHandler.bind(window.sliderContainer),1000));
-                //     },100)
-                // });
-                
-                //return;
-            }else{
-                // window.scrollLeftPrev = window.scrollLeft;
-                window.scrollLeft = this.scrollLeft;
-                global._unbxd_recsSliderSideScroll('recommendations', 'left');
-                // window.sliderContainer.removeEventListener("scroll", function(){
-                //     setTimeout(function(){
-                //         window.sliderContainer.addEventListener("scroll", debounce(scrollHandler.bind(window.sliderContainer),1000));
-                //     },100)
-                // });
-            }
-            
-        // setTimeout(function(){
-        //     window.scrollDebounce = false
-        // }, 1000)
-    }
-
     function handleSizeCalculations(targetDOMElementId, options) {
         var rexConsoleConfigs = options.rexConsoleConfigs;
         var recommendations = options.recommendations;
         var clickHandler = options.clickHandler;
         var itemsToShow = options.itemsToShow;
+        var itemWidth = options.itemWidth;
+        var itemWidthUnit = options.itemWidthUnit;
         var maxProducts = options.maxProducts;
         var assets = options.assets;
         var sliderType = options.sliderType;
@@ -419,9 +380,26 @@ import environment from './environment';
                         }
                         sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
-                        for (i = 0; i < sliderItems.length; i++) {
-                            sliderItems[i].style.width = hzSliderWidth + "px";
-                            recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
+                        if(itemWidth){
+                            if(itemWidthUnit === "%"){
+                                var itemWidthPRecentToPx = (itemWidth * 0.01 * sliderContainer[sliderContent.offsetDimension])
+                                for (i = 0; i < sliderItems.length; i++) {
+                                    sliderItems[i].style.width = itemWidthPRecentToPx + "px" ;
+                                    recsSlider.style.width = (maxprodLimit * itemWidthPRecentToPx) + (maxprodLimit) * margin + "px";
+                                    
+                                }
+                            }else{
+                                for (i = 0; i < sliderItems.length; i++) {
+                                    sliderItems[i].style.width = itemWidth + itemWidthUnit ;
+                                    recsSlider.style.width = (maxprodLimit * itemWidth) + (maxprodLimit) * margin + itemWidthUnit;
+                                    
+                                }
+                            }
+                        }else{
+                            for (i = 0; i < sliderItems.length; i++) {
+                                sliderItems[i].style.width = hzSliderWidth + "px";
+                                recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
+                            }
                         }
                         var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
                         opaqueElSelector.classList.remove("_unxbd_slider_hide");
@@ -440,8 +418,14 @@ import environment from './environment';
                         if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
                             sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
                         }
-                        for (i = 0; i < sliderItems.length; i++) {
-                            sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                        if(itemWidth){
+                            for (i = 0; i < sliderItems.length; i++) {
+                                sliderItems[i].style.width = itemWidth + itemWidthUnit ;
+                            }
+                        }else{
+                            for (i = 0; i < sliderItems.length; i++) {
+                                sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                            }
                         }
                         recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
                         var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
@@ -558,12 +542,16 @@ import environment from './environment';
         // console.log(window.innerWidth);
         var device = getDeviceType();
         var browserSize = getBrowserSize();
-        var itemsToShowOnMobile;
+        var itemsToShowOnMobile, itemWidth, itemWidthUnit;
         if (device === MOBILE || browserSize === SMALL) {
+            itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
+            itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
             itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
         if(window.unbxdDeviceType === "mobile-browser"){
+            itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
+            itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
             itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
@@ -605,6 +593,8 @@ import environment from './environment';
             recommendationsModified: recommendationsModified,
             clickHandler: clickHandler,
             itemsToShow: itemsToShow,
+            itemWidth: itemWidth,
+            itemWidthUnit: itemWidthUnit,
             maxProducts: maxProducts,
             assets: options.assets,
             sliderType: (isVertical || !window.unbxdDeviceType === "mobile-browser") ? "vertical" : "horizontal",
