@@ -17,7 +17,10 @@ import environment from './environment';
 
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
            // Typical action to be performed when the document is ready:
-                var requestId = this.getResponseHeader("x-request-id");
+           var requestId 
+           if(cb.name != "horizontalTemplateHandler" && cb.name != "verticalTemplateHandler"){
+                requestId = this.getResponseHeader("x-request-id");
+            }
                 cb(null, xhttp.responseText, requestId);
             }
             else if (this.readyState == 4 && (this.status != 200 || this.status != 204)) {
