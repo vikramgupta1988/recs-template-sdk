@@ -605,8 +605,8 @@ import environment from './environment';
 
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
         if (eventQueue && typeof(eventQueue['afterTemplateRender']) === "function") {
-            var beforeTemplateRenderCallback = eventQueue['afterTemplateRender']
-            templateData = beforeTemplateRenderCallback(isVertical || false);
+            var afterTemplateRenderCallback = eventQueue['afterTemplateRender']
+            templateData = afterTemplateRenderCallback(isVertical || false);
          }
      
     }
