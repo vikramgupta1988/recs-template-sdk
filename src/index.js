@@ -18,7 +18,8 @@ import environment from './environment';
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
            // Typical action to be performed when the document is ready:
            var requestId 
-           if(cb.name != "horizontalTemplateHandler" && cb.name != "verticalTemplateHandler"){
+           // Get request id only during call of recommendation API
+           if(url.indexOf('.dot') === -1){
                 requestId = this.getResponseHeader("x-request-id");
             }
                 cb(null, xhttp.responseText, requestId);
