@@ -31,6 +31,7 @@
         .root {
             display: flex;
         }
+        
     </style>
 </head>
 
@@ -38,7 +39,7 @@
     <div class="root">
         <div id="recommendations3"></div>
         <div class="horizontal-section">
-            <div id="recommendations"></div>
+            <div id="recommendations"></div>  
             <div id="recommendations1"></div>
             <div id="recommendations2"></div>
             <div id="unbxd_rex_home_w1"></div>
@@ -89,6 +90,10 @@
             pageInfo: {
                 pageType: 'PRODUCT',
                 productIds: ['SVCV']
+            },
+            unbxdDeviceType: {
+                desktopBrowser: false,
+                mobileBrowser: true
             },
             itemClickHandler: function (product) {
                 // product information will be provided here
