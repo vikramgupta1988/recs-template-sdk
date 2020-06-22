@@ -19,7 +19,7 @@ import environment from './environment';
            // Typical action to be performed when the document is ready:
            var requestId 
            // Get request id only during call of recommendation API
-           if(url.indexOf('.dot') === -1){
+           if(setHeader){
                 requestId = this.getResponseHeader("x-request-id");
             }
                 cb(null, xhttp.responseText, requestId);
