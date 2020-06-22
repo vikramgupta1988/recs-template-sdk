@@ -16,12 +16,12 @@ import environment from './environment';
         xhttp.onreadystatechange = function () {
 
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
-           // Typical action to be performed when the document is ready:
-           var requestId 
-           // Get request id only during call of recommendation API
-           if(setHeader){
-                requestId = this.getResponseHeader("x-request-id");
-            }
+                // Typical action to be performed when the document is ready:
+                var requestId 
+                // Get request id only during call of recommendation API
+                if(setHeader){
+                    requestId = this.getResponseHeader("x-request-id");
+                }
                 cb(null, xhttp.responseText, requestId);
             }
             else if (this.readyState == 4 && (this.status != 200 || this.status != 204)) {
@@ -648,7 +648,7 @@ import environment from './environment';
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
         if (eventQueue && typeof(eventQueue['afterTemplateRender']) === "function") {
             var afterTemplateRenderCallback = eventQueue['afterTemplateRender']
-            templateData = afterTemplateRenderCallback(isVertical || false);
+            templateData = afterTemplateRenderCallback(isVertical);
          }
      
     }
