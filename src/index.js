@@ -14,9 +14,15 @@ import environment from './environment';
     function fetchData(url, setHeader, cb) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
+
             if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
                 // Typical action to be performed when the document is ready:
-                cb(null, xhttp.responseText);
+                var requestId 
+                // Get request id only during call of recommendation API
+                if(setHeader){
+                    requestId = this.getResponseHeader("x-request-id");
+                }
+                cb(null, xhttp.responseText, requestId);
             }
             else if (this.readyState == 4 && (this.status != 200 || this.status != 204)) {
                 cb('Invalid network request: ' + url);
@@ -512,6 +518,13 @@ import environment from './environment';
         /** End of Setting styles for heading */
     }
 
+
+    global.eventQueue = {};
+    global._unbxd_registerHook = function (eventName, eventCallback){
+        global.eventQueue[eventName] = eventCallback;
+    }
+
+
     /** exporting a global function to initialize recs slider */
     global._unbxd_generateRexContent = function (options) {
         // console.log(options)
@@ -525,6 +538,7 @@ import environment from './environment';
         var maxProducts = rexConsoleConfigs.products.max || missingValueError('products.max', rexConsoleConfigs.products);
         var clickHandler = options.clickHandler;
         var dataParser = options.dataParser;
+        var eventQueue = options.eventQueue;
         var isVertical = options.isVertical;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
@@ -576,14 +590,23 @@ import environment from './environment';
 
         var templateData = {
             recommendations: recommendationsModified || recommendations,
-            heading: heading
+            heading: heading, 
+            analyticsData: {
+                widgetNum: 'WIDGET'+ options.widgetNum,
+                pageType: options.pageType,
+                requestId: options.reqId
+            }
         }
 
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
         if (dataParser && typeof(dataParser) === "function") {
             templateData = dataParser(templateData)
+        }
+        if (eventQueue && typeof(eventQueue['beforeTemplateRender']) === "function") {
+            var beforeTemplateRenderCallback = eventQueue['beforeTemplateRender']
+            templateData = beforeTemplateRenderCallback(templateData);
          }
-
+        
         document.getElementById(targetDOMElementId).innerHTML = renderFn(templateData);
 
         /** Dynamically adjusting width based on no of items to be shown */
@@ -621,6 +644,13 @@ import environment from './environment';
         document.head.appendChild(eventHandlerStyle);
 
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
+
+        /* Callback to make any modification to data and pass on the modified data to renderFn  */
+        if (eventQueue && typeof(eventQueue['afterTemplateRender']) === "function") {
+            var afterTemplateRenderCallback = eventQueue['afterTemplateRender']
+            templateData = afterTemplateRenderCallback(isVertical);
+         }
+     
     }
 
 
@@ -699,6 +729,24 @@ import environment from './environment';
             return queryStringLocal;
         }
 
+        function getCookie(key) {
+            var allcookies = document.cookie;
+            var name, value;
+           
+            // Get all the cookies pairs in an array
+            var cookiearray = allcookies.split(';');
+            
+            // Now take key value pair out of this array
+            for(var i=0; i<cookiearray.length; i++) {
+               name = cookiearray[i].split('=')[0];
+               value = cookiearray[i].split('=')[1];
+               //document.write ("Key is : " + name + " and Value is : " + value);
+               if(name.trim() === key){
+                   return value;
+               }
+            }
+         }
+
         // getting page info
         var pageType = getPageDetails(context.pageInfo);
 
@@ -715,16 +763,17 @@ import environment from './environment';
         }
         var itemClickHandler = getClickHandler(context);
         var dataParser = getDataParserHandler(context);
+        var eventQueue = global.eventQueue;
 
         // getting userId, siteKey and apiKey
         var userInfo = context.userInfo;
-        if (!userInfo) {
-            throw new Error("User info missing")
-        }
+        // if (!userInfo) {
+        //     throw new Error("User info missing")
+        // }
 
-        var userId = userInfo.userId;
-        var siteKey = userInfo.siteKey;
-        var apiKey = userInfo.apiKey;
+        var userId = (userInfo && userInfo.userId) || getCookie('unbxd_userId');
+        var siteKey = (userInfo && userInfo.siteKey) || global.UnbxdSiteName;
+        var apiKey =  (userInfo && userInfo.apiKey)  ||global.UnbxdApiKey;
 
         var requestUrl = platformDomain + apiKey + "/" + siteKey + '/items?&template=true&pageType=';
 
@@ -779,7 +828,7 @@ import environment from './environment';
 
         requestUrl += "&uid=" + userId;
 
-        function renderWidgetDataHorizontal(widget, recommendations, heading) {
+        function renderWidgetDataHorizontal(widget, widgetNum, recommendations, heading) {
             var maxProducts = horizontalConfig.products.max || horizontalConfig.products.max_products;
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
@@ -797,15 +846,19 @@ import environment from './environment';
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
                     dataParser: dataParser,
+                    eventQueue: eventQueue,
+                    widgetNum: widgetNum,
+                    pageType: pageType,
+                    reqId: reqId,
                     sliderClass: "_unbxd_recs-slider",
                     compressedStyle: compressedStyle
                 }
                 _unbxd_generateRexContent(options);
             }
-        }
+        } 
 
 
-        function renderWidgetDataVertical(widget, recommendations, heading) {
+        function renderWidgetDataVertical(widget, widgetNum, recommendations, heading) {
             var maxProducts = verticalConfig.products.max || verticalConfig.products.max_products;
             var targetDOMElementId = widget;
             var clickHandler = itemClickHandler;
@@ -823,7 +876,11 @@ import environment from './environment';
                     assets: verticalAssets,
                     maxProducts: maxProducts,
                     clickHandler: clickHandler,
+                    eventQueue: eventQueue,
                     dataParser: dataParser,
+                    widgetNum: widgetNum,
+                    pageType: pageType,
+                    reqId: reqId,
                     isVertical: true,
                     sliderClass: "_unbxd_recs-vertical-slider",
                     compressedStyle: compressedStyleVertical
@@ -838,7 +895,7 @@ import environment from './environment';
                 var widget3Data = recommendationsResponse.widget3;
                 var widget3Heading = widget3Data.widgetTitle;
                 var widget3Recommendations = widget3Data.recommendations;
-                renderWidgetDataVertical(widget3, widget3Recommendations, widget3Heading);
+                renderWidgetDataVertical(widget3, 3, widget3Recommendations, widget3Heading);
             }
         }
 
@@ -847,13 +904,13 @@ import environment from './environment';
                 var widget1Data = recommendationsResponse.widget1;
                 var widget1Heading = widget1Data.widgetTitle;
                 var widget1Recommendations = widget1Data.recommendations;
-                renderWidgetDataHorizontal(widget1, widget1Recommendations, widget1Heading);
+                renderWidgetDataHorizontal(widget1, 1, widget1Recommendations, widget1Heading);
             }
             if (widget2) {
                 var widget2Data = recommendationsResponse.widget2;
                 var widget2Heading = widget2Data.widgetTitle;
                 var widget2Recommendations = widget2Data.recommendations;
-                renderWidgetDataHorizontal(widget2, widget2Recommendations, widget2Heading);
+                renderWidgetDataHorizontal(widget2, 2, widget2Recommendations, widget2Heading);
             }
 
         }
@@ -885,7 +942,8 @@ import environment from './environment';
         var verticalTemplate;
         var compressedStyle;
         var compressedStyleVertical;
-        fetchData(requestUrl, true,  function (err, res) {
+        var reqId;
+        fetchData(requestUrl, true,  function (err, res, requestId) {
             // fetching data specific to a page type
             if (err) {
                 throw new Error('Failed to fetch recommendations');
@@ -894,6 +952,7 @@ import environment from './environment';
 
             // horizontal desktop templates configuration
                 horizontalTemplate = recommendationsResponse.template.horizontal;
+                reqId = requestId;
                 if(horizontalTemplate){
                     horizontalConfig = horizontalTemplate.conf;
                     horizontalAssets = horizontalConfig.assets;
@@ -923,6 +982,8 @@ import environment from './environment';
                 }
         });
     }
+
+   
 })(window);
 
 

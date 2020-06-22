@@ -7,12 +7,17 @@ const recommendationsMobile = require('./recommendationsMobile');
 const recommendationsMobileInfinite =  require('./recommendationsMobileInfinite');
 
 const app = express();
-app.use(cors());
+var corsOptions = {
+    allowedHeaders: ['x-request-id'],
+    exposedHeaders: ['x-request-id']
+  }
+app.use(cors(corsOptions));
 const PORT = 4201;
 
 app.get('/:sitekey/:apiKey/items' ,(req,res,next)=>{
     //var templateType = req.query.templateType;
     var unbxdDeviceType = req.headers['unbxd-device-type']; 
+    res.setHeader('x-request-id', 123);
     if(unbxdDeviceType === "desktop-browser"){
         console.log("&&&&&&&&&&&&&&&", unbxdDeviceType);
         res.json(recommendationsNew);
