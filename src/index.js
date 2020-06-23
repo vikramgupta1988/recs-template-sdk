@@ -539,7 +539,7 @@ import environment from './environment';
         var clickHandler = options.clickHandler;
         var dataParser = options.dataParser;
         var eventQueue = options.eventQueue;
-        var isVertical = options.isVertical;
+        var isVertical = options.isVertical || false;
         var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
         var recommendationsModified = null;
         var widgetWidthData = rexConsoleConfigs.widget.width || missingValueError('products.widget.width', rexConsoleConfigs.widget);
