@@ -8,8 +8,8 @@ const recommendationsMobileInfinite =  require('./recommendationsMobileInfinite'
 
 const app = express();
 var corsOptions = {
-    allowedHeaders: ['x-request-id'],
-    exposedHeaders: ['x-request-id']
+    allowedHeaders: ['x-request-id', 'unbxd-device-type'],
+    exposedHeaders: ['x-request-id', 'unbxd-device-type']
   }
 app.use(cors(corsOptions));
 const PORT = 4201;

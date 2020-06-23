@@ -461,6 +461,15 @@ module.exports = {
         "templateId": null,
         "widgetTitle": "Widget 2 title"
     },
+    "widget3": {
+        "count": 0,
+        "recommendations": [
+
+        ],
+        "debug": null,
+        "templateId": null,
+        "widgetTitle": null
+    },
     // "widget3": {
     //     "count": 13,
     //     "recommendations": [
