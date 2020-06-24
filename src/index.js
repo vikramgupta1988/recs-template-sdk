@@ -557,18 +557,18 @@ import environment from './environment';
         var device = getDeviceType();
         var browserSize = getBrowserSize();
         var itemsToShowOnMobile, itemWidth, itemWidthUnit;
-        if (device === MOBILE || browserSize === SMALL || window.unbxdDeviceType === "mobile-browser") {
+        if (device === MOBILE || browserSize === SMALL) {
             itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
             itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
             itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
-        // if(window.unbxdDeviceType === "mobile-browser"){
-        //     itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
-        //     itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
-        //     itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
-        //     itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
-        // }
+        if(window.unbxdDeviceType === "mobile-browser"){
+            itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
+            itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
+            itemsToShowOnMobile = rexConsoleConfigs.products.visible;
+            itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
+        }
  
         if (!renderTargetEl) {
             return sendWarning('The target element id <' + targetDOMElementId + '> is not present in DOM. Execution can not continue');

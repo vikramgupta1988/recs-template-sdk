@@ -4,7 +4,11 @@
             <div class='_unbxd_recs-slider-heading' id='_unbxd_recs-slider-heading'>{{=it.heading}}</div>
             <div class='_unbxd_recs-slider-container' id='_unbxd_recs-slider-container'>
                 <div class='_unbxd_recs-slider' id='_unbxd_recs-slider'> {{~it.recommendations :value:index}}
-                <div class='_unbxd_recs-slider__item' id='hz-item-{{=index}}'>
+                <div class='_unbxd_recs-slider__item' id='hz-item-{{=index}}'
+                data-unbxdAttr='product' data-unbxdparam_experience_widget='{{=it.analyticsData.widgetNum}}'
+                data-unbxdparam_experience_pagetype='{{=it.analyticsData.pageType}}' 
+                data-unbxdparam_sku='{{=value.uniqueId}}'
+                data-unbxdparam_requestId='{{=it.analyticsData.requestId}}'>
                     <img src='{{=value.imageUrl || value.imageUrl[0]}}' />
                 </div> {{~}}
             </div>
