@@ -563,7 +563,7 @@ import environment from './environment';
             itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
-        if(window.unbxdDeviceType === "mobile-browser"){
+        if(window.unbxdDeviceType === "mobile-browser" || options.unbxdDeviceType === "mobile-browser"){
             itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
             itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
             itemsToShowOnMobile = rexConsoleConfigs.products.visible;
