@@ -343,7 +343,7 @@ import environment from './environment';
                             newnode.innerHTML = "";
                         }
                         else {
-                            newnode.innerHTML = dimension;
+                            newnode.innerHTML = (dimension instanceof Array) ? dimension.join(', ') : dimension;
                         }
                     }
 
