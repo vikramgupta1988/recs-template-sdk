@@ -42,6 +42,13 @@
 	display: grid;
 	grid-template-columns: repeat(3, 100%);
 }
+._unbxd_recs-slider-container::-webkit-scrollbar {
+	width: 0!important;
+}
+._unbxd_recs-slider-container {
+	overflow: -moz-scrollbars-none;
+	-ms-overflow-style: none;
+}
 .unbxd-recs-slider {
     position:relative;
 }
