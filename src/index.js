@@ -557,17 +557,33 @@ import environment from './environment';
         var device = getDeviceType();
         var browserSize = getBrowserSize();
         var itemsToShowOnMobile, itemWidth, itemWidthUnit;
-        if (device === MOBILE || browserSize === SMALL) {
-            itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
-            itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
-            itemsToShowOnMobile = rexConsoleConfigs.products.visibleOnMobile;
-            itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
-        }
+        
         if(window.unbxdDeviceType === "mobile-browser" || options.unbxdDeviceType === "mobile-browser"){
             itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
             itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
-            itemsToShowOnMobile = rexConsoleConfigs.products.visible;
+            if(rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn){
+                itemsToShowOnMobile = rexConsoleConfigs.products.visibleOn.mobile;
+            }else{
+                itemsToShowOnMobile = rexConsoleConfigs.products.visible;
+            }
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
+        }
+        else if (device === MOBILE || browserSize === SMALL){
+            itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
+            itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
+            if(rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn){
+                itemsToShowOnMobile = rexConsoleConfigs.products.visibleOn.mobile;
+            }else{
+                itemsToShowOnMobile = rexConsoleConfigs.products.visible;
+            }
+            itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
+        }else{
+            if(rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn){
+                itemsToShow = rexConsoleConfigs.products.visibleOn.desktop;
+            }else{
+                itemsToShow = rexConsoleConfigs.products.visible;
+            }
+            itemsToShow = itemsToShow ? itemsToShow: 2;
         }
  
         if (!renderTargetEl) {
