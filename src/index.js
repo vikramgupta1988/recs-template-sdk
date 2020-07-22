@@ -448,10 +448,12 @@ import environment from './environment';
             counter = 0;
 
         [].forEach.call(imgs, function (img) {
-            if (img.complete)
+            if (img.complete){
                 incrementCounter();
-            else
-                img.addEventListener('load', incrementCounter, false);
+            }
+            else{
+                img.addEventListener('load', incrementCounter(), false);
+            }
         });
 
 
