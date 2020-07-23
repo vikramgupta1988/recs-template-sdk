@@ -452,7 +452,9 @@ import environment from './environment';
                 incrementCounter();
             }
             else{
-                img.addEventListener('load', incrementCounter(), false);
+                // img.addEventListener('load', incrementCounter, false);
+                console.error("Error downloading image::" + img.src);
+                incrementCounter();
             }
         });
 
