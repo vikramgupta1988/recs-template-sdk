@@ -787,7 +787,7 @@ import environment from './environment';
         //     throw new Error("User info missing")
         // }
 
-        var userId = (userInfo && userInfo.userId) || getCookie('unbxd_userId');
+        var userId = (userInfo && userInfo.userId) || getCookie('unbxd.userId');
         var siteKey = (userInfo && userInfo.siteKey) || global.UnbxdSiteName;
         var apiKey =  (userInfo && userInfo.apiKey)  ||global.UnbxdApiKey;
 
