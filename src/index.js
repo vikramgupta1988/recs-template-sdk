@@ -811,26 +811,26 @@ import environment from './environment';
         switch (pageType.toLowerCase()) {
             case PRODUCT_PAGE:
             case CART_PAGE:
-                if (!pageInfo.productIds) {
-                    throw new Error("product id is missing for page type:" + pageType);
+                if (pageInfo.productIds) {
+                    requestUrl += getProductIdsAsUrlParams(pageInfo.productIds);
                 }
-                requestUrl += getProductIdsAsUrlParams(pageInfo.productIds);
                 break;
             case CATEGORY_PAGE:
+                var categoryUrl = '';
                 var catlevel1Name = pageInfo.catlevel1Name;
-                if (!catlevel1Name) {
-                    throw new Error("catlevel1Name is mandatory for page type:" + pageType);
-                }
                 var catlevel2Name = pageInfo.catlevel2Name;
                 var catlevel3Name = pageInfo.catlevel3Name;
                 var catlevel4Name = pageInfo.catlevel4Name;
-                var categoryUrl = "&" + getUrlEncodedParam("catlevel1Name", catlevel1Name);
-                if (catlevel2Name) {
-                    categoryUrl += "&" + getUrlEncodedParam("catlevel2Name", catlevel2Name);
-                    if (catlevel3Name) {
-                        categoryUrl += "&" + getUrlEncodedParam("catlevel3Name=", catlevel3Name);
-                        if (catlevel4Name) {
-                            categoryUrl += "&" + getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                
+                if (catlevel1Name) {
+                    categoryUrl = "&" + getUrlEncodedParam("catlevel1Name", catlevel1Name);
+                    if (catlevel2Name) {
+                        categoryUrl += "&" + getUrlEncodedParam("catlevel2Name", catlevel2Name);
+                        if (catlevel3Name) {
+                            categoryUrl += "&" + getUrlEncodedParam("catlevel3Name=", catlevel3Name);
+                            if (catlevel4Name) {
+                                categoryUrl += "&" + getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                            }
                         }
                     }
                 }
