@@ -32,7 +32,7 @@ $ yarn start
 ```bash
 $ yarn dev
 ```
-Creates a minified bundle with development mode environment. File will be build/unbxd_rex_template_sdk_dev.js
+Creates a minified bundle with development mode environment. File will be build/unbxd_recs_template_sdk_dev.js
 
 ```bash
 $ yarn start
@@ -45,4 +45,4 @@ Runs bundler output to build. This will create a production build
 $ yarn build
 ```
 
-The build file that has to be used as an external script file will be build/unbxd_rex_template_sdk.js
+The build file that has to be used as an external script file will be build/unbxd_recs_template_sdk.js
