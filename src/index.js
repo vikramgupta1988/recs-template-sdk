@@ -4,38 +4,10 @@ import { eventHandlers, setImagesSource, sendWarning } from './handlers';
 import { getRatingContent } from './ratings';
 import { strikeThrough } from './strikeThrough';
 import environment from './environment';
+import getUnbxdRecommendations from './recs';
+import { getDeviceType, getBrowserSize, MOBILE, SMALL, fetchData } from './utils';
+
 (function (global) {
-
-    /**
-     * Global declaration section
-     */
-
-    /** Function for fetching api requests */
-    function fetchData(url, setHeader, cb) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-
-            if (this.readyState == 4 && (this.status == 200 || this.status == 204)) {
-                // Typical action to be performed when the document is ready:
-                var requestId 
-                // Get request id only during call of recommendation API
-                if(setHeader){
-                    requestId = this.getResponseHeader("x-request-id");
-                }
-                cb(null, xhttp.responseText, requestId);
-            }
-            else if (this.readyState == 4 && (this.status != 200 || this.status != 204)) {
-                cb('Invalid network request: ' + url);
-            }
-        };
-        xhttp.onerror = function () {
-            cb('Failed network request: ' + url);
-        }
-        xhttp.open("GET", url, true);
-        if(setHeader)
-            xhttp.setRequestHeader("unbxd-device-type", window.unbxdDeviceType);
-        xhttp.send();
-    }
 
     /** This function find the node containing selector passed as param
      *  closest to element passed as param 
@@ -45,76 +17,41 @@ import environment from './environment';
     function getClosestNode(elem, selector) {
 
         var firstChar = selector.charAt(0);
-    
+
         // Get closest match
-        for ( ; elem && elem !== document; elem = elem.parentNode ) {
-    
+        for (; elem && elem !== document; elem = elem.parentNode) {
+
             // If selector is a class
-            if ( firstChar === '.' ) {
-                if ( elem.classList.contains( selector.substr(1) ) ) {
+            if (firstChar === '.') {
+                if (elem.classList.contains(selector.substr(1))) {
                     return elem;
                 }
             }
-    
+
             // If selector is an ID
-            if ( firstChar === '#' ) {
-                if ( elem.id === selector.substr(1) ) {
-                    return elem;
-                }
-            } 
-    
-            // If selector is a data attribute
-            if ( firstChar === '[' ) {
-                if ( elem.hasAttribute( selector.substr(1, selector.length - 2) ) ) {
+            if (firstChar === '#') {
+                if (elem.id === selector.substr(1)) {
                     return elem;
                 }
             }
-    
+
+            // If selector is a data attribute
+            if (firstChar === '[') {
+                if (elem.hasAttribute(selector.substr(1, selector.length - 2))) {
+                    return elem;
+                }
+            }
+
             // If selector is a tag
-            if ( elem.tagName.toLowerCase() === selector ) {
+            if (elem.tagName.toLowerCase() === selector) {
                 return elem;
             }
-    
+
         }
-    
+
         return false;
-    
+
     };
-    var MOBILE = 'mobile';
-    var DESKTOP = 'desktop';
-    var SMALL = 'small';
-    var LARGE = 'large';
-
-    function getDeviceType() {
-        console.log("screen.width: ", window.screen.width);
-        console.log("screen.height: ", window.screen.height);
-        const mediaQueryList = window.matchMedia("(orientation: portrait)");
-        if(mediaQueryList.matches) {
-            console.log('portrait mode')
-            if (window.screen.width <= 667) {
-                return MOBILE;
-            } else {
-                return DESKTOP;
-            }
-        } else {
-            console.log('landscape mode')
-            if (window.screen.height <=667) {
-                return MOBILE;
-            } else {
-                return DESKTOP;
-            }
-        }
-    }
-
-    function getBrowserSize() {
-        console.log("window.innerWidth: ", window.innerWidth);
-        console.log("window.innerHeight: ", window.innerHeight);
-        if (window.innerWidth <= 667) {
-            return SMALL;
-        } else {
-            return LARGE;
-        }
-    }
 
 
     /** Global variables */
@@ -221,7 +158,7 @@ import environment from './environment';
         throw new Error('Error: ' + valueKey + ' not found in ' + JSON.stringify(contentObject));
     }
 
-    function handleHorizontalWidgetClicks(parentId, clickHandler, recommendations){
+    function handleHorizontalWidgetClicks(parentId, clickHandler, recommendations) {
         var hzRegex = /hz-item/;
         if (hzRegex.test(parentId)) {
             var arrayIndex = parentId.split("-")[2]; // fixed id of form hz-slider-0
@@ -229,7 +166,7 @@ import environment from './environment';
         }
     }
 
-    function handleVerticalWidgetClicks(parent1Id, parent2Id, clickHandler, recommendationsModified){
+    function handleVerticalWidgetClicks(parent1Id, parent2Id, clickHandler, recommendationsModified) {
         var vtRegex = /[0-9]-vt-level2-/;
         if (vtRegex.test(parent1Id)) {
             var parent1ArrayIndex = parent1Id.split("-")[3]; // fixed id of form *-vt-slider-0
@@ -268,13 +205,13 @@ import environment from './environment';
 
         var productFields = rexConsoleConfigs.products.fields || missingValueError('products.fields', rexConsoleConfigs);
 
-        productFields = productFields.sort(function(b,a){
-           a.sequence = a.sequence || a.sequence_number;
-           b.sequence = b.sequence || b.sequence_number;
-           if(a.sequence  < b.sequence){
-               return 1;
-           }
-           return -1;
+        productFields = productFields.sort(function (b, a) {
+            a.sequence = a.sequence || a.sequence_number;
+            b.sequence = b.sequence || b.sequence_number;
+            if (a.sequence < b.sequence) {
+                return 1;
+            }
+            return -1;
         });
 
         var dimension = sliderContent.dimension;
@@ -282,23 +219,23 @@ import environment from './environment';
         if (clickHandler) {
             if (sliderContent.dimension == "width") {
                 sliderContainer.addEventListener("click", function (event) {
-                    if (event.target.className == "_unbxd_recs-slider__item"){
+                    if (event.target.className == "_unbxd_recs-slider__item") {
                         handleHorizontalWidgetClicks(event.target.id, clickHandler, recommendations);
                     }
-                    else{
-                        var el = getClosestNode(event.target,"._unbxd_recs-slider__item")
+                    else {
+                        var el = getClosestNode(event.target, "._unbxd_recs-slider__item")
                         handleHorizontalWidgetClicks(el.id, clickHandler, recommendations);
                     }
                 });
             }
             else {
-                sliderContainer.addEventListener("click", function (event) {                
-                    if(event.target.className == "_unbxd_recs-vertical-slider__item"){
+                sliderContainer.addEventListener("click", function (event) {
+                    if (event.target.className == "_unbxd_recs-vertical-slider__item") {
                         var parentId = event.target.parentElement.id;
                         handleVerticalWidgetClicks(event.target.id, parentId, clickHandler, recommendationsModified);
                     }
-                    else{
-                        var el = getClosestNode(event.target,"._unbxd_recs-vertical-slider__item");
+                    else {
+                        var el = getClosestNode(event.target, "._unbxd_recs-vertical-slider__item");
                         var parentId = el.parentElement.id;
                         handleVerticalWidgetClicks(el.id, parentId, clickHandler, recommendationsModified);
                     }
@@ -312,7 +249,7 @@ import environment from './environment';
                 var styles = productFields[j].styles || missingValueError('styles', productFields[j]);
                 var productAttributeKey = productFields[j].unbxdDimensionKey || productFields[j].catalogKey || missingValueError('unbxdDimensionKey or catalogKey', productFields[j]);
                 var cssArr = Object.keys(styles);
-                if(!recommendations[i][productAttributeKey]){
+                if (!recommendations[i][productAttributeKey]) {
                     productAttributeKey = productFields[j].catalogKey;
                 }
                 // appending fields to slider item
@@ -321,20 +258,20 @@ import environment from './environment';
                     var newnode = document.createElement("p");
                     var dimension = recommendations[i][productAttributeKey];
                     newnode.className = sliderContent.sliderContentClass;
-                    if(rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field){
-                        if(rexConsoleConfigs.products.strike_price_feature.enabled){
+                    if (rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field) {
+                        if (rexConsoleConfigs.products.strike_price_feature.enabled) {
                             newnode.innerHTML = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
                         }
-                        else{
-                            newnode.innerHTML = rexConsoleConfigs.products.currency+ dimension;
+                        else {
+                            newnode.innerHTML = rexConsoleConfigs.products.currency + dimension;
                         }
                     }
-                    else if(ratingFeature &&
+                    else if (ratingFeature &&
                         ratingFeature.enabled &&
                         productFields[j].unbxdDimensionKey &&
-                        productFields[j].unbxdDimensionKey.toLowerCase() == "rating" ){
+                        productFields[j].unbxdDimensionKey.toLowerCase() == "rating") {
                         var ratingContentData = getRatingContent(recommendations[i], ratingFeature, domSelector, productAttributeKey);
-                        if(ratingContentData){
+                        if (ratingContentData) {
                             newnode.innerHTML = ratingContentData;
                         }
                     }
@@ -348,7 +285,7 @@ import environment from './environment';
                     }
 
                     if (newnode.innerHTML) {
-                        for(var k=0; k< cssArr.length; k++){
+                        for (var k = 0; k < cssArr.length; k++) {
                             newnode.style[cssArr[k]] = styles[cssArr[k]];
                         }
                         fragment.appendChild(newnode);
@@ -386,32 +323,32 @@ import environment from './environment';
                         }
                         sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
                         var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
-                        if(itemWidth){
-                            if(itemWidthUnit === "%"){
+                        if (itemWidth) {
+                            if (itemWidthUnit === "%") {
                                 var itemWidthPercentToPx = (itemWidth * 0.01 * sliderContainer[sliderContent.offsetDimension])
                                 for (var i = 0; i < sliderItems.length; i++) {
-                                    sliderItems[i].style.width = itemWidthPercentToPx + "px" ;
+                                    sliderItems[i].style.width = itemWidthPercentToPx + "px";
                                     recsSlider.style.width = (maxprodLimit * itemWidthPercentToPx) + (maxprodLimit) * margin + "px";
-                                    
+
                                 }
-                            }else{
+                            } else {
                                 for (var i = 0; i < sliderItems.length; i++) {
-                                    sliderItems[i].style.width = itemWidth + itemWidthUnit ;
+                                    sliderItems[i].style.width = itemWidth + itemWidthUnit;
                                     recsSlider.style.width = (maxprodLimit * itemWidth) + (maxprodLimit) * margin + itemWidthUnit;
-                                    
+
                                 }
                             }
-                        }else{
+                        } else {
                             for (var i = 0; i < sliderItems.length; i++) {
                                 sliderItems[i].style.width = hzSliderWidth + "px";
                                 recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
                             }
                         }
-                        var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
+                        var opaqueElSelector = document.querySelector("#" + targetDOMElementId + " ._unxbd_slider_hide");
                         opaqueElSelector.classList.remove("_unxbd_slider_hide");
-                       
+
                     }, 0);
-                
+
                 }
                 else {
 
@@ -421,25 +358,25 @@ import environment from './environment';
                         // if root container width is less than configuration width, then
                         // the container inherits root container width 
                         sliderParentContainer.style.width = widgetWidth || "initial";
-                        if(sliderRootContainer.clientWidth < sliderParentContainer.clientWidth){
+                        if (sliderRootContainer.clientWidth < sliderParentContainer.clientWidth) {
                             sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
                         }
-                        if(itemWidth){
+                        if (itemWidth) {
                             for (var i = 0; i < sliderItems.length; i++) {
-                                sliderItems[i].style.width = itemWidth + itemWidthUnit ;
+                                sliderItems[i].style.width = itemWidth + itemWidthUnit;
                             }
-                        }else{
+                        } else {
                             for (var i = 0; i < sliderItems.length; i++) {
                                 sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
                             }
                         }
                         recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
-                        var opaqueElSelector = document.querySelector("#"+targetDOMElementId + " ._unxbd_slider_hide");
+                        var opaqueElSelector = document.querySelector("#" + targetDOMElementId + " ._unxbd_slider_hide");
                         opaqueElSelector.classList.remove("_unxbd_slider_hide");
                     }, 0);
-                 
+
                 }
-               
+
             }
         }
 
@@ -520,7 +457,7 @@ import environment from './environment';
 
 
     global.eventQueue = {};
-    global._unbxd_registerHook = function (eventName, eventCallback){
+    global._unbxd_registerHook = function (eventName, eventCallback) {
         global.eventQueue[eventName] = eventCallback;
     }
 
@@ -540,7 +477,7 @@ import environment from './environment';
         var dataParser = options.dataParser;
         var eventQueue = options.eventQueue;
         var isVertical = options.isVertical || false;
-        var compressedStyle = rexConsoleConfigs.css || missingValueError('css',rexConsoleConfigs);
+        var compressedStyle = rexConsoleConfigs.css || missingValueError('css', rexConsoleConfigs);
         var recommendationsModified = null;
         var widgetWidthData = rexConsoleConfigs.widget.width || missingValueError('products.widget.width', rexConsoleConfigs.widget);
         // var widgetWidthData = verticalConfig.width;
@@ -557,35 +494,35 @@ import environment from './environment';
         var device = getDeviceType();
         var browserSize = getBrowserSize();
         var itemsToShowOnMobile, itemWidth, itemWidthUnit;
-        
-        if(window.unbxdDeviceType === "mobile-browser" || options.unbxdDeviceType === "mobile-browser"){
+
+        if (window.unbxdDeviceType === "mobile-browser" || options.unbxdDeviceType === "mobile-browser") {
             itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
             itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
-            if(rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn){
+            if (rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn) {
                 itemsToShowOnMobile = rexConsoleConfigs.products.visibleOn.mobile;
-            }else{
+            } else {
                 itemsToShowOnMobile = rexConsoleConfigs.products.visible;
             }
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
         }
-        else if (device === MOBILE || browserSize === SMALL){
+        else if (device === MOBILE || browserSize === SMALL) {
             itemWidth = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.value) || 0;
             itemWidthUnit = (rexConsoleConfigs.products && rexConsoleConfigs.products.width && rexConsoleConfigs.products.width.unit) || 'px';
-            if(rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn){
+            if (rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn) {
                 itemsToShowOnMobile = rexConsoleConfigs.products.visibleOn.mobile;
-            }else{
+            } else {
                 itemsToShowOnMobile = rexConsoleConfigs.products.visible;
             }
             itemsToShow = itemsToShowOnMobile ? itemsToShowOnMobile : 2;
-        }else{
-            if(rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn){
+        } else {
+            if (rexConsoleConfigs && rexConsoleConfigs.products && rexConsoleConfigs.products.visibleOn) {
                 itemsToShow = rexConsoleConfigs.products.visibleOn.desktop;
-            }else{
+            } else {
                 itemsToShow = rexConsoleConfigs.products.visible;
             }
-            itemsToShow = itemsToShow ? itemsToShow: 2;
+            itemsToShow = itemsToShow ? itemsToShow : 2;
         }
- 
+
         if (!renderTargetEl) {
             return sendWarning('The target element id <' + targetDOMElementId + '> is not present in DOM. Execution can not continue');
         }
@@ -606,23 +543,23 @@ import environment from './environment';
 
         var templateData = {
             recommendations: recommendationsModified || recommendations,
-            heading: heading, 
+            heading: heading,
             analyticsData: {
-                widgetNum: 'WIDGET'+ options.widgetNum,
+                widgetNum: 'WIDGET' + options.widgetNum,
                 pageType: options.pageType,
                 requestId: options.reqId
             }
         }
 
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
-        if (dataParser && typeof(dataParser) === "function") {
+        if (dataParser && typeof (dataParser) === "function") {
             templateData = dataParser(templateData)
         }
-        if (eventQueue && typeof(eventQueue['beforeTemplateRender']) === "function") {
+        if (eventQueue && typeof (eventQueue['beforeTemplateRender']) === "function") {
             var beforeTemplateRenderCallback = eventQueue['beforeTemplateRender']
             templateData = beforeTemplateRenderCallback(templateData);
-         }
-        
+        }
+
         document.getElementById(targetDOMElementId).innerHTML = renderFn(templateData);
 
         /** Dynamically adjusting width based on no of items to be shown */
@@ -645,14 +582,14 @@ import environment from './environment';
         if (isVertical) {
             global._unbxd_recsItemToScrollVt = itemsToShow;
         }
-        else if(window.unbxdDeviceType === "mobile-browser"){
+        else if (window.unbxdDeviceType === "mobile-browser") {
             global._unbxd_recsItemToScrollHz = itemsToShow;
         }
         else {
             global._unbxd_recsItemToScrollHz = itemsToShow;
         }
 
-            /** Attaching styles for the slider */
+        /** Attaching styles for the slider */
         var eventHandlerStyle = document.createElement('style');
         eventHandlerStyle.type = 'text/css';
         // innerHTML needs to stay as es5 since it will be embedded directly to client's browser
@@ -662,13 +599,14 @@ import environment from './environment';
         handleSizeCalculations(targetDOMElementId, sliderOptionsConfig);
 
         /* Callback to make any modification to data and pass on the modified data to renderFn  */
-        if (eventQueue && typeof(eventQueue['afterTemplateRender']) === "function") {
+        if (eventQueue && typeof (eventQueue['afterTemplateRender']) === "function") {
             var afterTemplateRenderCallback = eventQueue['afterTemplateRender']
             templateData = afterTemplateRenderCallback(isVertical);
-         }
-     
+        }
+
     }
 
+    global.getUnbxdRecommendations = getUnbxdRecommendations;
 
     /** The initialization function that has to be exposed to the merchandiser website
         *  it takes context object from the client html
@@ -705,18 +643,18 @@ import environment from './environment';
             return pageTypeLocal;
         }
 
-        function getTemplateDetails(context){
+        function getTemplateDetails(context) {
             var device = getDeviceType();
             var browserSize = getBrowserSize();
 
-            if(context.unbxdDeviceType && context.unbxdDeviceType.mobileBrowser)
+            if (context.unbxdDeviceType && context.unbxdDeviceType.mobileBrowser)
                 return "mobile-browser";
-            else if(context.unbxdDeviceType && context.unbxdDeviceType.desktopBrowser)
+            else if (context.unbxdDeviceType && context.unbxdDeviceType.desktopBrowser)
                 return "desktop-browser";
-            else if(device === MOBILE || browserSize === SMALL){
+            else if (device === MOBILE || browserSize === SMALL) {
                 return "mobile-browser";
             }
-            else{
+            else {
                 return "desktop-browser";
             }
         }
@@ -748,26 +686,26 @@ import environment from './environment';
         function getCookie(key) {
             var allcookies = document.cookie;
             var name, value;
-           
+
             // Get all the cookies pairs in an array
             var cookiearray = allcookies.split(';');
-            
+
             // Now take key value pair out of this array
-            for(var i=0; i<cookiearray.length; i++) {
-               name = cookiearray[i].split('=')[0];
-               value = cookiearray[i].split('=')[1];
-               //document.write ("Key is : " + name + " and Value is : " + value);
-               if(name.trim() === key){
-                   return value;
-               }
+            for (var i = 0; i < cookiearray.length; i++) {
+                name = cookiearray[i].split('=')[0];
+                value = cookiearray[i].split('=')[1];
+                //document.write ("Key is : " + name + " and Value is : " + value);
+                if (name.trim() === key) {
+                    return value;
+                }
             }
-         }
+        }
 
         // getting page info
         var pageType = getPageDetails(context.pageInfo);
 
         // getting template Info
-       window.unbxdDeviceType = getTemplateDetails(context)
+        window.unbxdDeviceType = getTemplateDetails(context)
 
         // get widget if
         var widgets = context.widgets;
@@ -789,7 +727,7 @@ import environment from './environment';
 
         var userId = (userInfo && userInfo.userId) || getCookie('unbxd.userId');
         var siteKey = (userInfo && userInfo.siteKey) || global.UnbxdSiteName;
-        var apiKey =  (userInfo && userInfo.apiKey)  ||global.UnbxdApiKey;
+        var apiKey = (userInfo && userInfo.apiKey) || global.UnbxdApiKey;
 
         var requestUrl = platformDomain + apiKey + "/" + siteKey + '/items?&template=true&pageType=';
 
@@ -821,7 +759,7 @@ import environment from './environment';
                 var catlevel2Name = pageInfo.catlevel2Name;
                 var catlevel3Name = pageInfo.catlevel3Name;
                 var catlevel4Name = pageInfo.catlevel4Name;
-                
+
                 if (catlevel1Name) {
                     categoryUrl = "&" + getUrlEncodedParam("catlevel1Name", catlevel1Name);
                     if (catlevel2Name) {
@@ -871,7 +809,7 @@ import environment from './environment';
                 }
                 _unbxd_generateRexContent(options);
             }
-        } 
+        }
 
 
         function renderWidgetDataVertical(widget, widgetNum, recommendations, heading) {
@@ -959,7 +897,7 @@ import environment from './environment';
         var compressedStyle;
         var compressedStyleVertical;
         var reqId;
-        fetchData(requestUrl, true,  function (err, res, requestId) {
+        fetchData(requestUrl, true, function (err, res, requestId) {
             // fetching data specific to a page type
             if (err) {
                 throw new Error('Failed to fetch recommendations');
@@ -967,39 +905,39 @@ import environment from './environment';
             recommendationsResponse = JSON.parse(res);
 
             // horizontal desktop templates configuration
-                horizontalTemplate = recommendationsResponse.template.horizontal;
-                reqId = requestId;
-                if(horizontalTemplate){
-                    horizontalConfig = horizontalTemplate.conf;
-                    horizontalAssets = horizontalConfig.assets;
-                    var templateUrlHorizontal = horizontalTemplate.scriptUrl;
-                    if(templateUrlHorizontal){
-                        
-                        /** Fetch template layout string */
-                        fetchData(templateUrlHorizontal,false,  horizontalTemplateHandler);
-                    }
-                    else{
-                        console.warn("script url not found for horizontal template")
-                    }
-                }       
-                // vertical templates configuration
-                verticalTemplate = recommendationsResponse.template.vertical;
-                if(verticalTemplate){
-                    verticalConfig = verticalTemplate.conf;
-                    verticalAssets = verticalConfig.assets;
-                    var templateUrlVertical = verticalTemplate.scriptUrl;
-                    if(templateUrlVertical){
-                        /** Fetch vertical template layout string */
-                        fetchData(templateUrlVertical,false,  verticalTemplateHandler);
-                    }
-                    else{
-                        console.warn("script url not found for vertical template")
-                    }
+            horizontalTemplate = recommendationsResponse.template.horizontal;
+            reqId = requestId;
+            if (horizontalTemplate) {
+                horizontalConfig = horizontalTemplate.conf;
+                horizontalAssets = horizontalConfig.assets;
+                var templateUrlHorizontal = horizontalTemplate.scriptUrl;
+                if (templateUrlHorizontal) {
+
+                    /** Fetch template layout string */
+                    fetchData(templateUrlHorizontal, false, horizontalTemplateHandler);
                 }
+                else {
+                    console.warn("script url not found for horizontal template")
+                }
+            }
+            // vertical templates configuration
+            verticalTemplate = recommendationsResponse.template.vertical;
+            if (verticalTemplate) {
+                verticalConfig = verticalTemplate.conf;
+                verticalAssets = verticalConfig.assets;
+                var templateUrlVertical = verticalTemplate.scriptUrl;
+                if (templateUrlVertical) {
+                    /** Fetch vertical template layout string */
+                    fetchData(templateUrlVertical, false, verticalTemplateHandler);
+                }
+                else {
+                    console.warn("script url not found for vertical template")
+                }
+            }
         });
     }
 
-   
+
 })(window);
 
 

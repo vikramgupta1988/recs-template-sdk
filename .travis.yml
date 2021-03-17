@@ -7,7 +7,7 @@ install:
 script:
   - yarn build
 before_deploy:
-  - mkdir dist && mv build/unbxd_rex_template_sdk.js dist/
+  - mkdir dist && mv build/unbxd_recs_template_sdk.js dist/
 deploy:
   provider: s3
   access_key_id: $AWS_ACCESS_ID

@@ -1,15 +1,26 @@
 <html>
+
 <head>
     <title>
         Recs template container
     </title>
     <style>
+        .outer-widgets-container {
+            display: flex;
+        }
+
+        #recommendations3_1 {
+            width: 200px;
+        }
+
         #recommendations3 {
             width: 200px;
         }
-        /* #recommendations{
-                padding: 20px 40px;
-            } */
+
+        #recommendations {
+            padding: 20px 40px;
+        }
+
         .slider-item {
             background-color: red;
             height: 200px;
@@ -30,36 +41,43 @@
 
         .root {
             display: flex;
+            flex-direction: column;
         }
-        
     </style>
 </head>
 
 <body>
     <div class="root">
-        <div id="recommendations3"></div>
-        <div class="horizontal-section">
-            <div id="recommendations"></div>  
-            <div id="recommendations1"></div>
-            <div id="recommendations2"></div>
-            <div id="unbxd_rex_home_w1"></div>
+        <div style="display: flex;">
+            <div id="recommendations3"></div>
+            <div class="horizontal-section">
+                <div id="recommendations"></div>
+                <div id="recommendations1"></div>
+            </div>
+        </div>
+        <div style="display: flex;" class="outer-widgets-container">
+            <div id="recommendations3_1"></div>
+            <div class="horizontal-section">
+                <div id="recommendations_1"></div>
+                <div id="recommendations1_1"></div>
+            </div>
         </div>
     </div>
 
-    <script type="text/javascript" src="build/unbxd_rex_template_sdk_dev.js"></script>
+    <script type="text/javascript" src="build/unbxd_recs_template_sdk_dev.js"></script>
     <script>
         var UnbxdSiteName = 'demo2-com11555668711';
         var UnbxdApiKey = '19762cd9ce8ffcdb88fee1404e3fb802';
-        
-        beforeTemplateRenderer = function(templateData){
+
+        beforeTemplateRenderer = function (templateData) {
             // modify the data received from recommendation API in case required.
             console.log("template data");
             return templateData;
         }
 
-             //Perform activity after template render
-        afterTemplateRenderer = function(isVertical){
-            if(!isVertical){
+        //Perform activity after template render
+        afterTemplateRenderer = function (isVertical) {
+            if (!isVertical) {
                 console.log("Horizontal Template Rendered");
             } else {
                 console.log("Vertical Template Rendered");
@@ -99,14 +117,52 @@
                 // product information will be provided here
                 alert(JSON.stringify(product));
             },
-            dataParser: function(templateData){
+            dataParser: function (templateData) {
                 // modify the data received from recommendation API in case required.
                 // console.log("template data");
                 return templateData;
             }
-           
+
         };
-        window._unbxd_getRecommendations(context);
+        var context1 = {
+            widgets: {
+                widget1: {
+                    name: "recommendations1_1"
+                },
+                widget2: {
+                    name: "recommendations_1"
+                },
+                widget3: {
+                    name: "recommendations3_1"
+                }
+            },
+            userInfo: {
+                userId: 'uid-1510789640554-83175',
+                siteKey: 'demo2-com11555668711',
+                apiKey: '19762cd9ce8ffcdb88fee1404e3fb802'
+            },
+            pageInfo: {
+                pageType: 'PRODUCT',
+                productIds: ['SVCV']
+            },
+            unbxdDeviceType: {
+                desktopBrowser: false,
+                mobileBrowser: true
+            },
+            itemClickHandler: function (product) {
+                // product information will be provided here
+                alert(JSON.stringify(product));
+            },
+            dataParser: function (templateData) {
+                // modify the data received from recommendation API in case required.
+                // console.log("template data");
+                return templateData;
+            }
+
+        };
+
+        new window.getUnbxdRecommendations(context);
+        new window.getUnbxdRecommendations(context1);
 
     </script>
 </body>

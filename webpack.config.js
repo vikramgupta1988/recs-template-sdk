@@ -7,7 +7,7 @@ module.exports = {
     mode: "development",
     output: {
         path: path.resolve(__dirname, "build"),
-        filename: "unbxd_rex_template_sdk_dev.js",
+        filename: "unbxd_recs_template_sdk_dev.js",
         publicPath: 'build/'
     },
     devServer: {
@@ -40,7 +40,7 @@ module.exports = {
             }
         ]
     },
-    plugins:[
+    plugins: [
         new HtmlWebpackPlugin({
             template: 'src/index.html'
         }),
