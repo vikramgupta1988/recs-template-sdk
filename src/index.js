@@ -765,9 +765,9 @@ import { getDeviceType, getBrowserSize, MOBILE, SMALL, fetchData } from './utils
                     if (catlevel2Name) {
                         categoryUrl += "&" + getUrlEncodedParam("catlevel2Name", catlevel2Name);
                         if (catlevel3Name) {
-                            categoryUrl += "&" + getUrlEncodedParam("catlevel3Name=", catlevel3Name);
+                            categoryUrl += "&" + getUrlEncodedParam("catlevel3Name", catlevel3Name);
                             if (catlevel4Name) {
-                                categoryUrl += "&" + getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                                categoryUrl += "&" + getUrlEncodedParam("catlevel4Name", catlevel4Name);
                             }
                         }
                     }
