@@ -73,9 +73,9 @@ export default class getUnbxdRecommendations {
                     if (catlevel2Name) {
                         categoryUrl += "&" + this.getUrlEncodedParam("catlevel2Name", catlevel2Name);
                         if (catlevel3Name) {
-                            categoryUrl += "&" + this.getUrlEncodedParam("catlevel3Name=", catlevel3Name);
+                            categoryUrl += "&" + this.getUrlEncodedParam("catlevel3Name", catlevel3Name);
                             if (catlevel4Name) {
-                                categoryUrl += "&" + this.getUrlEncodedParam("catlevel4Name=", catlevel4Name);
+                                categoryUrl += "&" + this.getUrlEncodedParam("catlevel4Name", catlevel4Name);
                             }
                         }
                     }
