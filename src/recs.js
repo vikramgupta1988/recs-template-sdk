@@ -225,29 +225,27 @@ export default class getUnbxdRecommendations {
         var maxProducts = this.horizontalConfig.products.max || this.horizontalConfig.products.max_products;
         var targetDOMElementId = widget;
         var clickHandler = this.itemClickHandler;
-        if (recommendations.length) {
-            if (maxProducts < recommendations.length) {
-                recommendations = recommendations.splice(0, maxProducts);
-            }
-            var options = {
-                template: this.horizontalTemplate,
-                targetDOMElementId: targetDOMElementId,
-                recommendations: recommendations,
-                heading: heading,
-                rexConsoleConfigs: this.horizontalConfig,
-                assets: this.horizontalAssets,
-                maxProducts: maxProducts,
-                clickHandler: clickHandler,
-                dataParser: this.dataParser,
-                eventQueue: this.eventQueue,
-                widgetNum: widgetNum,
-                pageType: this.pageType,
-                reqId: this.reqId,
-                sliderClass: "_unbxd_recs-slider",
-                compressedStyle: this.compressedStyle
-            }
-            _unbxd_generateRexContent(options);
+        if (maxProducts < recommendations.length) {
+            recommendations = recommendations.splice(0, maxProducts);
         }
+        var options = {
+            template: this.horizontalTemplate,
+            targetDOMElementId: targetDOMElementId,
+            recommendations: recommendations,
+            heading: heading,
+            rexConsoleConfigs: this.horizontalConfig,
+            assets: this.horizontalAssets,
+            maxProducts: maxProducts,
+            clickHandler: clickHandler,
+            dataParser: this.dataParser,
+            eventQueue: this.eventQueue,
+            widgetNum: widgetNum,
+            pageType: this.pageType,
+            reqId: this.reqId,
+            sliderClass: "_unbxd_recs-slider",
+            compressedStyle: this.compressedStyle
+        }
+        _unbxd_generateRexContent(options);
     }
 
 
@@ -255,32 +253,30 @@ export default class getUnbxdRecommendations {
         var maxProducts = this.verticalConfig.products.max || this.verticalConfig.products.max_products;
         var targetDOMElementId = widget;
         var clickHandler = this.itemClickHandler;
-        if (recommendations.length) {
-            if (maxProducts < recommendations.length) {
-                recommendations = recommendations.splice(0, maxProducts);
-            }
-
-            var options = {
-                template: this.verticalTemplate,
-                targetDOMElementId: targetDOMElementId,
-                recommendations: recommendations,
-                heading: heading,
-                rexConsoleConfigs: this.verticalConfig,
-                assets: this.verticalAssets,
-                maxProducts: maxProducts,
-                clickHandler: clickHandler,
-                eventQueue: this.eventQueue,
-                dataParser: this.dataParser,
-                widgetNum: widgetNum,
-                pageType: this.pageType,
-                reqId: this.reqId,
-                isVertical: true,
-                sliderClass: "_unbxd_recs-vertical-slider",
-                compressedStyle: this.compressedStyleVertical
-
-            }
-            _unbxd_generateRexContent(options);
+        if (maxProducts < recommendations.length) {
+            recommendations = recommendations.splice(0, maxProducts);
         }
+
+        var options = {
+            template: this.verticalTemplate,
+            targetDOMElementId: targetDOMElementId,
+            recommendations: recommendations,
+            heading: heading,
+            rexConsoleConfigs: this.verticalConfig,
+            assets: this.verticalAssets,
+            maxProducts: maxProducts,
+            clickHandler: clickHandler,
+            eventQueue: this.eventQueue,
+            dataParser: this.dataParser,
+            widgetNum: widgetNum,
+            pageType: this.pageType,
+            reqId: this.reqId,
+            isVertical: true,
+            sliderClass: "_unbxd_recs-vertical-slider",
+            compressedStyle: this.compressedStyleVertical
+
+        }
+        _unbxd_generateRexContent(options);
     }
 
     handleWidgetRenderingVertical() {
