@@ -258,6 +258,8 @@ import { getDeviceType, getBrowserSize, MOBILE, SMALL, fetchData } from './utils
                     var newnode = document.createElement("p");
                     var dimension = recommendations[i][productAttributeKey];
                     newnode.className = sliderContent.sliderContentClass;
+                    newnode.tabIndex = 0;
+                    newnode.setAttribute('role', 'button');
                     if (rexConsoleConfigs.products.strike_price_feature && productAttributeKey == rexConsoleConfigs.products.strike_price_feature.new.field) {
                         if (rexConsoleConfigs.products.strike_price_feature.enabled) {
                             newnode.innerHTML = strikeThrough(recommendations[i], rexConsoleConfigs, domSelector);
@@ -424,11 +426,19 @@ import { getDeviceType, getBrowserSize, MOBILE, SMALL, fetchData } from './utils
             "half_rating": "_unbxd_rex-half-star",
             "full_rating": "_unbxd_rex-full-star"
         }
+        var altTextMap = {
+            "next_arrow": "Next Arrow",
+            "prev_arrow": "Previous Arrow",
+            "empty_rating": "Empty star",
+            "half_rating": "half star",
+            "full_rating": "full star"
+        }
         for (var i = 0; i < assets.length; i++) {
             var horizontalAssetItem = assets[i];
             imgArr.push(
                 {
                     classname: classMap[horizontalAssetItem.tag],
+                    altText: altTextMap[horizontalAssetItem.tag],
                     url: horizontalAssetItem.src
                 }
             );
