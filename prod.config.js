@@ -1,13 +1,20 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var ContentReplacePlugin = require('content-replace-webpack-plugin')
 
 module.exports = {
     entry: './src/index.js',
+    entry: {
+        'unbxd_recs_template_sdk': './src/index.js',
+        'unbxd_recs_template_sdk_uk': './src/index.js',
+        'unbxd_recs_template_sdk_apac': './src/index.js',
+        'unbxd_recs_template_sdk_anz': './src/index.js'
+    },
     devtool: "source-map",
     mode: "production",
     output: {
         path: path.resolve(__dirname, "build"),
-        filename: "unbxd_recs_template_sdk.js",
+        filename: "[name].js",
         publicPath: 'build/'
     },
     module: {
@@ -39,5 +46,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'src/index.html'
         }),
-    ]
+        new ContentReplacePlugin({
+            rules: {
+              'unbxd_recs_template_sdk_uk.js': content => content.replace('/recommendations.unbxd.io', '/uk-recommendations.unbxd.io'),
+              'unbxd_recs_template_sdk_apac.js': content => content.replace('/recommendations.unbxd.io', '/apac-recommendations.unbxd.io'),
+              'unbxd_recs_template_sdk_anz.js': content => content.replace('/recommendations.unbxd.io', '/anz-recommendations.unbxd.io')
+            }
+          })
+    ],
 }

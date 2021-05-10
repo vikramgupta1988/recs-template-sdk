@@ -6,7 +6,9 @@
   "scripts": {
     "build": "webpack --config prod.config.js",
     "start": "webpack-dev-server",
-    "dev": "webpack"
+    "dev": "webpack",
+    "deploy_staging": "aws s3 sync build/ s3://staging-recs-ui/rex_template_content/ --cache-control 'public,max-age=2592000'",
+    "deploy_prod": "aws s3 sync build/ s3://prod-recs-ui/rex_template_content/ --cache-control 'public,max-age=2592000'"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +32,7 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "core-js": "^3.4.8"
+    "core-js": "^3.4.8",
+    "content-replace-webpack-plugin": "^1.0.0"
   }
 }
