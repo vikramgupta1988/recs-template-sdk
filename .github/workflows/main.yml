@@ -32,3 +32,6 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      - name: Deploy staging
+        run: yarn deploy_staging
