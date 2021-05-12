@@ -8,7 +8,7 @@
     "start": "webpack-dev-server",
     "dev": "webpack",
     "deploy_staging": "aws s3 sync build/ s3://staging-recs-ui/rex_template_content/ --cache-control 'public,max-age=2592000'",
-    "deploy_prod": "aws s3 sync build/ s3://unbxd/recs_sdk/v2.1.0/ --cache-control 'public,max-age=2592000'"
+    "deploy_prod": "aws s3 sync build/ s3://unbxd/recs-sdk/v2.1.0/ --cache-control 'public,max-age=2592000'"
   },
   "author": "",
   "license": "ISC",
