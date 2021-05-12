@@ -1,8 +1,8 @@
 <div class='_unbxd_vertical-recs-slider _unxbd_slider_hide'>
-    <div class='_unbxd_recs-vertical-slider-heading' id='_unbxd_recs-vertical-slider-heading'>{{=it.heading}}</div>
+    <div class='_unbxd_recs-vertical-slider-heading' id='_unbxd_recs-vertical-slider-heading' tabIndex='0'>{{=it.heading}}</div>
     <div class='_unbxd_recs-vertical-button-container'>
-        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--top' onclick='_unbxd_recsSliderScrollTop(event)'></button>
-        <button class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--bottom' onclick='_unbxd_recsSliderScrollBottom(event)'></button>
+        <button type='button' aria-label='Previous' class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--top' onclick='_unbxd_recsSliderScrollTop(event)'></button>
+        <button type='button' aria-label='Next' class='_unbxd_recs-vertical-slider-btn _unbxd_rex-vertical-slider--bottom' onclick='_unbxd_recsSliderScrollBottom(event)'></button>
     </div>
     <div class='_unbxd_recs-vertical-slider-container' id='_unbxd_recs-vertical-slider-container'>
         <div class='_unbxd_recs-vertical-slider' id='_unbxd_recs-vertical-slider'> 
@@ -10,10 +10,10 @@
                 <div class='_unbxd_recs-vertical-list' id='{{=index}}-vt-level1-{{=index}}'>
                        {{ for(var prop=0; prop<value.length; prop++) { }}
                             <div class='_unbxd_recs-vertical-slider__item' id='{{=prop}}-vt-level2-{{=prop}}'
-                             data-unbxdAttr='product' data-unbxdparam_experience_widget='{{=it.analyticsData.widgetNum}}'
-                             data-unbxdparam_experience_pagetype='{{=it.analyticsData.pageType}}' data-unbxdparam_sku='{{=value[0].uniqueId}}'
+                            data-unbxdAttr='product' data-unbxdparam_experience_widget='{{=it.analyticsData.widgetNum}}'
+                             data-unbxdparam_experience_pagetype='{{=it.analyticsData.pageType}}' data-unbxdparam_sku='{{=value[prop].uniqueId}}'
                              data-unbxdparam_requestId='{{=it.analyticsData.requestId}}'>
-                                <img src='{{=value[prop] ? value[prop].imageUrl:value[prop].imageUrl[0]}}' />
+                                <img src='{{=value[prop] ? value[prop].imageUrl:value[prop].imageUrl[0]}}' alt='Item image' tabindex='0' />
                             </div>
                        {{ } }}     
                 </div>

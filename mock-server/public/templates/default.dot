@@ -1,14 +1,18 @@
 <div class='unbxd-recs-slider _unxbd_slider_hide'>
-    <div class='_unbxd_recs-slider-heading' id='_unbxd_recs-slider-heading'>{{=it.heading}}</div>
+    <div class='_unbxd_recs-slider-heading' id='_unbxd_recs-slider-heading' tabIndex='0'>{{=it.heading}}</div>
     <div class='_unbxd_recs-slider-container' id='_unbxd_recs-slider-container'>
-        <button class='_unbxd_recs-slider-btn _unbxd_rex-slider--prev' onclick='_unbxd_recsSliderScrollPrev(event)'></button>
-        <button class='_unbxd_recs-slider-btn _unbxd_rex-slider--next' onclick='_unbxd_recsSliderScrollNext(event)'></button>
+        <button type='button' aria-label='Previous' class='_unbxd_recs-slider-btn _unbxd_rex-slider--prev' onclick='_unbxd_recsSliderScrollPrev(event)'></button>
+        <button type='button' aria-label='Next' class='_unbxd_recs-slider-btn _unbxd_rex-slider--next' onclick='_unbxd_recsSliderScrollNext(event)'></button>
         <div class='_unbxd_recs-slider' id='_unbxd_recs-slider'> {{~it.recommendations :value:index}}
         <div class='_unbxd_recs-slider__item' id='hz-item-{{=index}}'
         data-unbxdAttr='product' data-unbxdparam_experience_widget='{{=it.analyticsData.widgetNum}}'
         data-unbxdparam_experience_pagetype='{{=it.analyticsData.pageType}}' data-unbxdparam_sku='{{=value.uniqueId}}'
         data-unbxdparam_requestId='{{=it.analyticsData.requestId}}'>
-            <img src='{{=value.imageUrl || value.imageUrl[0]}}' />
+            {{? Array.isArray(value.imageUrl) }}
+                <img src='{{=value.imageUrl[0]}}' alt='Item image' tabindex='0' />
+                {{??}}
+                <img src='{{=value.imageUrl}}' alt='Item image' tabindex='0' />
+            {{?}}
         </div> {{~}}
     </div>
     </div>
