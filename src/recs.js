@@ -29,9 +29,6 @@ export default class getUnbxdRecommendations {
 
         // getting userId, siteKey and apiKey
         var userInfo = context.userInfo;
-        // if (!userInfo) {
-        //     throw new Error("User info missing")
-        // }
 
         var userId = (userInfo && userInfo.userId) || this.getCookie('unbxd.userId');
         var siteKey = (userInfo && userInfo.siteKey) || window.UnbxdSiteName;
@@ -89,6 +86,21 @@ export default class getUnbxdRecommendations {
         }
 
         requestUrl += "&uid=" + userId;
+
+        // Adding extra parameters to the API
+        const extraParams = context.extraParams;
+        if(extraParams && typeof extraParams === 'object' && Object.keys(extraParams).length > 0) {
+            let extraParamsRequest = '';
+            const extraParamKeys = Object.keys(extraParams);
+            extraParamKeys.forEach((param, index) => {
+                if(index > 0) {
+                    extraParamsRequest += '&';
+                }
+                extraParamsRequest += `${param}=${encodeURIComponent(extraParams[param])}`
+            });
+            requestUrl += `&${extraParamsRequest}`;
+        }
+
         /** Fetch recommendations response */
         // to store recommendations response
         // to store template string
