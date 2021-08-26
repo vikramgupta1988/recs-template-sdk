@@ -312,86 +312,72 @@ import { getDeviceType, getBrowserSize, MOBILE, SMALL, fetchData } from './utils
         }
 
         function incrementCounter() {
-            counter++;
-            if (counter === len) {
-                if (sliderContent.dimension == "width") {
+            if (sliderContent.dimension == "width") {
+                setTimeout(function () {
+                    var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " .unbxd-recs-slider");
+                    var sliderRootContainer = sliderParentContainer.parentElement;
+                    sliderParentContainer.style.width = widgetWidth || "initial";
+                    if (sliderRootContainer.clientWidth < sliderParentContainer.clientWidth) {
+                        sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
+                    }
+                    sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
+                    var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
+                    if (itemWidth) {
+                        if (itemWidthUnit === "%") {
+                            var itemWidthPercentToPx = (itemWidth * 0.01 * sliderContainer[sliderContent.offsetDimension])
+                            for (var i = 0; i < sliderItems.length; i++) {
+                                sliderItems[i].style.width = itemWidthPercentToPx + "px";
+                                recsSlider.style.width = (maxprodLimit * itemWidthPercentToPx) + (maxprodLimit) * margin + "px";
 
-                    setTimeout(function () {
-                        var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " .unbxd-recs-slider");
-                        var sliderRootContainer = sliderParentContainer.parentElement;
-                        sliderParentContainer.style.width = widgetWidth || "initial";
-                        if (sliderRootContainer.clientWidth < sliderParentContainer.clientWidth) {
-                            sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
-                        }
-                        sliderContainer.style.width = sliderContainer[sliderContent.offsetDimension] + "px";
-                        var hzSliderWidth = (sliderContainer[sliderContent.offsetDimension] - (itemsToShow * margin)) / itemsToShow;
-                        if (itemWidth) {
-                            if (itemWidthUnit === "%") {
-                                var itemWidthPercentToPx = (itemWidth * 0.01 * sliderContainer[sliderContent.offsetDimension])
-                                for (var i = 0; i < sliderItems.length; i++) {
-                                    sliderItems[i].style.width = itemWidthPercentToPx + "px";
-                                    recsSlider.style.width = (maxprodLimit * itemWidthPercentToPx) + (maxprodLimit) * margin + "px";
-
-                                }
-                            } else {
-                                for (var i = 0; i < sliderItems.length; i++) {
-                                    sliderItems[i].style.width = itemWidth + itemWidthUnit;
-                                    recsSlider.style.width = (maxprodLimit * itemWidth) + (maxprodLimit) * margin + itemWidthUnit;
-
-                                }
                             }
                         } else {
-                            for (var i = 0; i < sliderItems.length; i++) {
-                                sliderItems[i].style.width = hzSliderWidth + "px";
-                                recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
-                            }
-                        }
-                        var opaqueElSelector = document.querySelector("#" + targetDOMElementId + " ._unxbd_slider_hide");
-                        opaqueElSelector.classList.remove("_unxbd_slider_hide");
-
-                    }, 0);
-
-                }
-                else {
-
-                    setTimeout(function () {
-                        var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " ._unbxd_vertical-recs-slider");
-                        var sliderRootContainer = sliderParentContainer.parentElement;
-                        // if root container width is less than configuration width, then
-                        // the container inherits root container width 
-                        sliderParentContainer.style.width = widgetWidth || "initial";
-                        if (sliderRootContainer.clientWidth < sliderParentContainer.clientWidth) {
-                            sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
-                        }
-                        if (itemWidth) {
                             for (var i = 0; i < sliderItems.length; i++) {
                                 sliderItems[i].style.width = itemWidth + itemWidthUnit;
-                            }
-                        } else {
-                            for (var i = 0; i < sliderItems.length; i++) {
-                                sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                                recsSlider.style.width = (maxprodLimit * itemWidth) + (maxprodLimit) * margin + itemWidthUnit;
+
                             }
                         }
-                        recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
-                        var opaqueElSelector = document.querySelector("#" + targetDOMElementId + " ._unxbd_slider_hide");
-                        opaqueElSelector.classList.remove("_unxbd_slider_hide");
-                    }, 0);
+                    } else {
+                        for (var i = 0; i < sliderItems.length; i++) {
+                            sliderItems[i].style.width = hzSliderWidth + "px";
+                            recsSlider.style.width = (maxprodLimit * hzSliderWidth) + (maxprodLimit) * margin + "px";
+                        }
+                    }
+                    var opaqueElSelector = document.querySelector("#" + targetDOMElementId + " ._unxbd_slider_hide");
+                    opaqueElSelector.classList.remove("_unxbd_slider_hide");
 
-                }
+                }, 0);
+
+            }
+            else {
+
+                setTimeout(function () {
+                    var sliderParentContainer = document.querySelector("#" + targetDOMElementId + " ._unbxd_vertical-recs-slider");
+                    var sliderRootContainer = sliderParentContainer.parentElement;
+                    // if root container width is less than configuration width, then
+                    // the container inherits root container width 
+                    sliderParentContainer.style.width = widgetWidth || "initial";
+                    if (sliderRootContainer.clientWidth < sliderParentContainer.clientWidth) {
+                        sliderParentContainer.style.width = sliderRootContainer.clientWidth + "px";
+                    }
+                    if (itemWidth) {
+                        for (var i = 0; i < sliderItems.length; i++) {
+                            sliderItems[i].style.width = itemWidth + itemWidthUnit;
+                        }
+                    } else {
+                        for (var i = 0; i < sliderItems.length; i++) {
+                            sliderItems[i].style.width = sliderParentContainer.clientWidth - 2 * margin + "px";
+                        }
+                    }
+                    recsSlider.style.width = (sliderParentContainer.clientWidth) * recommendationsModified.length + "px";
+                    var opaqueElSelector = document.querySelector("#" + targetDOMElementId + " ._unxbd_slider_hide");
+                    opaqueElSelector.classList.remove("_unxbd_slider_hide");
+                }, 0);
 
             }
         }
 
-        var imgs = document.images,
-            len = imgs.length,
-            counter = 0;
-
-        [].forEach.call(imgs, function (img) {
-            if (img.complete)
-                incrementCounter();
-            else
-                img.addEventListener('load', incrementCounter, false);
-        });
+       incrementCounter();
 
 
         /** Setting styles for carousel buttons */
